@@ -3,6 +3,11 @@
 
 declare (strict_types=1);
 
+use Instability\Exception\InstabilityException;
+use Instability\Metric\Abstractness;
+use Instability\Metric\DMS;
+use Instability\Metric\Instability;
+
 include __DIR__ . '/../../autoload.php' ?? throw new Exception('Missing autoload file');
 $instabilityFile = __DIR__ . '/../../../instability.php';
 
@@ -16,11 +21,15 @@ if (!is_file($instabilityFile)) {
 $config = include __DIR__ . '/../../../instability.php';
 
 try {
-    // Call calculator here
-    echo '';
-    echo 'Provide statistics here';
-} catch (Exception $exception) { // TODO add dedicated exception
-    echo 'Exception occurred: ' . $exception->getMessage();
+    Instability::create();
+    Abstractness::create();
+    DMS::create();
+    echo "\n";
+    echo "Provide statistics here\n";
+} catch (InstabilityException $exception) {
+    foreach ($exception->output() as $output) {
+        echo $output;
+    }
 
     exit(1);
 }

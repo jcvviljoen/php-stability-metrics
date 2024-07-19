@@ -1,0 +1,28 @@
+<?php
+
+return [
+    /**
+     * Define the base path, where components would live in.
+     */
+    'base_path' => 'src',
+
+    /**
+     * Default namespaces application wide that don't affect the instability.
+     */
+    'default' => [
+        // ex: 'DateTimeImmutable',
+    ],
+
+    /**
+     * Define each components to be checked.
+     */
+    'components' => [
+        [
+            /**
+             * Define the component path, excluding the base_path
+             */
+            'component' => 'First/Module/Path',
+        ],
+        // ... Define other components
+    ],
+];
