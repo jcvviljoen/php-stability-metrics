@@ -15,6 +15,9 @@ The stability of a component is determined by the number of incoming and outgoin
 The more incoming dependencies a component has, the more stable it is.
 The more outgoing dependencies a component has, the more unstable it is.
 
+The principle behind this is called the **Stable Dependencies Principle (SDP)**
+(further promoted by the **Stable Abstractions Principle (SAP)**).
+
 This all plays into the concept of **Component Cohesion Principles** which are:
 1. **Reuse / Release Equivalence Principle (REP)**: The granule of reuse is the granule of release.
 2. **Common Closure Principle (CCP)**: Classes that change together are packaged together.
