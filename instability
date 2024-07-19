@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+<?php
+
+declare (strict_types=1);
+
+include __DIR__ . '/../../autoload.php' ?? throw new Exception('Missing autoload file');
+$instabilityFile = __DIR__ . '/../../../instability.php';
+
+/**
+ * creates config
+ */
+if (!is_file($instabilityFile)) {
+    copy(__DIR__ . '/instability.php.sample', $instabilityFile);
+}
+
+$config = include __DIR__ . '/../../../instability.php';
+
+try {
+    // Call calculator here
+    echo '';
+    echo 'Provide statistics here';
+} catch (Exception $exception) { // TODO add dedicated exception
+    echo 'Exception occurred: ' . $exception->getMessage();
+
+    exit(1);
+}

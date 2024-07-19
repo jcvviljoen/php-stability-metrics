@@ -1,2 +1,49 @@
 {
+  "name": "jcviljoen/php-stability-metrics",
+  "type": "library",
+  "description": "PHP Tool calculate project stability metrics",
+  "require": {
+    "php": "^8.3",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^11.2",
+    "phpstan/phpstan": "^1.11",
+    "slevomat/coding-standard": "^8.15"
+  },
+  "scripts": {
+    "cs:fix": "vendor/bin/phpcs --colors -ps",
+    "test:stan": "vendor/bin/phpstan analyse src --level=max --ansi",
+    "test:unit": "vendor/bin/phpunit --testdox --color=always",
+    "tests": [
+      "@cs:fix",
+      "@test:stan",
+      "@test:unit"
+    ]
+  },
+  "bin": [
+    "instability"
+  ],
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Instability\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Instability\\Tests\\": "tests/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Jason Viljoen",
+      "email": "jason@vespertool.com"
+    }
+  ],
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": false
+    }
+  }
 }
