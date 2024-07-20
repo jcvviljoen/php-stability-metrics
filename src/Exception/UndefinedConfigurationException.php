@@ -2,7 +2,7 @@
 
 namespace Instability\Exception;
 
-class UndefinedConfigurationException extends InstabilityException
+class UndefinedConfigurationException extends StabilityException
 {
     public function output(): array
     {

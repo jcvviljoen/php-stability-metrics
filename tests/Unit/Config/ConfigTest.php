@@ -1,0 +1,91 @@
+<?php
+
+namespace Instability\Tests\Unit\Config;
+
+use Instability\Config\Config;
+use Instability\Config\Module;
+use Instability\Exception\InvalidConfigurationException;
+use Instability\Tests\ExpectThrows;
+use PHPUnit\Framework\TestCase;
+
+class ConfigTest extends TestCase
+{
+    use ExpectThrows;
+
+    public function test_from(): void
+    {
+        $config = [
+            'basePath' => '/path/to/base',
+            'default' => [
+                'Some/Default/Namespace',
+            ],
+            'modules' => [
+                [
+                    'module' => '/path/to/module',
+                    'exclude' => ['tests'],
+                ],
+            ],
+        ];
+
+        $config = Config::from($config);
+
+        $this->assertEquals('/path/to/base', $config->basePath);
+        $this->assertEquals(['Some/Default/Namespace'], $config->default);
+        $this->assertEquals(
+            [new Module('/path/to/module', ['tests'])],
+            $config->modules,
+        );
+    }
+
+    public function test_from_throws_exception_when_base_path_is_missing(): void
+    {
+        $config = [
+            'default' => [
+                'Some/Default/Namespace',
+            ],
+            'modules' => [
+                [
+                    'module' => '/path/to/module',
+                    'exclude' => ['tests'],
+                ],
+            ],
+        ];
+
+        $exception = $this->expectThrows(fn() => Config::from($config));
+
+        $this->assertEquals(InvalidConfigurationException::onMissingBasePath(), $exception);
+    }
+
+    public function test_from_throws_exception_when_modules_is_missing(): void
+    {
+        $config = [
+            'basePath' => '/path/to/base',
+            'default' => [
+                'Some/Default/Namespace',
+            ],
+        ];
+
+        $exception = $this->expectThrows(fn() => Config::from($config));
+
+        $this->assertEquals(InvalidConfigurationException::onMissingModules(), $exception);
+    }
+
+    public function test_from_throws_exception_when_module_is_missing(): void
+    {
+        $config = [
+            'basePath' => '/path/to/base',
+            'default' => [
+                'Some/Default/Namespace',
+            ],
+            'modules' => [
+                [
+                    'exclude' => ['tests'],
+                ],
+            ],
+        ];
+
+        $exception = $this->expectThrows(fn() => Config::from($config));
+
+        $this->assertEquals(InvalidConfigurationException::onMissingModule(), $exception);
+    }
+}

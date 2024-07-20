@@ -1,0 +1,33 @@
+#!/usr/bin/env php
+<?php
+
+declare (strict_types=1);
+
+use Instability\Config\Config;
+use Instability\Exception\StabilityException;
+use Instability\Stability;
+
+include __DIR__ . '/../../autoload.php' ?? throw new Exception('Missing autoload file');
+$stabilityFile = __DIR__ . '/../../../stability.php';
+
+/**
+ * creates config
+ */
+if (!is_file($stabilityFile)) {
+    copy(__DIR__ . '/stability.php.sample', $stabilityFile);
+}
+
+/**
+ * @param array<string, mixed> $config
+ */
+$config = include __DIR__ . '/../../../stability.php';
+
+try {
+    Stability::create(Config::from($config))->check();
+} catch (StabilityException $exception) {
+    foreach ($exception->output() as $output) {
+        echo $output;
+    }
+
+    exit(1);
+}

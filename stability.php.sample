@@ -1,0 +1,35 @@
+<?php
+
+return [
+    /**
+     * Define the base path, where components would live in.
+     */
+    'base_path' => 'src',
+
+    /**
+     * Default namespaces application wide that don't affect the stability.
+     */
+    'default' => [
+        // ex: 'DateTimeImmutable',
+    ],
+
+    /**
+     * Define each module to be checked.
+     */
+    'modules' => [
+        [
+            /**
+             * Define the module path, excluding the base_path
+             */
+            'module' => 'First/Module/Path',
+
+            /**
+             * Define the components within the module to be excluded from the stability check.
+             */
+            'exclude' => [
+                // ex: 'Interfaces',
+            ],
+        ],
+        // ... Define other components
+    ],
+];
