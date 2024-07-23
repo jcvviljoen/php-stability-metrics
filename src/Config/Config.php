@@ -6,6 +6,8 @@ use Instability\Exception\InvalidConfigurationException;
 
 readonly class Config
 {
+    private const string PATH_SEPARATOR = '/';
+
     /**
      * @param array<string> $default
      * @param array<Module> $modules
@@ -30,7 +32,9 @@ readonly class Config
 
         $modules = array_map(
             fn (array $module) => new Module(
-                $module['module'] ?? throw InvalidConfigurationException::onMissingModule(),
+                $basePath
+                    . self::PATH_SEPARATOR
+                    . ($module['module'] ?? throw InvalidConfigurationException::onMissingModule()),
                 $module['exclude'] ?? [],
             ),
             $modules

@@ -1,0 +1,1 @@
+We only want to consider `.php` files, so this file should not be found by tests.
