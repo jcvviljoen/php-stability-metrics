@@ -15,13 +15,13 @@ class ConfigTest extends TestCase
     public function test_from(): void
     {
         $config = [
-            'basePath' => 'path/to/base',
+            'basePath' => 'base',
             'default' => [
                 'Some/Default/Namespace',
             ],
             'modules' => [
                 [
-                    'module' => 'path/to/module',
+                    'module' => 'module',
                     'exclude' => ['tests'],
                 ],
             ],
@@ -29,10 +29,10 @@ class ConfigTest extends TestCase
 
         $config = Config::from($config);
 
-        $this->assertEquals('path/to/base', $config->basePath);
+        $this->assertEquals('base', $config->basePath);
         $this->assertEquals(['Some/Default/Namespace'], $config->default);
         $this->assertEquals(
-            [new Module('path/to/base/path/to/module', ['tests'])],
+            [new Module('module', 'base/module', ['tests'])],
             $config->modules,
         );
     }
@@ -45,7 +45,7 @@ class ConfigTest extends TestCase
             ],
             'modules' => [
                 [
-                    'module' => '/path/to/module',
+                    'module' => '/module',
                     'exclude' => ['tests'],
                 ],
             ],
@@ -59,7 +59,7 @@ class ConfigTest extends TestCase
     public function test_from_throws_exception_when_modules_is_missing(): void
     {
         $config = [
-            'basePath' => 'path/to/base',
+            'basePath' => 'base',
             'default' => [
                 'Some/Default/Namespace',
             ],
@@ -73,7 +73,7 @@ class ConfigTest extends TestCase
     public function test_from_throws_exception_when_module_is_missing(): void
     {
         $config = [
-            'basePath' => 'path/to/base',
+            'basePath' => 'base',
             'default' => [
                 'Some/Default/Namespace',
             ],

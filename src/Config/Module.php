@@ -13,6 +13,7 @@ class Module
 
     public function __construct(
         public readonly string $module,
+        public readonly string $modulePath,
         public readonly array $exclude,
     ) {
     }
@@ -26,8 +27,8 @@ class Module
             return $this->files;
         }
 
-        $directory = realpath(rtrim($this->module, '/'))
-            ?: throw InvalidModuleException::onInvalidModulePath($this->module);
+        $directory = realpath(rtrim($this->modulePath, '/'))
+            ?: throw InvalidModuleException::onInvalidModulePath($this->modulePath);
 
         $this->files = $this->rglob("$directory/*.php");
 

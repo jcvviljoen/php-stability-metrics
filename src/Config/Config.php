@@ -31,12 +31,15 @@ readonly class Config
         $modules = $config['modules'] ?? throw InvalidConfigurationException::onMissingModules();
 
         $modules = array_map(
-            fn (array $module) => new Module(
-                $basePath
-                    . self::PATH_SEPARATOR
-                    . ($module['module'] ?? throw InvalidConfigurationException::onMissingModule()),
-                $module['exclude'] ?? [],
-            ),
+            function (array $moduleConfig) use ($basePath) {
+                $module = $moduleConfig['module'] ?? throw InvalidConfigurationException::onMissingModule();
+
+                return new Module(
+                    $module,
+                    $basePath . self::PATH_SEPARATOR . $module,
+                    $moduleConfig['exclude'] ?? [],
+                );
+            },
             $modules
         );
 

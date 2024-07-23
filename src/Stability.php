@@ -25,8 +25,7 @@ readonly class Stability
                 $counter->getClassCount(),
             );
 
-            var_dump("Abstractness for module $module->module: $abstractness");
-            echo "Abstractness for module $module->module: $abstractness";
+            echo "Abstractness for module \"$module->module\": $abstractness";
 
             //foreach ($module->files() as $file) {
             //    $instability = Instability::calculate($external, $internal);

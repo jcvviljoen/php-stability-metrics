@@ -15,7 +15,7 @@ class ModuleTest extends TestCase
 
     public function test_files(): void
     {
-        $module = new Module(self::DIRECTORY_DATA, []);
+        $module = new Module('Data', self::DIRECTORY_DATA, []);
 
         $files = $module->files();
 
@@ -32,7 +32,7 @@ class ModuleTest extends TestCase
     public function test_given_a_module_when_reading_files_in_missing_directory_then_throw_exception(): void
     {
         $path = self::DIRECTORY_DATA . '/non-existent';
-        $module = new Module($path, []);
+        $module = new Module('Data', $path, []);
 
         $exception = $this->expectThrows(fn() => $module->files());
 
