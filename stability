@@ -23,7 +23,7 @@ if (!is_file($stabilityFile)) {
 $config = include __DIR__ . '/../../../stability.php';
 
 try {
-    Stability::create(Config::from($config))->check();
+    Stability::create(Config::from($config))->calculate();
 } catch (StabilityException $exception) {
     foreach ($exception->output() as $output) {
         echo $output;

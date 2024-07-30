@@ -20,6 +20,6 @@ class StabilityTest extends TestCase
 
     public function test_check_stability(): void
     {
-        $this->stability->check();
+        $this->stability->calculate();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Instability\Metric;
 
-readonly class Calculator
+final readonly class Calculator
 {
     public static function abstractness(
         int $abstractClassCount,

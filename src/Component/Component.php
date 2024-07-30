@@ -9,7 +9,7 @@ readonly class Component
      */
     public function __construct(
         public string $name,
-        public string $partialNamespace,
+        public string $partialNamespace, // TODO maybe `$mainNamespace`?
         public array $fileData,
         public ClassCounter $counter,
     ) {
