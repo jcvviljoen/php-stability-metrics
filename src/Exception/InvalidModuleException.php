@@ -8,9 +8,4 @@ class InvalidModuleException extends StabilityException
     {
         return new self("Module directory $module not found.");
     }
-
-    public function output(): array
-    {
-        // TODO: Implement output().
-    }
 }

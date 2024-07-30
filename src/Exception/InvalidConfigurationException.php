@@ -18,9 +18,4 @@ class InvalidConfigurationException extends StabilityException
     {
         return new self('Module is missing `module` path property.');
     }
-
-    public function output(): array
-    {
-        // TODO: Implement output().
-    }
 }

@@ -10,9 +10,4 @@ abstract class StabilityException extends Exception
     {
         parent::__construct($message);
     }
-
-    /**
-     * @return array<string>
-     */
-    abstract public function output(): array;
 }
