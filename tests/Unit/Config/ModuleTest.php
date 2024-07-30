@@ -11,11 +11,11 @@ class ModuleTest extends TestCase
 {
     use ExpectThrows;
 
-    private const string DIRECTORY_DATA = __DIR__ . '/../../_Fixtures/Data';
+    private const string DIRECTORY_DATA = __DIR__ . '/../_Fixtures/Config';
 
     public function test_files(): void
     {
-        $module = new Module('Data', self::DIRECTORY_DATA, []);
+        $module = new Module('Config', self::DIRECTORY_DATA, []);
 
         $files = $module->files();
 
@@ -32,7 +32,7 @@ class ModuleTest extends TestCase
     public function test_given_a_module_when_reading_files_in_missing_directory_then_throw_exception(): void
     {
         $path = self::DIRECTORY_DATA . '/non-existent';
-        $module = new Module('Data', $path, []);
+        $module = new Module('Stability', $path, []);
 
         $exception = $this->expectThrows(fn() => $module->files());
 

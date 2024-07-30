@@ -1,6 +1,6 @@
 <?php
 
-namespace Instability;
+namespace Instability\Component;
 
 enum FileType
 {

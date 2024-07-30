@@ -6,14 +6,14 @@ use Instability\Config\Config;
 
 class ConfigFactory
 {
-    public static function fixture(): Config
+    public static function stability(): Config
     {
         $config = [
-            'basePath' => '../_Fixtures',
+            'basePath' => '_Fixtures/Stability',
             'modules' => [
-                [
-                    'module' => 'Data',
-                ],
+                ['module' => 'Module1'],
+                ['module' => 'Module2'],
+                ['module' => 'Module3'],
             ],
         ];
 

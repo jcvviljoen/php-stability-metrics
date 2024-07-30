@@ -1,8 +1,8 @@
 <?php /** @noinspection PhpSameParameterValueInspection */
 
-namespace Instability;
+namespace Instability\Component;
 
-class Counter
+class ClassCounter
 {
     private function __construct(
         private int $abstractClassCount,
@@ -14,6 +14,7 @@ class Counter
     public function addAbstractClass(): void
     {
         $this->abstractClassCount++;
+        $this->addClass();
     }
 
     public function getAbstractClassCount(): int
@@ -24,6 +25,7 @@ class Counter
     public function addInterface(): void
     {
         $this->interfaceCount++;
+        $this->addClass();
     }
 
     public function getInterfaceCount(): int

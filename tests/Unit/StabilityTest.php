@@ -14,7 +14,7 @@ class StabilityTest extends TestCase
     {
         parent::setUp();
 
-        $config = ConfigFactory::fixture();
+        $config = ConfigFactory::stability();
         $this->stability = Stability::create($config);
     }
 

@@ -9,12 +9,22 @@ readonly class Calculator
         int $interfaceCount,
         int $totalClassCount
     ): float {
+        if ($totalClassCount === 0) {
+            return 0;
+        }
+
         return ($abstractClassCount + $interfaceCount) / $totalClassCount;
     }
 
-    public static function instability(float $externalDependencies, float $internalDependencies): float
+    public static function instability(float $fanIn, float $fanOut): float
     {
-        return $externalDependencies / ($externalDependencies + $internalDependencies);
+        $total = $fanIn + $fanOut;
+
+        if ($total === 0.0) {
+            return 0;
+        }
+
+        return $fanOut / ($total);
     }
 
     /**

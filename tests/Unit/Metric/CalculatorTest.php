@@ -18,6 +18,17 @@ class CalculatorTest extends TestCase
         $this->assertEquals(0.6, $abstractness);
     }
 
+    public function test_given_total_class_count_is_zero_when_calculating_abstractness_then_return_zero(): void
+    {
+        $abstractClassCount = 0;
+        $interfaceCount = 0;
+        $totalClassCount = 0;
+
+        $abstractness = Calculator::abstractness($abstractClassCount, $interfaceCount, $totalClassCount);
+
+        $this->assertEquals(0, $abstractness);
+    }
+
     public function test_instability(): void
     {
         $externalDependencies = 2;
@@ -26,6 +37,16 @@ class CalculatorTest extends TestCase
         $instability = Calculator::instability($externalDependencies, $internalDependencies);
 
         $this->assertEquals(0.6666666666666666, $instability);
+    }
+
+    public function test_given_total_dependencies_is_zero_when_calculating_instability_then_return_zero(): void
+    {
+        $externalDependencies = 0;
+        $internalDependencies = 0;
+
+        $instability = Calculator::instability($externalDependencies, $internalDependencies);
+
+        $this->assertEquals(0, $instability);
     }
 
     public function test_dms(): void

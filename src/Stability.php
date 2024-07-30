@@ -3,6 +3,10 @@
 namespace Instability;
 
 use Exception;
+use Instability\Component\Component;
+use Instability\Component\ClassCounter;
+use Instability\Component\FileData;
+use Instability\Component\FileType;
 use Instability\Config\Config;
 use Instability\Config\Module;
 use Instability\Metric\Calculator;
@@ -16,41 +20,74 @@ readonly class Stability
 
     public function check(): void
     {
+        /** @var array<Component> $components */
+        $components = [];
+
         foreach ($this->config->modules as $module) {
-            $counter = $this->countClasses($module);
+            $components[] = $this->parseToComponent($module);
+        }
 
-            $abstractness = Calculator::abstractness(
-                $counter->getAbstractClassCount(),
-                $counter->getInterfaceCount(),
-                $counter->getClassCount(),
+        $graph = $this->generateGraph($components);
+
+        foreach ($components as $component) {
+            echo "----------------------------------------\n";
+            echo "Component: $component->name\n";
+            echo "----------------------------------------\n";
+
+            $abstractness = Calculator::abstractness( // TODO maybe not here?
+                $component->counter->getAbstractClassCount(),
+                $component->counter->getInterfaceCount(),
+                $component->counter->getClassCount(),
             );
+            echo "| Abstractness: $abstractness\n";
 
-            echo "Abstractness for module \"$module->module\": $abstractness";
+            $fanIn = array_reduce(
+                $graph,
+                fn(int $carry, array $item) => $carry + $item[$component->name],
+                0,
+            );
+            $fanOut = array_reduce(
+                $graph[$component->name],
+                fn(int $carry, int $item) => $carry + $item,
+                0,
+            ); // TODO is fan in and fan out correct?
 
-            //foreach ($module->files() as $file) {
-            //    $instability = Instability::calculate($external, $internal);
-            //    echo "Instability for file $file: $instability";
-            //
-            //    $dms = DMS::calculate($instability, $abstractness);
-            //    echo "DMS for file $file: $dms";
-            //}
+            // TODO can we show direction of dependencies?
+            // TODO can we detect cycles and notify?
+            $instability = Calculator::instability($fanIn, $fanOut);
+            echo "| Instability: $instability\n";
+
+            // TODO how to show "zone of pain" vs "zone of uselessness"?
+            $dms = Calculator::dms($instability, $abstractness);
+            echo "| DMS: $dms\n";
+
+            echo "----------------------------------------\n";
+            echo "\n";
         }
     }
 
-    private function countClasses(Module $module): Counter
+    private function parseToComponent(Module $module): Component
     {
-        $counter = Counter::empty();
+        /** @var array<FileData> $fileData */
+        $fileData = [];
+        $counter = ClassCounter::empty();
+
+        $partialNamespace = str_replace('/', '\\', $module->modulePath);
 
         foreach ($module->files() as $file) {
-            $fileType = $this->getFileType($file);
+            $data = $this->getFileData($file, $partialNamespace);
 
-            switch ($fileType) {
+            if ($data === null) {
+                continue;
+            }
+
+            $fileData[] = $data;
+
+            switch ($data->type) {
                 case FileType::ABSTRACT_CLASS:
-                    $counter->addClass();
                     $counter->addAbstractClass();
                     break;
                 case FileType::INTERFACE:
-                    $counter->addClass();
                     $counter->addInterface();
                     break;
                 case FileType::T_CLASS:
@@ -61,17 +98,23 @@ readonly class Stability
             }
         }
 
-        return $counter;
+        return new Component($module->module, $partialNamespace, $fileData, $counter);
     }
 
-    private function getFileType(string $file): FileType
+    private function getFileData(string $file, string $partialNamespace): ?FileData
     {
         $type = FileType::UNKNOWN;
+        $imports = [];
 
         // Open the file for reading
         $file = fopen($file, 'r') ?: throw new Exception("Could not open file '$file'");
 
         while (($line = fgets($file)) !== false) {
+            if (str_starts_with($line, 'use ')) {
+                $imports[] = str_replace('use ', '', rtrim($line, ";\n"));
+                continue;
+            }
+
             if (str_contains($line, 'abstract class')) {
                 $type = FileType::ABSTRACT_CLASS;
                 break;
@@ -95,7 +138,42 @@ readonly class Stability
 
         fclose($file);
 
-        return $type;
+        if ($type === FileType::UNKNOWN) {
+            return null;
+        }
+
+        /**
+         * Only allow standard classes to be checked & filter out internal imports.
+         */
+        $imports = array_filter(
+            $imports,
+            fn(string $import) => str_contains($import, "\\")
+                && !str_contains(strtolower($import), strtolower($partialNamespace))
+        );
+
+        return new FileData($imports, $type);
+    }
+
+    /**
+     * @param array<Component> $components
+     *
+     * @return array<string, array<string>>
+     */
+    private function generateGraph(array $components): array
+    {
+        $graph = [];
+
+        foreach ($components as $component) {
+            foreach ($components as $otherComponent) {
+                if ($component->name === $otherComponent->name) {
+                    continue;
+                }
+
+                $graph[$component->name][$otherComponent->name] = $component->countUsagesOf($otherComponent);
+            }
+        }
+
+        return $graph;
     }
 
     public static function create(Config $config): self
