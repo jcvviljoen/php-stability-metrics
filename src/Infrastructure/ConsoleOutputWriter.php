@@ -2,9 +2,9 @@
 
 namespace Stability\Infrastructure;
 
+use Override;
 use Stability\OutputWriter;
 use Stability\StabilityResult;
-use Override;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 readonly class ConsoleOutputWriter implements OutputWriter

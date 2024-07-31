@@ -1,4 +1,4 @@
-<?php /** @noinspection PhpSameParameterValueInspection */
+<?php
 
 namespace Stability\Component;
 

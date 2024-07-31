@@ -1,4 +1,4 @@
-<?php /** @noinspection PhpSameParameterValueInspection */
+<?php
 
 namespace Stability\Component;
 
@@ -23,6 +23,7 @@ readonly class Component
             foreach ($fileData->imports as $import) {
                 if (str_contains($import, $other->partialNamespace)) {
                     $count++;
+
                     break;
                 }
             }

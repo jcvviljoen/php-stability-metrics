@@ -2,8 +2,8 @@
 
 namespace Stability\Tests\Unit\Metric;
 
-use Stability\Metric\Calculator;
 use PHPUnit\Framework\TestCase;
+use Stability\Metric\Calculator;
 
 class CalculatorTest extends TestCase
 {
@@ -31,10 +31,10 @@ class CalculatorTest extends TestCase
 
     public function test_instability(): void
     {
-        $externalDependencies = 2;
-        $internalDependencies = 1;
+        $fanIn = 1;
+        $fanOut = 2;
 
-        $instability = Calculator::instability($externalDependencies, $internalDependencies);
+        $instability = Calculator::instability($fanIn, $fanOut);
 
         $this->assertEquals(0.6666666666666666, $instability);
     }

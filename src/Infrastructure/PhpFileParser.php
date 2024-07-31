@@ -3,10 +3,10 @@
 namespace Stability\Infrastructure;
 
 use Exception;
+use Override;
 use Stability\Component\FileData;
 use Stability\Component\FileType;
 use Stability\FileParser;
-use Override;
 
 readonly class PhpFileParser implements FileParser
 {
@@ -22,21 +22,25 @@ readonly class PhpFileParser implements FileParser
         while (($line = fgets($file)) !== false) {
             if (str_starts_with($line, 'use ')) {
                 $imports[] = str_replace('use ', '', rtrim($line, ";\n"));
+
                 continue;
             }
 
             if (str_contains($line, 'abstract class')) {
                 $type = FileType::ABSTRACT_CLASS;
+
                 break;
             }
 
             if (str_starts_with($line, 'interface')) {
                 $type = FileType::INTERFACE;
+
                 break;
             }
 
             if (str_contains($line, 'class')) {
                 $type = FileType::CONCRETE_CLASS;
+
                 break;
             }
 
@@ -58,7 +62,7 @@ readonly class PhpFileParser implements FileParser
         $imports = array_filter(
             $imports,
             fn(string $import) => str_contains($import, "\\")
-                && !str_contains(strtolower($import), strtolower($namespaceMatcher))
+                && !str_contains(strtolower($import), strtolower($namespaceMatcher)),
         );
 
         return new FileData($imports, $type);
