@@ -2,10 +2,10 @@
 
 namespace Stability\Tests\Unit\Config;
 
+use PHPUnit\Framework\TestCase;
 use Stability\Config\Module;
 use Stability\Exception\InvalidModuleException;
 use Stability\Tests\ExpectThrows;
-use PHPUnit\Framework\TestCase;
 
 class ModuleTest extends TestCase
 {

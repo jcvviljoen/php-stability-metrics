@@ -2,8 +2,8 @@
 
 namespace Stability;
 
-use Stability\Component\Component;
 use Stability\Component\ClassCounter;
+use Stability\Component\Component;
 use Stability\Component\ComponentResult;
 use Stability\Component\FileData;
 use Stability\Component\FileType;
@@ -66,12 +66,15 @@ readonly class Stability
             switch ($data->type) {
                 case FileType::ABSTRACT_CLASS:
                     $counter->addAbstractClass();
+
                     break;
                 case FileType::INTERFACE:
                     $counter->addInterface();
+
                     break;
                 case FileType::CONCRETE_CLASS:
                     $counter->addClass();
+
                     break;
                 default:
                     break;

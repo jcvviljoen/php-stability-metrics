@@ -2,16 +2,19 @@
 
 namespace Stability\Infrastructure;
 
+use Override;
 use Stability\Config\Module;
 use Stability\Exception\InvalidModuleException;
 use Stability\FileReader;
-use Override;
 
 /**
  * This class reads PHP files from the filesystem.
  */
 readonly class PhpFileReader implements FileReader
 {
+    /**
+     * @return array<string>
+     */
     #[Override] public function files(Module $module): array
     {
         $directory = realpath(rtrim($module->modulePath, '/'))

@@ -2,8 +2,8 @@
 
 namespace Stability\Tests\Unit\Metric;
 
-use Stability\Metric\Calculator;
 use PHPUnit\Framework\TestCase;
+use Stability\Metric\Calculator;
 
 class CalculatorTest extends TestCase
 {

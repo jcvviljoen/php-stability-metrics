@@ -40,7 +40,7 @@ readonly class Config
                     $moduleConfig['exclude'] ?? [],
                 );
             },
-            $modules
+            $modules,
         );
 
         return new self($basePath, $default, $modules);

@@ -2,9 +2,9 @@
 
 namespace Stability\Tests\_Fixtures;
 
+use PHPUnit\Framework\Assert;
 use Stability\OutputWriter;
 use Stability\StabilityResult;
-use PHPUnit\Framework\Assert;
 
 class SpyOutputWriter implements OutputWriter
 {

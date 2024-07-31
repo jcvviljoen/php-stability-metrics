@@ -7,7 +7,7 @@ final readonly class Calculator
     public static function abstractness(
         int $abstractClassCount,
         int $interfaceCount,
-        int $totalClassCount
+        int $totalClassCount,
     ): float {
         if ($totalClassCount === 0) {
             return 0;
