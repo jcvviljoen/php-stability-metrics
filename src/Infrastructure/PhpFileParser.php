@@ -36,7 +36,7 @@ readonly class PhpFileParser implements FileParser
             }
 
             if (str_contains($line, 'class')) {
-                $type = FileType::T_CLASS;
+                $type = FileType::CONCRETE_CLASS;
                 break;
             }
 

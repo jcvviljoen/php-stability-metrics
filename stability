@@ -5,6 +5,7 @@ declare (strict_types=1);
 
 use Instability\Config\Config;
 use Instability\Exception\StabilityException;
+use Instability\Infrastructure\ConsoleOutputWriter;
 use Instability\Stability;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -29,7 +30,7 @@ try {
     $console->writeln('<info>Calculating stability metrics...</info>');
     $console->writeln('');
 
-    Stability::create(Config::from($config))->calculate();
+    Stability::create(Config::from($config), ConsoleOutputWriter::create())->calculate();
 
     $console->writeln('');
     $console->writeln('<info>Stability metrics calculated successfully!</info>');

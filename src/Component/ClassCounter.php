@@ -4,7 +4,7 @@ namespace Instability\Component;
 
 class ClassCounter
 {
-    private function __construct(
+    public function __construct(
         private int $abstractClassCount,
         private int $interfaceCount,
         private int $totalClasses,

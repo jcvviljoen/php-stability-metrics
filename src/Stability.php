@@ -72,7 +72,7 @@ readonly class Stability
                 case FileType::INTERFACE:
                     $counter->addInterface();
                     break;
-                case FileType::T_CLASS:
+                case FileType::CONCRETE_CLASS:
                     $counter->addClass();
                     break;
                 default:
@@ -144,13 +144,13 @@ readonly class Stability
         );
     }
 
-    public static function create(Config $config): self
+    public static function create(Config $config, OutputWriter $outputWriter): self
     {
         return new self(
             $config,
             new PhpFileReader(),
             new PhpFileParser(),
-            ConsoleOutputWriter::create(),
+            $outputWriter,
         );
     }
 }
