@@ -10,7 +10,7 @@ use Instability\Component\FileData;
 use Instability\Component\FileType;
 use Instability\Config\Config;
 use Instability\Config\Module;
-use Instability\Infrastructure\ConsoleOutputFormatter;
+use Instability\Infrastructure\ConsoleOutputWriter;
 use Instability\Infrastructure\PhpFileParser;
 use Instability\Infrastructure\PhpFileReader;
 use Instability\Metric\Calculator;
@@ -21,7 +21,7 @@ readonly class Stability
         private Config $config,
         private FileReader $filesystemReader,
         private FileParser $fileParser,
-        private OutputFormatter $outputFormatter,
+        private OutputWriter $outputWriter,
     ) {
     }
 
@@ -43,7 +43,7 @@ readonly class Stability
 
         $result = new StabilityResult($componentResults);
 
-        $this->outputFormatter->outputResult($result);
+        $this->outputWriter->outputResult($result);
     }
 
     private function parseToComponent(Module $module): Component
@@ -112,7 +112,7 @@ readonly class Stability
         Component $component,
         array $componentGraph,
     ): ComponentResult {
-        $abstractness = Calculator::abstractness( // TODO maybe not here?
+        $abstractness = Calculator::abstractness(
             $component->counter->getAbstractClassCount(),
             $component->counter->getInterfaceCount(),
             $component->counter->getClassCount(),
@@ -150,7 +150,7 @@ readonly class Stability
             $config,
             new PhpFileReader(),
             new PhpFileParser(),
-            new ConsoleOutputFormatter(),
+            ConsoleOutputWriter::create(),
         );
     }
 }

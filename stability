@@ -6,6 +6,7 @@ declare (strict_types=1);
 use Instability\Config\Config;
 use Instability\Exception\StabilityException;
 use Instability\Stability;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 include __DIR__ . '/../../autoload.php' ?? throw new Exception('Missing autoload file');
 $stabilityFile = __DIR__ . '/../../../stability.php';
@@ -22,10 +23,18 @@ if (!is_file($stabilityFile)) {
  */
 $config = include __DIR__ . '/../../../stability.php';
 
+$console = new ConsoleOutput();
+
 try {
+    $console->writeln('<info>Calculating stability metrics...</info>');
+    $console->writeln('');
+
     Stability::create(Config::from($config))->calculate();
+
+    $console->writeln('');
+    $console->writeln('<info>Stability metrics calculated successfully!</info>');
 } catch (StabilityException $exception) {
-    echo $exception->getMessage(); // TODO better way to output errors?
+    $console->writeln("<error>{$exception->getMessage()}</error>");
 
     exit(1);
 }

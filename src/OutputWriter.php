@@ -2,7 +2,7 @@
 
 namespace Instability;
 
-interface OutputFormatter
+interface OutputWriter
 {
     public function outputResult(StabilityResult $result): void;
 }
