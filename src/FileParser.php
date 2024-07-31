@@ -1,8 +1,8 @@
 <?php
 
-namespace Instability;
+namespace Stability;
 
-use Instability\Component\FileData;
+use Stability\Component\FileData;
 
 interface FileParser
 {

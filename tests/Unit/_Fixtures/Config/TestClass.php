@@ -1,6 +1,6 @@
 <?php
 
-namespace Instability\Tests\_Fixtures\Data;
+namespace Stability\Tests\_Fixtures\Data;
 
 readonly class TestClass
 {

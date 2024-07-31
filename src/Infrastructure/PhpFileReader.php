@@ -1,10 +1,10 @@
 <?php
 
-namespace Instability\Infrastructure;
+namespace Stability\Infrastructure;
 
-use Instability\Config\Module;
-use Instability\Exception\InvalidModuleException;
-use Instability\FileReader;
+use Stability\Config\Module;
+use Stability\Exception\InvalidModuleException;
+use Stability\FileReader;
 use Override;
 
 /**

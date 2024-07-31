@@ -3,10 +3,10 @@
 
 declare (strict_types=1);
 
-use Instability\Config\Config;
-use Instability\Exception\StabilityException;
-use Instability\Infrastructure\ConsoleOutputWriter;
-use Instability\Stability;
+use Stability\Config\Config;
+use Stability\Exception\StabilityException;
+use Stability\Infrastructure\ConsoleOutputWriter;
+use Stability\Stability;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 include __DIR__ . '/../../autoload.php' ?? throw new Exception('Missing autoload file');

@@ -1,6 +1,6 @@
 <?php /** @noinspection PhpSameParameterValueInspection */
 
-namespace Instability\Component;
+namespace Stability\Component;
 
 readonly class Component
 {

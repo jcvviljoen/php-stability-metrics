@@ -28,12 +28,12 @@
   "license": "MIT",
   "autoload": {
     "psr-4": {
-      "Instability\\": "src/"
+      "Stability\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Instability\\Tests\\": "tests/"
+      "Stability\\Tests\\": "tests/"
     }
   },
   "authors": [

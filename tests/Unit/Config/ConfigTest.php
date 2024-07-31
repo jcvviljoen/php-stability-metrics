@@ -1,11 +1,11 @@
 <?php
 
-namespace Instability\Tests\Unit\Config;
+namespace Stability\Tests\Unit\Config;
 
-use Instability\Config\Config;
-use Instability\Config\Module;
-use Instability\Exception\InvalidConfigurationException;
-use Instability\Tests\ExpectThrows;
+use Stability\Config\Config;
+use Stability\Config\Module;
+use Stability\Exception\InvalidConfigurationException;
+use Stability\Tests\ExpectThrows;
 use PHPUnit\Framework\TestCase;
 
 class ConfigTest extends TestCase

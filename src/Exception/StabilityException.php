@@ -1,6 +1,6 @@
 <?php
 
-namespace Instability\Exception;
+namespace Stability\Exception;
 
 use Exception;
 

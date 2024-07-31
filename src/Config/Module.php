@@ -1,6 +1,6 @@
 <?php
 
-namespace Instability\Config;
+namespace Stability\Config;
 
 readonly class Module
 {

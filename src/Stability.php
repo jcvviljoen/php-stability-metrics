@@ -1,19 +1,17 @@
 <?php
 
-namespace Instability;
+namespace Stability;
 
-use Exception;
-use Instability\Component\Component;
-use Instability\Component\ClassCounter;
-use Instability\Component\ComponentResult;
-use Instability\Component\FileData;
-use Instability\Component\FileType;
-use Instability\Config\Config;
-use Instability\Config\Module;
-use Instability\Infrastructure\ConsoleOutputWriter;
-use Instability\Infrastructure\PhpFileParser;
-use Instability\Infrastructure\PhpFileReader;
-use Instability\Metric\Calculator;
+use Stability\Component\Component;
+use Stability\Component\ClassCounter;
+use Stability\Component\ComponentResult;
+use Stability\Component\FileData;
+use Stability\Component\FileType;
+use Stability\Config\Config;
+use Stability\Config\Module;
+use Stability\Infrastructure\PhpFileParser;
+use Stability\Infrastructure\PhpFileReader;
+use Stability\Metric\Calculator;
 
 readonly class Stability
 {

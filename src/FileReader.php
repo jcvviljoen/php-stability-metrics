@@ -1,8 +1,8 @@
 <?php
 
-namespace Instability;
+namespace Stability;
 
-use Instability\Config\Module;
+use Stability\Config\Module;
 
 interface FileReader
 {

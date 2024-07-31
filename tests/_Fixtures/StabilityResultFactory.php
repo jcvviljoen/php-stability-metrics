@@ -1,8 +1,8 @@
 <?php
 
-namespace Instability\Tests\_Fixtures;
+namespace Stability\Tests\_Fixtures;
 
-use Instability\StabilityResult;
+use Stability\StabilityResult;
 
 class StabilityResultFactory
 {

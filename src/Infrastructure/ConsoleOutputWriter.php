@@ -1,9 +1,9 @@
 <?php
 
-namespace Instability\Infrastructure;
+namespace Stability\Infrastructure;
 
-use Instability\OutputWriter;
-use Instability\StabilityResult;
+use Stability\OutputWriter;
+use Stability\StabilityResult;
 use Override;
 use Symfony\Component\Console\Output\ConsoleOutput;
 

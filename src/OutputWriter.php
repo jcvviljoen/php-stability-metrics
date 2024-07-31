@@ -1,6 +1,6 @@
 <?php
 
-namespace Instability;
+namespace Stability;
 
 interface OutputWriter
 {

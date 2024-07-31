@@ -1,8 +1,8 @@
 <?php
 
-namespace Instability\Config;
+namespace Stability\Config;
 
-use Instability\Exception\InvalidConfigurationException;
+use Stability\Exception\InvalidConfigurationException;
 
 readonly class Config
 {

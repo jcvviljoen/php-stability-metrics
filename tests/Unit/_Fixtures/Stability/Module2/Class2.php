@@ -1,8 +1,8 @@
 <?php
 
-namespace Instability\Tests\Unit\_Fixtures\Stability\Module2;
+namespace Stability\Tests\Unit\_Fixtures\Stability\Module2;
 
-use Instability\Tests\Unit\_Fixtures\Stability\Module1\Class1;
+use Stability\Tests\Unit\_Fixtures\Stability\Module1\Class1;
 
 readonly class Class2 extends Abstract2
 {

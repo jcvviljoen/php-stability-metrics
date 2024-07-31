@@ -1,9 +1,9 @@
 <?php
 
-namespace Instability\Tests\_Fixtures;
+namespace Stability\Tests\_Fixtures;
 
-use Instability\OutputWriter;
-use Instability\StabilityResult;
+use Stability\OutputWriter;
+use Stability\StabilityResult;
 use PHPUnit\Framework\Assert;
 
 class SpyOutputWriter implements OutputWriter

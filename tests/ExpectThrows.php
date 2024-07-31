@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Instability\Tests;
+namespace Stability\Tests;
 
 use PHPUnit\Framework\AssertionFailedError;
 use Throwable;

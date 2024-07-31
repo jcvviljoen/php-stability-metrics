@@ -1,11 +1,11 @@
 <?php
 
-namespace Instability\Tests\Unit;
+namespace Stability\Tests\Unit;
 
-use Instability\Stability;
-use Instability\Tests\_Fixtures\ConfigFactory;
-use Instability\Tests\_Fixtures\SpyOutputWriter;
-use Instability\Tests\_Fixtures\StabilityResultFactory;
+use Stability\Stability;
+use Stability\Tests\_Fixtures\ConfigFactory;
+use Stability\Tests\_Fixtures\SpyOutputWriter;
+use Stability\Tests\_Fixtures\StabilityResultFactory;
 use PHPUnit\Framework\TestCase;
 
 class StabilityTest extends TestCase

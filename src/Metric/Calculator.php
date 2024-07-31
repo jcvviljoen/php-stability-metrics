@@ -1,6 +1,6 @@
 <?php
 
-namespace Instability\Metric;
+namespace Stability\Metric;
 
 final readonly class Calculator
 {

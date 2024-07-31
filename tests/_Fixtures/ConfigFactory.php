@@ -1,8 +1,8 @@
 <?php
 
-namespace Instability\Tests\_Fixtures;
+namespace Stability\Tests\_Fixtures;
 
-use Instability\Config\Config;
+use Stability\Config\Config;
 
 class ConfigFactory
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Instability\Component;
+namespace Stability\Component;
 
 readonly class ComponentResult
 {

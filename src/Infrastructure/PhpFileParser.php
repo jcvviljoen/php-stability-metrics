@@ -1,11 +1,11 @@
 <?php
 
-namespace Instability\Infrastructure;
+namespace Stability\Infrastructure;
 
 use Exception;
-use Instability\Component\FileData;
-use Instability\Component\FileType;
-use Instability\FileParser;
+use Stability\Component\FileData;
+use Stability\Component\FileType;
+use Stability\FileParser;
 use Override;
 
 readonly class PhpFileParser implements FileParser

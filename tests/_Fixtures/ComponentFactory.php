@@ -1,11 +1,11 @@
 <?php
 
-namespace Instability\Tests\_Fixtures;
+namespace Stability\Tests\_Fixtures;
 
-use Instability\Component\ClassCounter;
-use Instability\Component\Component;
-use Instability\Component\FileData;
-use Instability\Component\FileType;
+use Stability\Component\ClassCounter;
+use Stability\Component\Component;
+use Stability\Component\FileData;
+use Stability\Component\FileType;
 
 class ComponentFactory
 {
@@ -13,7 +13,7 @@ class ComponentFactory
     {
         $fileData = [
             new FileData([], FileType::ABSTRACT_CLASS),
-            new FileData(['Instability\Tests\Unit\_Fixtures\Stability\Module3\Class3'], FileType::CONCRETE_CLASS),
+            new FileData(['Stability\Tests\Unit\_Fixtures\Stability\Module3\Class3'], FileType::CONCRETE_CLASS),
             new FileData([], FileType::INTERFACE),
         ];
 
@@ -29,7 +29,7 @@ class ComponentFactory
     {
         $fileData = [
             new FileData([], FileType::ABSTRACT_CLASS),
-            new FileData(['Instability\Tests\Unit\_Fixtures\Stability\Module1\Class1'], FileType::CONCRETE_CLASS),
+            new FileData(['Stability\Tests\Unit\_Fixtures\Stability\Module1\Class1'], FileType::CONCRETE_CLASS),
         ];
 
         return new Component(
