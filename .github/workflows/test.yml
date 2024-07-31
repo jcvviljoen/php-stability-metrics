@@ -11,6 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -20,10 +25,11 @@ jobs:
           path: /tmp/composer-cache
           key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
 
-      - name: Setup PHP and Composer dependencies
-        uses: php-actions/composer@v6
-        with:
-          php-version: "8.3"
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
 
       - name: Run test suite
         run: composer tests
