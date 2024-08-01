@@ -12,9 +12,9 @@ class ComponentFactory
     public static function module1(): Component
     {
         $fileData = [
-            new FileData([], FileType::ABSTRACT_CLASS),
-            new FileData(['Stability\Tests\Unit\_Fixtures\Stability\Module3\Class3'], FileType::CONCRETE_CLASS),
-            new FileData([], FileType::INTERFACE),
+            new FileData(FileType::ABSTRACT_CLASS, []),
+            new FileData(FileType::CONCRETE_CLASS, ['Stability\Tests\Unit\_Fixtures\Stability\Module3\Class3']),
+            new FileData(FileType::INTERFACE, []),
         ];
 
         return new Component(
@@ -28,8 +28,8 @@ class ComponentFactory
     public static function module2(): Component
     {
         $fileData = [
-            new FileData([], FileType::ABSTRACT_CLASS),
-            new FileData(['Stability\Tests\Unit\_Fixtures\Stability\Module1\Class1'], FileType::CONCRETE_CLASS),
+            new FileData(FileType::ABSTRACT_CLASS, []),
+            new FileData(FileType::CONCRETE_CLASS, ['Stability\Tests\Unit\_Fixtures\Stability\Module1\Class1']),
         ];
 
         return new Component(
@@ -43,7 +43,7 @@ class ComponentFactory
     public static function module3(): Component
     {
         $fileData = [
-            new FileData([], FileType::CONCRETE_CLASS),
+            new FileData(FileType::CONCRETE_CLASS, []),
         ];
 
         return new Component(

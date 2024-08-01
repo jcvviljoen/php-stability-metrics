@@ -53,7 +53,7 @@ readonly class PhpFileParser implements FileParser
         fclose($file);
 
         if ($type === FileType::UNKNOWN) {
-            return null; // TODO should we rather throw an exception here for the user to fix?
+            return new FileData($type, []);
         }
 
         /**
@@ -65,6 +65,6 @@ readonly class PhpFileParser implements FileParser
                 && !str_contains(strtolower($import), strtolower($namespaceMatcher)),
         );
 
-        return new FileData($imports, $type);
+        return new FileData($type, $imports);
     }
 }

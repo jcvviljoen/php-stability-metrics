@@ -9,8 +9,9 @@ interface FileParser
     /**
      * @param string $filePath The path to the PHP file.
      * @param string $namespaceMatcher The namespace to match against.
-     * @return FileData|null The parsed file data.
-     * Will return `null` if the file's class type cannot be determined, or the file is not a `.php` file.
+     * @return FileData The parsed file data.
+     * If the file's class type cannot be determined, the result should contain FileType::UNKNOWN.
+     * This allows the user to filter out files that are not relevant to the analysis.
      */
-    public function parse(string $filePath, string $namespaceMatcher): ?FileData;
+    public function parse(string $filePath, string $namespaceMatcher): FileData;
 }
