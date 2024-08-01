@@ -42,7 +42,7 @@ readonly class Config
 
                 return new Module(
                     $module,
-                    $basePath . self::PATH_SEPARATOR . $module,
+                    $basePath . DIRECTORY_SEPARATOR . $module,
                     $exclude,
                 );
             },
