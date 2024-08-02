@@ -11,10 +11,10 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 if (is_file($autoload = __DIR__ . '/vendor/autoload.php')) {
     require_once $autoload;
-    $stabilityFile = __DIR__ . '/stability.php';
+    $basePath = __DIR__;
 } elseif (is_file($autoload = __DIR__ . '/../../autoload.php')) {
     require_once $autoload;
-    $stabilityFile = __DIR__ . '/../../../stability.php';
+    $basePath = __DIR__ . '/../../..';
 } else {
     fwrite(
         STDERR,
@@ -27,7 +27,9 @@ $console = new ConsoleOutput();
 $args = getopt('i', ['init', 'config']);
 
 if (isset($args['config'])) {
-    $stabilityFile = __DIR__ . '/../../..' . $args['config'];
+    $stabilityFile = $basePath . $args['config'];
+} else {
+    $stabilityFile = $basePath . '/stability.php';
 }
 
 if (isset($args['i']) || isset($args['init'])) {
@@ -45,7 +47,9 @@ if (isset($args['i']) || isset($args['init'])) {
 }
 
 if (!is_file($stabilityFile)) {
-    $console->writeln('<error>Configuration file not found. Please run `stability --init (-i)`</error>');
+    $console->writeln(
+            '<error>Configuration file not found. Please run `stability --init (-i)` or point to a custom file using `--config`.</error>',
+    );
 
     exit(1);
 }
