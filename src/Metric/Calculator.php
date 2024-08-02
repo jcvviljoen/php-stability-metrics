@@ -26,7 +26,7 @@ final readonly class Calculator
             return 0;
         }
 
-        return $fanOut / ($total);
+        return $fanOut / $total;
     }
 
     /**

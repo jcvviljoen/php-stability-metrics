@@ -8,8 +8,6 @@ use Exception;
 use Override;
 use Stability\Component\Class\ClassData;
 use Stability\Component\Class\ClassType;
-use Stability\Config\Config;
-use Stability\Config\Module\Module;
 use Stability\FileParser;
 
 /**

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Stability\Component;
 
 use Stability\Tests\_Fixtures\_TestSrc\Module3\Class3;
@@ -62,7 +61,7 @@ readonly class ComponentUsageMap
     /**
      * @param array<Component> $components
      */
-    public static function from(array $components): static
+    public static function from(array $components): self
     {
         $mappings = [];
 
@@ -76,6 +75,6 @@ readonly class ComponentUsageMap
             }
         }
 
-        return new static($mappings);
+        return new self($mappings);
     }
 }

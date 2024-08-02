@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Stability\Infrastructure\PHP;
 
 use Override;
-use Stability\Config\Module\Module;
 use Stability\Exception\InvalidModuleException;
 use Stability\FileReader;
 

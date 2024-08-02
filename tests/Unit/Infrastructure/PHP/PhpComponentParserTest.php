@@ -75,6 +75,9 @@ class PhpComponentParserTest extends TestCase
         );
     }
 
+    /**
+     * @param array<string> $files
+     */
     private function setupGetFilesForModule(string $modulePath, array $files): void
     {
         $this->fileReader->expects($this->once())

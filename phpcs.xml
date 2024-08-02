@@ -73,6 +73,7 @@
         <exclude name="SlevomatCodingStandard.Functions.StrictCall.StrictParameterMissing"/>
         <exclude name="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousPrefix"/>
         <exclude name="SlevomatCodingStandard.PHP.RequireExplicitAssertion.RequiredExplicitAssertion"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.IncorrectStrictTypesFormat"/>
 
         <!-- PHP8 conflicts -->
         <exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect"/>

@@ -52,7 +52,7 @@ class ComponentUsageMapTest extends TestCase
     #[DataProvider('provideFanInComponents')]
     public function test_fan_in_dependencies(
         Component $component,
-        int $expected
+        int $expected,
     ): void {
         $fanIn = $this->map->fanInDependencies($component);
 
@@ -62,13 +62,16 @@ class ComponentUsageMapTest extends TestCase
     #[DataProvider('provideFanOutComponents')]
     public function test_fan_out_dependencies(
         Component $component,
-        int $expected
+        int $expected,
     ): void {
         $fanOut = $this->map->fanOutDependencies($component);
 
         $this->assertEquals($expected, $fanOut);
     }
 
+    /**
+     * @return array<string, array{component: Component, expected: int}>
+     */
     public static function provideFanInComponents(): array
     {
         return [
@@ -87,6 +90,9 @@ class ComponentUsageMapTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array{component: Component, expected: int}>
+     */
     public static function provideFanOutComponents(): array
     {
         return [

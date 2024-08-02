@@ -32,7 +32,7 @@ readonly class PhpConfigLoader implements ConfigLoader
         }
 
         $modules = array_map(
-            function (array $moduleConfig) use ($basePath) {
+            function (array $moduleConfig) {
                 /** @var string $modulePath */
                 $modulePath = $moduleConfig['module'] ?? throw InvalidConfigurationException::onMissingModule();
                 /** @var array<string> $exclude */

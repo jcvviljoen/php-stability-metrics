@@ -22,6 +22,9 @@ class ConfigLoaderFactoryTest extends TestCase
         $this->assertInstanceOf($expected, $loader);
     }
 
+    /**
+     * @return array<string, array{type: ConfigType, expected: class-string}>
+     */
     public static function provide_config_types(): array
     {
         return [

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stability;
 
 use Stability\Component\Component;
-use Stability\Component\ComponentUsageMap;
 use Stability\Component\ComponentParser;
 use Stability\Component\ComponentResult;
+use Stability\Component\ComponentUsageMap;
 use Stability\Config\ConfigLoader;
 use Stability\Config\Module\Module;
 use Stability\Exception\StabilityException;

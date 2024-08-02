@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Stability;
 
 use Stability\Component\Class\ClassData;
-use Stability\Config\Config;
-use Stability\Config\Module\Module;
 
 interface FileParser
 {

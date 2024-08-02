@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stability\Tests\_Fixtures\Component;
 
-use Stability\Component\Class\ClassData;
-use Stability\Component\Class\ClassType;
 use Stability\Component\Component;
 use Stability\Tests\_Fixtures\Config\ModuleFactory;
 
