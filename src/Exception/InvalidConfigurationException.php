@@ -4,6 +4,11 @@ namespace Stability\Exception;
 
 class InvalidConfigurationException extends StabilityException
 {
+    public static function onMissingConfigFile(string $path): self
+    {
+        return new self("No configuration file found at \"$path\".");
+    }
+
     public static function onMissingBasePath(): self
     {
         return new self('Configuration is missing `base_path` property.');
