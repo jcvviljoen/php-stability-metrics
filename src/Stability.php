@@ -1,41 +1,48 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stability;
 
-use Stability\Component\ClassCounter;
 use Stability\Component\Component;
+use Stability\Component\ComponentUsageMap;
+use Stability\Component\ComponentParser;
 use Stability\Component\ComponentResult;
-use Stability\Component\FileData;
-use Stability\Component\FileType;
-use Stability\Config\Config;
-use Stability\Config\Module;
-use Stability\Infrastructure\PhpFileParser;
-use Stability\Infrastructure\PhpFileReader;
+use Stability\Config\ConfigLoader;
+use Stability\Config\Module\Module;
+use Stability\Exception\StabilityException;
+use Stability\Infrastructure\PHP\PhpComponentParser;
+use Stability\Infrastructure\PHP\PhpFileParser;
+use Stability\Infrastructure\PHP\PhpFileReader;
 use Stability\Metric\Calculator;
 
 readonly class Stability
 {
     private function __construct(
-        private Config $config,
-        private FileReader $filesystemReader,
-        private FileParser $fileParser,
+        private ComponentParser $componentParser,
+        private ConfigLoader $configLoader,
         private OutputWriter $outputWriter,
     ) {
     }
 
-    public function calculate(): void
+    /**
+     * @throws StabilityException
+     */
+    public function calculate(string $configPath): void
     {
+        $config = $this->configLoader->load($configPath);
+
         /** @var array<Component> $components */
         $components = array_map(
-            fn(Module $module) => $this->parseToComponent($module),
-            $this->config->modules,
+            fn(Module $module) => $this->componentParser->parse($config, $module),
+            $config->modules,
         );
 
-        $graph = $this->generateComponentGraph($components);
+        $map = ComponentUsageMap::from($components);
 
         /** @var array<ComponentResult> $componentResults */
         $componentResults = array_map(
-            fn(Component $component) => $this->calculateComponentMetrics($component, $graph),
+            fn(Component $component) => $this->calculateComponentMetrics($component, $map),
             $components,
         );
 
@@ -44,95 +51,22 @@ readonly class Stability
         $this->outputWriter->outputResult($result);
     }
 
-    private function parseToComponent(Module $module): Component
-    {
-        /** @var array<FileData> $fileData */
-        $fileData = [];
-        $counter = ClassCounter::empty();
-
-        $partialNamespace = str_replace('/', '\\', $module->modulePath);
-
-        $moduleFiles = $this->filesystemReader->files($module);
-
-        foreach ($moduleFiles as $file) {
-            $data = $this->fileParser->parse($file, $partialNamespace);
-
-            if ($data === null) {
-                continue;
-            }
-
-            $fileData[] = $data;
-
-            switch ($data->type) {
-                case FileType::ABSTRACT_CLASS:
-                    $counter->addAbstractClass();
-
-                    break;
-                case FileType::INTERFACE:
-                    $counter->addInterface();
-
-                    break;
-                case FileType::CONCRETE_CLASS:
-                    $counter->addClass();
-
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        return new Component($module->module, $partialNamespace, $fileData, $counter);
-    }
-
-    /**
-     * @param array<Component> $components
-     *
-     * @return array<string, array<string, int>>
-     */
-    private function generateComponentGraph(array $components): array
-    {
-        $graph = [];
-
-        foreach ($components as $component) {
-            foreach ($components as $otherComponent) {
-                if ($component->name === $otherComponent->name) {
-                    $graph[$component->name][$otherComponent->name] = 0;
-                }
-
-                $graph[$component->name][$otherComponent->name] = $component->countUsagesOf($otherComponent);
-            }
-        }
-
-        return $graph;
-    }
-
-    /**
-     * @param array<string, array<string, int>> $componentGraph
-     */
     private function calculateComponentMetrics(
         Component $component,
-        array $componentGraph,
+        ComponentUsageMap $map,
     ): ComponentResult {
         $abstractness = Calculator::abstractness(
-            $component->counter->getAbstractClassCount(),
-            $component->counter->getInterfaceCount(),
-            $component->counter->getClassCount(),
-        );
-
-        $fanIn = array_reduce(
-            $componentGraph,
-            fn(int $carry, array $item) => $carry + $item[$component->name],
-            0,
-        );
-        $fanOut = array_reduce(
-            $componentGraph[$component->name],
-            fn(int $carry, int $item) => $carry + $item,
-            0,
+            $component->abstractClasses,
+            $component->interfaces,
+            $component->totalClasses,
         );
 
         // TODO can we show direction of dependencies?
         // TODO can we detect cycles and notify?
-        $instability = Calculator::instability($fanIn, $fanOut);
+        $instability = Calculator::instability(
+            $map->fanInDependencies($component),
+            $map->fanOutDependencies($component),
+        );
 
         // TODO how to show "zone of pain" vs "zone of uselessness"?
         $dms = Calculator::dms($instability, $abstractness);
@@ -145,12 +79,19 @@ readonly class Stability
         );
     }
 
-    public static function create(Config $config, OutputWriter $outputWriter): self
+    /**
+     * For now this only supports PHP components, but it can always be extended in the future.
+     */
+    public static function create(ConfigLoader $configLoader, OutputWriter $outputWriter): self
     {
-        return new self(
-            $config,
+        $componentParser = new PhpComponentParser(
             new PhpFileReader(),
             new PhpFileParser(),
+        );
+
+        return new self(
+            $componentParser,
+            $configLoader,
             $outputWriter,
         );
     }

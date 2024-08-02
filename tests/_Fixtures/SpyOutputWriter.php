@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stability\Tests\_Fixtures;
 
 use PHPUnit\Framework\Assert;

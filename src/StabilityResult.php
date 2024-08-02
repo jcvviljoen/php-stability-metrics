@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stability;
 
 use Stability\Component\ComponentResult;

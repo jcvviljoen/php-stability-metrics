@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stability\Exception;
 
 class InvalidConfigurationException extends StabilityException

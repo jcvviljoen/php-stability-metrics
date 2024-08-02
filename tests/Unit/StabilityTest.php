@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stability\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Stability\Stability;
-use Stability\Tests\_Fixtures\ConfigFactory;
 use Stability\Tests\_Fixtures\SpyOutputWriter;
 use Stability\Tests\_Fixtures\StabilityResultFactory;
 
@@ -18,23 +19,11 @@ class StabilityTest extends TestCase
     {
         parent::setUp();
 
-        $config = ConfigFactory::stability();
-
         $this->outputWriter = new SpyOutputWriter();
-
-        $this->stability = Stability::create($config, $this->outputWriter);
     }
 
     public function test_calculate_stability(): void
     {
-        $this->markTestSkipped(
-            'This works locally but fails on CI, might be that the files are not included in the test suite',
-        );
-
-        $expectedResult = StabilityResultFactory::unitStability();
-
-        $this->stability->calculate();
-
-        $this->outputWriter->verifyIsWritten($expectedResult);
+        $this->markTestSkipped('Will be re-implemented');
     }
 }

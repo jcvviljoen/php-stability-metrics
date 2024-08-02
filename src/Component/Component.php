@@ -1,17 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stability\Component;
+
+use Stability\Component\Class\ClassData;
+use Stability\Config\Module\Module;
 
 readonly class Component
 {
     /**
-     * @param array<FileData> $fileData
+     * @param array<ClassData> $classData
      */
     public function __construct(
-        public string $name,
-        public string $partialNamespace, // TODO maybe `$mainNamespace`?
-        public array $fileData,
-        public ClassCounter $counter,
+        public Module $module,
+        public string $sharedNamespace,
+        public int $abstractClasses,
+        public int $interfaces,
+        public int $totalClasses,
+        private array $classData,
     ) {
     }
 
@@ -19,9 +26,13 @@ readonly class Component
     {
         $count = 0;
 
-        foreach ($this->fileData as $fileData) {
-            foreach ($fileData->imports as $import) {
-                if (str_contains($import, $other->partialNamespace)) {
+        if ($this->module->name === $other->module->name) {
+            return $count;
+        }
+
+        foreach ($this->classData as $class) {
+            foreach ($class->imports as $import) {
+                if (str_contains(strtolower($import), strtolower($other->sharedNamespace))) {
                     $count++;
 
                     break;

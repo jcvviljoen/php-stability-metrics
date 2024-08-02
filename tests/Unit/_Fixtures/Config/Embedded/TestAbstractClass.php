@@ -1,6 +1,8 @@
 <?php
 
-namespace Stability\Tests\_Fixtures\Data\Embedded;
+declare(strict_types=1);
+
+namespace Stability\Tests\Unit\_Fixtures\Config\Embedded;
 
 readonly abstract class TestAbstractClass
 {
