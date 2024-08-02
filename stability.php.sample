@@ -7,7 +7,7 @@ return [
     'base_path' => 'src',
 
     /**
-     * Default namespaces application wide that don't affect the stability.
+     * Default namespaces application wide that doesn't affect the stability.
      */
     'default' => [
         // ex: 'DateTimeImmutable',

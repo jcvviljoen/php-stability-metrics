@@ -11,8 +11,10 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 if (is_file($autoload = __DIR__ . '/vendor/autoload.php')) {
     require_once $autoload;
+    $stabilityFile = __DIR__ . '/stability.php';
 } elseif (is_file($autoload = __DIR__ . '/../../autoload.php')) {
     require_once $autoload;
+    $stabilityFile = __DIR__ . '/../../../stability.php';
 } else {
     fwrite(
         STDERR,
@@ -23,8 +25,6 @@ if (is_file($autoload = __DIR__ . '/vendor/autoload.php')) {
 
 $console = new ConsoleOutput();
 $args = getopt('i', ['init', 'config']);
-
-$stabilityFile = __DIR__ . '/../../../stability.php';
 
 if (isset($args['config'])) {
     $stabilityFile = __DIR__ . '/../../..' . $args['config'];
