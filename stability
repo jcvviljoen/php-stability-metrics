@@ -24,10 +24,10 @@ if (is_file($autoload = __DIR__ . '/vendor/autoload.php')) {
 }
 
 $console = new ConsoleOutput();
-$args = getopt('iv', ['init', 'config', 'verbose']);
+$args = getopt('i', ['init', 'config:', 'debug']);
 
 if (isset($args['config'])) {
-    $stabilityFile = $basePath . $args['config'];
+    $stabilityFile = $basePath . '/' . $args['config'];
 } else {
     $stabilityFile = $basePath . '/stability.php';
 }
@@ -67,11 +67,11 @@ try {
 } catch (StabilityException $exception) {
     $console->writeln("<error>{$exception->getMessage()}</error>");
 
-    if(isset($args['v']) || isset($args['verbose'])) {
+    if(isset($args['debug'])) {
         $console->writeln([
             '',
-            'Stack trace:',
-            $exception->getTraceAsString(),
+            '<error>Stack trace:</error>',
+            '<info>' . $exception->getTraceAsString() . '</info>',
         ]);
     }
 
