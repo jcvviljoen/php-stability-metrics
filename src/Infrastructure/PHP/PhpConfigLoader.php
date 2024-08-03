@@ -25,7 +25,7 @@ readonly class PhpConfigLoader implements ConfigLoader
         /** @var array<string> $default */
         $default = $config['default'] ?? [];
         /** @var array<int, array<string, mixed>> $modules */
-        $modules = $config['modules'];
+        $modules = $config['modules'] ?? [];
 
         if (empty($modules)) {
             throw throw InvalidConfigurationException::onMissingModules();
