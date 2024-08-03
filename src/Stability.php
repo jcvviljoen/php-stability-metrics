@@ -12,8 +12,8 @@ use Stability\Config\ConfigLoader;
 use Stability\Config\Module\Module;
 use Stability\Exception\StabilityException;
 use Stability\Infrastructure\PHP\PhpComponentParser;
-use Stability\Infrastructure\PHP\PhpStandardFileParser;
 use Stability\Infrastructure\PHP\PhpFileReader;
+use Stability\Infrastructure\PHP\PhpStandardFileParser;
 use Stability\Metric\Calculator;
 
 readonly class Stability

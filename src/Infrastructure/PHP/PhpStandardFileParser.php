@@ -35,7 +35,7 @@ readonly class PhpStandardFileParser implements FileParser
         $imports = [];
 
         // Open the file for reading
-        $file = fopen($filePath, 'r')
+        $file = @fopen($filePath, 'r')
             ?: throw new Exception("Could not open file \"$filePath\" for reading.");
 
         while (($line = fgets($file)) !== false) {
@@ -84,7 +84,7 @@ readonly class PhpStandardFileParser implements FileParser
         $imports = array_filter(
             $imports,
             fn(string $import) => str_contains($import, self::NAMESPACE_SEPARATOR)
-                && !str_contains(strtolower($import), strtolower($sharedNamespace)),
+                && str_contains(strtolower($import), strtolower($sharedNamespace)),
         );
 
         return new ClassData($type, $imports);
