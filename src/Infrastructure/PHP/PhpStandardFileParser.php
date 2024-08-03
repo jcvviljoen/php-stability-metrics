@@ -81,11 +81,11 @@ readonly class PhpStandardFileParser implements FileParser
             return new ClassData($type, []);
         }
 
-        $imports = array_filter(
+        $imports = array_values(array_filter(
             $imports,
             fn(string $import) => str_contains($import, self::NAMESPACE_SEPARATOR)
                 && str_contains(strtolower($import), strtolower($sharedNamespace)),
-        );
+        ));
 
         return new ClassData($type, $imports);
     }
