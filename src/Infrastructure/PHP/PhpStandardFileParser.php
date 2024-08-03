@@ -29,7 +29,7 @@ readonly class PhpStandardFileParser implements FileParser
         );
     }
 
-    #[Override] public function parse(string $filePath, string $namespaceMatcher): ClassData
+    #[Override] public function parse(string $filePath, string $sharedNamespace): ClassData
     {
         $type = ClassType::UNKNOWN;
         $imports = [];
@@ -84,7 +84,7 @@ readonly class PhpStandardFileParser implements FileParser
         $imports = array_filter(
             $imports,
             fn(string $import) => str_contains($import, self::NAMESPACE_SEPARATOR)
-                && !str_contains(strtolower($import), strtolower($namespaceMatcher)),
+                && !str_contains(strtolower($import), strtolower($sharedNamespace)),
         );
 
         return new ClassData($type, $imports);
