@@ -25,7 +25,7 @@ class PhpConfigLoaderTest extends TestCase
 
     public function test_given_a_config_when_valid_then_load_config(): void
     {
-        $config = __DIR__ . '/_Fixtures/valid.php';
+        $config = __DIR__ . '/_Fixtures/Files/config_valid.php';
 
         $result = $this->loader->load($config);
 
@@ -34,7 +34,7 @@ class PhpConfigLoaderTest extends TestCase
 
     public function test_given_a_config_when_file_does_not_exist_then_throw_exception(): void
     {
-        $config = __DIR__ . '/_Fixtures/does_not_exist.php';
+        $config = __DIR__ . '/_Fixtures/Files/does_not_exist.php';
 
         $exception = $this->expectThrows(fn() => $this->loader->load($config));
 
@@ -43,7 +43,7 @@ class PhpConfigLoaderTest extends TestCase
 
     public function test_given_a_config_when_base_path_is_missing_then_throw_exception(): void
     {
-        $config = __DIR__ . '/_Fixtures/missing_base_path.php';
+        $config = __DIR__ . '/_Fixtures/Files/config_missing_base_path.php';
 
         $exception = $this->expectThrows(fn() => $this->loader->load($config));
 
@@ -52,7 +52,7 @@ class PhpConfigLoaderTest extends TestCase
 
     public function test_given_a_config_when_modules_is_missing_then_throw_exception(): void
     {
-        $config = __DIR__ . '/_Fixtures/missing_modules.php';
+        $config = __DIR__ . '/_Fixtures/Files/config_missing_modules.php';
 
         $exception = $this->expectThrows(fn() => $this->loader->load($config));
 
@@ -61,7 +61,7 @@ class PhpConfigLoaderTest extends TestCase
 
     public function test_given_a_config_when_module_is_missing_then_throw_exception(): void
     {
-        $config = __DIR__ . '/_Fixtures/missing_module.php';
+        $config = __DIR__ . '/_Fixtures/Files/config_missing_module.php';
 
         $exception = $this->expectThrows(fn() => $this->loader->load($config));
 
