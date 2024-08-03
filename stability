@@ -24,7 +24,21 @@ if (is_file($autoload = __DIR__ . '/vendor/autoload.php')) {
 }
 
 $console = new ConsoleOutput();
-$args = getopt('i', ['init', 'config:', 'debug']);
+$args = getopt('i', ['help', 'init', 'config:', 'debug']);
+
+if (isset($args['help'])) {
+    $console->writeln([
+        '<info>Usage: stability [options]</info>',
+        '',
+        '<info>Options:</info>',
+        '<comment>  -i, --init          Create the standard stability configuration file.</comment>',
+        '<comment>  --config            Path to a custom stability configuration file.</comment>',
+        '<comment>  --debug             Show debug information (exposes exception stack traces).</comment>',
+        '<comment>  --help              Display this help message.</comment>',
+    ]);
+
+    exit(0);
+}
 
 if (isset($args['config'])) {
     $stabilityFile = $basePath . '/' . $args['config'];
