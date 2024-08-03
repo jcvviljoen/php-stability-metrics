@@ -12,7 +12,7 @@ use Stability\Config\ConfigLoader;
 use Stability\Config\Module\Module;
 use Stability\Exception\StabilityException;
 use Stability\Infrastructure\PHP\PhpComponentParser;
-use Stability\Infrastructure\PHP\PhpFileParser;
+use Stability\Infrastructure\PHP\PhpStandardFileParser;
 use Stability\Infrastructure\PHP\PhpFileReader;
 use Stability\Metric\Calculator;
 
@@ -86,7 +86,7 @@ readonly class Stability
     {
         $componentParser = new PhpComponentParser(
             new PhpFileReader(),
-            new PhpFileParser(),
+            new PhpStandardFileParser(),
         );
 
         return new self(

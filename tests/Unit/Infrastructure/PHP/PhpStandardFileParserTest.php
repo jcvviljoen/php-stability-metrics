@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace Stability\Tests\Unit\Infrastructure\PHP;
 
 use PHPUnit\Framework\TestCase;
-use Stability\Infrastructure\PHP\PhpFileParser;
+use Stability\Infrastructure\PHP\PhpStandardFileParser;
 
-class PhpFileParserTest extends TestCase
+class PhpStandardFileParserTest extends TestCase
 {
-    private PhpFileParser $phpFileParser;
+    private PhpStandardFileParser $phpFileParser;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->phpFileParser = new PhpFileParser();
+        $this->phpFileParser = new PhpStandardFileParser();
     }
 
     public function test_determine_shared_namespace(): void

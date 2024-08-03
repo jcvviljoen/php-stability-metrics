@@ -16,7 +16,7 @@ use Stability\FileParser;
  *
  * A separate parser could be added in the future should their analysis requirements become clear.
  */
-readonly class PhpFileParser implements FileParser
+readonly class PhpStandardFileParser implements FileParser
 {
     private const string NAMESPACE_SEPARATOR = '\\';
 
