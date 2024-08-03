@@ -1,7 +1,21 @@
 {
   "name": "jcviljoen/php-stability-metrics",
+  "description": "PHP Tool to calculate project stability metrics based on clean architecture principles",
   "type": "library",
-  "description": "PHP Tool calculate project stability metrics",
+  "license": "MIT",
+  "keywords": [
+    "php",
+    "stability",
+    "metrics",
+    "clean",
+    "architecture"
+  ],
+  "authors": [
+    {
+      "name": "Jason Viljoen",
+      "email": "jason@vespertool.com"
+    }
+  ],
   "require": {
     "php": "^8.3",
     "ext-json": "*",
@@ -12,20 +26,6 @@
     "phpstan/phpstan": "^1.11",
     "slevomat/coding-standard": "^8.15"
   },
-  "scripts": {
-    "cs:fix": "vendor/bin/phpcs --colors -ps",
-    "test:stan": "vendor/bin/phpstan analyse src --level=max --ansi",
-    "test:unit": "vendor/bin/phpunit --testdox --color=always",
-    "tests": [
-      "@cs:fix",
-      "@test:stan",
-      "@test:unit"
-    ]
-  },
-  "bin": [
-    "stability"
-  ],
-  "license": "MIT",
   "autoload": {
     "psr-4": {
       "Stability\\": "src/"
@@ -36,12 +36,25 @@
       "Stability\\Tests\\": "tests/"
     }
   },
-  "authors": [
-    {
-      "name": "Jason Viljoen",
-      "email": "jason@vespertool.com"
-    }
+  "bin": [
+    "stability"
   ],
+  "scripts": {
+    "test:cs": "vendor/bin/phpcs --colors -ps",
+    "test:stan": "vendor/bin/phpstan analyse src --level=max --ansi",
+    "test:unit": "vendor/bin/phpunit --testdox --color=always",
+    "tests": [
+      "@cs:fix",
+      "@test:stan",
+      "@test:unit"
+    ]
+  },
+  "scripts-descriptions": {
+    "test:cs": "Run PHP Code Sniffer to check standards (does not fix!).",
+    "test:stan": "Run PHPStan to check for static analysis errors.",
+    "test:unit": "Run PHPUnit to run unit tests.",
+    "tests": "Run all tests."
+  },
   "config": {
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": false
