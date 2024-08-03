@@ -22,6 +22,7 @@ class SpyOutputWriter implements OutputWriter
 
     public function verifyIsWritten(StabilityResult $result): void
     {
+        var_dump($this->writtenResults[0]->componentResults[0], $result->componentResults[0]);
         Assert::assertTrue(
             in_array($result, $this->writtenResults),
             'Failed asserting that the stability result was written to the output writer',

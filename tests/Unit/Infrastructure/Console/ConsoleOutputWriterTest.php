@@ -27,7 +27,7 @@ class ConsoleOutputWriterTest extends TestCase
 
     public function test_output_result(): void
     {
-        $result = StabilityResultFactory::fixtureSource();
+        $result = StabilityResultFactory::testSource();
         $expects = count($result->componentResults);
 
         $this->consoleOutput

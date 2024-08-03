@@ -15,6 +15,9 @@ use Stability\Tests\ExpectThrows;
  * This test uses the files in the "_Fixtures/Parser" directory.
  * The classes therein have been further separated into different directories
  * so that we can check the imports.
+ *
+ * We also test against the "_Fixtures\Other" namespace to ensure that the parser
+ * actually includes imports in the class data.
  */
 class PhpStandardFileParserTest extends TestCase
 {
@@ -42,7 +45,7 @@ class PhpStandardFileParserTest extends TestCase
     {
         $file = __DIR__ . '/_Fixtures/Parser/Abstraction/TestAbstractClass.php';
 
-        $classData = $this->phpFileParser->parse($file, '_Fixtures\Parser');
+        $classData = $this->phpFileParser->parse($file, '_Fixtures\Other');
 
         $this->assertEquals(new ClassData(ClassType::ABSTRACT_CLASS, []), $classData);
     }
@@ -51,7 +54,7 @@ class PhpStandardFileParserTest extends TestCase
     {
         $file = __DIR__ . '/_Fixtures/Parser/Abstraction/TestInterface.php';
 
-        $classData = $this->phpFileParser->parse($file, '_Fixtures\Parser');
+        $classData = $this->phpFileParser->parse($file, '_Fixtures\Other');
 
         $this->assertEquals(
             new ClassData(
@@ -66,7 +69,7 @@ class PhpStandardFileParserTest extends TestCase
     {
         $file = __DIR__ . '/_Fixtures/Parser/TestClass.php';
 
-        $classData = $this->phpFileParser->parse($file, '_Fixtures\Parser');
+        $classData = $this->phpFileParser->parse($file, '_Fixtures\Other');
 
         $this->assertEquals(
             new ClassData(
@@ -84,7 +87,7 @@ class PhpStandardFileParserTest extends TestCase
     {
         $file = __DIR__ . '/_Fixtures/Parser/TestEnum.php';
 
-        $classData = $this->phpFileParser->parse($file, '_Fixtures\Parser');
+        $classData = $this->phpFileParser->parse($file, '_Fixtures\Other');
 
         $this->assertEquals(new ClassData(ClassType::ENUM, []), $classData);
     }
@@ -93,7 +96,7 @@ class PhpStandardFileParserTest extends TestCase
     {
         $file = __DIR__ . '/_Fixtures/Parser/unknown.php';
 
-        $classData = $this->phpFileParser->parse($file, '_Fixtures\Parser');
+        $classData = $this->phpFileParser->parse($file, '_Fixtures\Other');
 
         $this->assertEquals(new ClassData(ClassType::UNKNOWN, []), $classData);
     }

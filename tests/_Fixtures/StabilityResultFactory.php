@@ -9,7 +9,7 @@ use Stability\Tests\_Fixtures\Component\ComponentResultFactory;
 
 class StabilityResultFactory
 {
-    public static function fixtureSource(): StabilityResult
+    public static function testSource(): StabilityResult
     {
         return new StabilityResult([
             ComponentResultFactory::module1(),

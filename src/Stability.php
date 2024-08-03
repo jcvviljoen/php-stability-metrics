@@ -18,7 +18,7 @@ use Stability\Metric\Calculator;
 
 readonly class Stability
 {
-    private function __construct(
+    public function __construct(
         private ComponentParser $componentParser,
         private ConfigLoader $configLoader,
         private OutputWriter $outputWriter,

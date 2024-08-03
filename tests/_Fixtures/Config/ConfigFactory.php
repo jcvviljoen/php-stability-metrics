@@ -8,6 +8,19 @@ use Stability\Config\Config;
 
 class ConfigFactory
 {
+    public static function testSource(): Config
+    {
+        return new Config(
+            'tests/_Fixtures/_TestSrc',
+            [],
+            [
+                ModuleFactory::module1(),
+                ModuleFactory::module2(),
+                ModuleFactory::module3(),
+            ],
+        );
+    }
+
     public static function module1(): Config
     {
         return new Config(
