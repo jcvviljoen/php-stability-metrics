@@ -68,14 +68,11 @@ readonly class Stability
             $component->totalClasses,
         );
 
-        // TODO can we show direction of dependencies?
-        // TODO can we detect cycles and notify?
         $instability = Calculator::instability(
             $map->fanInDependencies($component),
             $map->fanOutDependencies($component),
         );
 
-        // TODO how to show "zone of pain" vs "zone of uselessness"?
         $dms = Calculator::dms($instability, $abstractness);
 
         $zone = Calculator::zone($dms, $thresholdZoneOfPain, $thresholdZoneOfUselessness);
