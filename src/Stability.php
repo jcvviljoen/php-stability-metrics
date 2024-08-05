@@ -42,7 +42,12 @@ readonly class Stability
 
         /** @var array<ComponentResult> $componentResults */
         $componentResults = array_map(
-            fn(Component $component) => $this->calculateComponentMetrics($component, $map),
+            fn(Component $component) => $this->calculateComponentMetrics(
+                $component,
+                $map,
+                $config->thresholdZoneOfPain,
+                $config->thresholdZoneOfUselessness,
+            ),
             $components,
         );
 
@@ -54,6 +59,8 @@ readonly class Stability
     private function calculateComponentMetrics(
         Component $component,
         ComponentUsageMap $map,
+        float $thresholdZoneOfPain,
+        float $thresholdZoneOfUselessness,
     ): ComponentResult {
         $abstractness = Calculator::abstractness(
             $component->abstractClasses,
@@ -71,11 +78,14 @@ readonly class Stability
         // TODO how to show "zone of pain" vs "zone of uselessness"?
         $dms = Calculator::dms($instability, $abstractness);
 
+        $zone = Calculator::zone($dms, $thresholdZoneOfPain, $thresholdZoneOfUselessness);
+
         return new ComponentResult(
             $component,
             $abstractness,
             $instability,
             $dms,
+            $zone,
         );
     }
 

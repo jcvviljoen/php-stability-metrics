@@ -18,6 +18,9 @@ readonly class ConsoleOutputWriter implements OutputWriter
     #[Override] public function outputResult(StabilityResult $result): void
     {
         foreach ($result->componentResults as $componentResult) {
+            $zoneDescription = $componentResult->zone->description();
+            $zoneIcon = $componentResult->zone->icon();
+
             $this->console->writeln([
                 '----------------------------------------',
                 "Component: {$componentResult->component->module->name}",
@@ -25,6 +28,7 @@ readonly class ConsoleOutputWriter implements OutputWriter
                 "| Abstractness: $componentResult->abstractness",
                 "| Instability: $componentResult->instability",
                 "| DMS: $componentResult->dms",
+                "| Zone: $zoneIcon $zoneDescription",
                 '----------------------------------------',
                 '',
             ]);

@@ -36,4 +36,20 @@ final readonly class Calculator
     {
         return abs($instability + $abstractness - 1);
     }
+
+    public static function zone(
+        float $dms,
+        float $thresholdZoneOfPain,
+        float $thresholdZoneOfUselessness,
+    ): ZoneType {
+        if ($dms <= $thresholdZoneOfPain) {
+            return ZoneType::PAIN;
+        }
+
+        if ($dms >= $thresholdZoneOfUselessness) {
+            return ZoneType::USELESSNESS;
+        }
+
+        return ZoneType::USEFULNESS;
+    }
 }

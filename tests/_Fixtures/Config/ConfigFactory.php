@@ -12,6 +12,8 @@ class ConfigFactory
     {
         return new Config(
             'tests/_Fixtures/_TestSrc',
+            0.3,
+            0.7,
             [],
             [
                 ModuleFactory::module1(),
@@ -25,6 +27,8 @@ class ConfigFactory
     {
         return new Config(
             'tests/_Fixtures/_TestSrc',
+            0.3,
+            0.7,
             [],
             [ModuleFactory::module1()],
         );
@@ -34,6 +38,8 @@ class ConfigFactory
     {
         return new Config(
             'src',
+            0.3,
+            0.7,
             [],
             [ModuleFactory::unknown()],
         );
@@ -43,6 +49,8 @@ class ConfigFactory
     {
         return new Config(
             'base',
+            0.2,
+            0.8,
             ['Some/Default/Namespace'],
             [ModuleFactory::baseValid()],
         );

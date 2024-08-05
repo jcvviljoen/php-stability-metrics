@@ -6,6 +6,9 @@ return [
      */
     'base_path' => 'src',
 
+    'threshold_zone_of_pain' => 0.3,
+    'threshold_zone_of_uselessness' => 0.7,
+
     /**
      * Default namespaces application wide that doesn't affect the stability.
      */

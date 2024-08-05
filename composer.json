@@ -44,7 +44,7 @@
     "test:stan": "vendor/bin/phpstan analyse src --level=max --ansi",
     "test:unit": "vendor/bin/phpunit --testdox --color=always",
     "tests": [
-      "@cs:fix",
+      "@test:cs",
       "@test:stan",
       "@test:unit"
     ]
