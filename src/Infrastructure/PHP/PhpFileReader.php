@@ -16,12 +16,21 @@ readonly class PhpFileReader implements FileReader
     /**
      * @inheritDoc
      */
-    #[Override] public function files(string $relativeDirectoryPath): array
+    #[Override] public function files(string $relativeDirectoryPath, array $exclude): array
     {
         $directory = realpath(rtrim($relativeDirectoryPath, DIRECTORY_SEPARATOR))
             ?: throw InvalidModuleException::onInvalidModulePath($relativeDirectoryPath);
 
-        return $this->rglob("$directory/*.php");
+        $files = $this->rglob("$directory/*.php");
+
+        foreach ($exclude as $excludedFile) {
+            $files = array_filter(
+                $files,
+                fn(string $file) => !str_contains($file, $excludedFile),
+            );
+        }
+
+        return $files;
     }
 
     /**

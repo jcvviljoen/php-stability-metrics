@@ -29,7 +29,7 @@ readonly class PhpComponentParser implements ComponentParser
         $totalClasses = 0;
 
         $modulePath = $config->basePath . DIRECTORY_SEPARATOR . $module->name;
-        $moduleFiles = $this->fileReader->files($modulePath);
+        $moduleFiles = $this->fileReader->files($modulePath, $module->exclude);
         $sharedNamespace = $this->fileParser->determineSharedNamespace($modulePath);
 
         $classData = [];
