@@ -10,13 +10,6 @@ return [
     'threshold_zone_of_uselessness' => 0.7,
 
     /**
-     * Default namespaces application wide that doesn't affect the stability.
-     */
-    'default' => [
-        // ex: 'DateTimeImmutable',
-    ],
-
-    /**
      * Define each module to be checked.
      */
     'modules' => [

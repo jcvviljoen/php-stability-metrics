@@ -14,7 +14,6 @@ class ConfigFactory
             'tests/_Fixtures/_TestSrc',
             0.3,
             0.7,
-            [],
             [
                 ModuleFactory::module1(),
                 ModuleFactory::module2(),
@@ -29,7 +28,6 @@ class ConfigFactory
             'tests/_Fixtures/_TestSrc',
             0.3,
             0.7,
-            [],
             [ModuleFactory::module1()],
         );
     }
@@ -40,7 +38,6 @@ class ConfigFactory
             'src',
             0.3,
             0.7,
-            [],
             [ModuleFactory::unknown()],
         );
     }
@@ -51,7 +48,6 @@ class ConfigFactory
             'base',
             0.2,
             0.8,
-            ['Some/Default/Namespace'],
             [ModuleFactory::baseValid()],
         );
     }
