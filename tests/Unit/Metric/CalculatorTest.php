@@ -41,12 +41,22 @@ class CalculatorTest extends TestCase
         $this->assertEquals(0.6666666666666666, $instability);
     }
 
-    public function test_given_total_dependencies_is_zero_when_calculating_instability_then_return_zero(): void
+    public function test_given_fan_in_is_zero_when_calculating_instability_then_return_one(): void
     {
-        $externalDependencies = 0;
-        $internalDependencies = 0;
+        $fanIn = 0;
+        $fanOut = 2;
 
-        $instability = Calculator::instability($externalDependencies, $internalDependencies);
+        $instability = Calculator::instability($fanIn, $fanOut);
+
+        $this->assertEquals(1, $instability);
+    }
+
+    public function test_given_fan_out_is_zero_when_calculating_instability_then_return_zero(): void
+    {
+        $fanIn = 1;
+        $fanOut = 0;
+
+        $instability = Calculator::instability($fanIn, $fanOut);
 
         $this->assertEquals(0, $instability);
     }
