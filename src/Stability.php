@@ -72,6 +72,8 @@ readonly class Stability
         $dms = Calculator::dms($instability, $abstractness);
 
         $zone = Calculator::zone(
+            $abstractness,
+            $instability,
             $dms,
             $component->module->thresholdZoneOfPain,
             $component->module->thresholdZoneOfUselessness,

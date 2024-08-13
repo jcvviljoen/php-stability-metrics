@@ -71,19 +71,38 @@ final readonly class Calculator
         return abs($instability + $abstractness - 1);
     }
 
+    /**
+     * The Zone tells us whether a component is in the Zone of Pain, Uselessness, or Usefulness.
+     *
+     * The Zone of Pain is where components are stable and maximally concrete (0, 0).
+     * The Zone of Uselessness is where components are maximally abstract (1, 1).
+     *
+     * We use Euclidean distance to find which zone we are closest to.
+     */
     public static function zone(
+        float $abstractness,
+        float $instability,
         float $dms,
         float $thresholdZoneOfPain,
         float $thresholdZoneOfUselessness,
     ): ZoneType {
-        if ($dms >= $thresholdZoneOfPain) {
+        $distanceToPain = self::euclideanDistance($instability, $abstractness, 0, 0);
+        $distanceToUselessness = self::euclideanDistance($instability, $abstractness, 1, 1);
+
+
+        if (($distanceToPain < $distanceToUselessness) && ($dms >= $thresholdZoneOfPain)) {
             return ZoneType::PAIN;
         }
 
-        if ($dms >= $thresholdZoneOfUselessness) {
+        if (($distanceToUselessness < $distanceToPain) && ($dms >= $thresholdZoneOfUselessness)) {
             return ZoneType::USELESSNESS;
         }
 
         return ZoneType::USEFULNESS;
+    }
+
+    private static function euclideanDistance(float $x1, float $y1, float $x2, float $y2): float
+    {
+        return sqrt(pow($x2 - $x1, 2) + pow($y2 - $y1, 2));
     }
 }
