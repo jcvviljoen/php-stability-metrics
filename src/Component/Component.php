@@ -24,22 +24,20 @@ readonly class Component
 
     public function countUsagesOf(Component $other): int
     {
-        $count = 0;
-
         if ($this->module->name === $other->module->name) {
-            return $count;
+            return 0;
         }
 
-        foreach ($this->classData as $class) {
-            foreach ($class->imports as $import) {
-                if (str_contains(strtolower($import), strtolower($other->sharedNamespace))) {
-                    $count++;
+        /** @var array<string> $imports */
+        $imports = array_reduce(
+            $this->classData,
+            fn(array $carry, ClassData $class) => array_merge($carry, $class->imports),
+            [],
+        );
 
-                    break;
-                }
-            }
-        }
-
-        return $count;
+        return count(array_filter(
+            $imports,
+            fn(string $import) => str_contains(strtolower($import), strtolower($other->sharedNamespace)),
+        ));
     }
 }
