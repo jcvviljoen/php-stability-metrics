@@ -24,7 +24,7 @@ class InvalidConfigurationExceptionTest extends TestCase
         $exception = InvalidConfigurationException::onMissingBasePath();
 
         $this->assertEquals(
-            'Configuration is missing `base_path` property.',
+            'Configuration is missing "base_path" property.',
             $exception->getMessage(),
         );
     }
@@ -34,7 +34,7 @@ class InvalidConfigurationExceptionTest extends TestCase
         $exception = InvalidConfigurationException::onMissingModules();
 
         $this->assertEquals(
-            'Configuration has no `modules` to run against.',
+            'Configuration has no "modules" to run against.',
             $exception->getMessage(),
         );
     }
@@ -44,7 +44,7 @@ class InvalidConfigurationExceptionTest extends TestCase
         $exception = InvalidConfigurationException::onMissingModule();
 
         $this->assertEquals(
-            'Module is missing `module` path property.',
+            'Module is missing "module" path property.',
             $exception->getMessage(),
         );
     }
