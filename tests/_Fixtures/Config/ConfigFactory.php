@@ -12,8 +12,6 @@ class ConfigFactory
     {
         return new Config(
             'tests/_Fixtures/_TestSrc',
-            0.3,
-            0.7,
             [
                 ModuleFactory::module1(),
                 ModuleFactory::module2(),
@@ -26,8 +24,6 @@ class ConfigFactory
     {
         return new Config(
             'tests/_Fixtures/_TestSrc',
-            0.3,
-            0.7,
             [ModuleFactory::module1()],
         );
     }
@@ -36,18 +32,17 @@ class ConfigFactory
     {
         return new Config(
             'src',
-            0.3,
-            0.7,
             [ModuleFactory::unknown()],
         );
     }
 
+    /**
+     * @see tests/Unit/Infrastructure/PHP/_Fixtures/Files/config_valid.php
+     */
     public static function baseValid(): Config
     {
         return new Config(
             'base',
-            0.2,
-            0.8,
             [ModuleFactory::baseValid()],
         );
     }

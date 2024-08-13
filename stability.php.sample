@@ -6,9 +6,6 @@ return [
      */
     'base_path' => 'src',
 
-    'threshold_zone_of_pain' => 0.3,
-    'threshold_zone_of_uselessness' => 0.7,
-
     /**
      * Define each module to be checked.
      */
@@ -18,6 +15,13 @@ return [
              * Define the module path, excluding the base_path
              */
             'module' => 'First/Module/Path',
+
+            /**
+             * Define the DMS threshold values for the stability check.
+             * Should be a value between 0 and 1.
+             */
+            'threshold_zone_of_pain' => 0.7,
+            'threshold_zone_of_uselessness' => 0.7,
 
             /**
              * Define the components within the module to be excluded from the stability check.

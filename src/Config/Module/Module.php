@@ -11,6 +11,8 @@ readonly class Module
      */
     public function __construct(
         public string $name,
+        public float $thresholdZoneOfPain,
+        public float $thresholdZoneOfUselessness,
         public array $exclude,
     ) {
     }

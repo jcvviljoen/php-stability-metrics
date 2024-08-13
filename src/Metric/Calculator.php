@@ -76,7 +76,7 @@ final readonly class Calculator
         float $thresholdZoneOfPain,
         float $thresholdZoneOfUselessness,
     ): ZoneType {
-        if ($dms <= $thresholdZoneOfPain) {
+        if ($dms >= $thresholdZoneOfPain) {
             return ZoneType::PAIN;
         }
 

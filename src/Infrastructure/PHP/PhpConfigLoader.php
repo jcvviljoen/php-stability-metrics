@@ -22,8 +22,6 @@ readonly class PhpConfigLoader implements ConfigLoader
 
         /** @var string $basePath */
         $basePath = $config['base_path'] ?? throw InvalidConfigurationException::onMissingBasePath();
-        $thresholdZoneOfPain = $config['threshold_zone_of_pain'] ?? 0.3;
-        $thresholdZoneOfUselessness = $config['threshold_zone_of_uselessness'] ?? 0.7;
         /** @var array<int, array<string, mixed>> $modules */
         $modules = $config['modules'] ?? [];
 
@@ -35,11 +33,17 @@ readonly class PhpConfigLoader implements ConfigLoader
             function (array $moduleConfig) {
                 /** @var string $modulePath */
                 $modulePath = $moduleConfig['module'] ?? throw InvalidConfigurationException::onMissingModule();
+                /** @var float $thresholdZoneOfPain */
+                $thresholdZoneOfPain = $moduleConfig['threshold_zone_of_pain'] ?? 0.7;
+                /** @var float $thresholdZoneOfUselessness */
+                $thresholdZoneOfUselessness = $moduleConfig['threshold_zone_of_uselessness'] ?? 0.7;
                 /** @var array<string> $exclude */
                 $exclude = $moduleConfig['exclude'] ?? [];
 
                 return new Module(
                     $modulePath,
+                    $thresholdZoneOfPain,
+                    $thresholdZoneOfUselessness,
                     $exclude,
                 );
             },
@@ -48,8 +52,6 @@ readonly class PhpConfigLoader implements ConfigLoader
 
         return new Config(
             $basePath,
-            $thresholdZoneOfPain,
-            $thresholdZoneOfUselessness,
             $modules,
         );
     }

@@ -13,8 +13,6 @@ readonly class Config
      */
     public function __construct(
         public string $basePath,
-        public float $thresholdZoneOfPain,
-        public float $thresholdZoneOfUselessness,
         public array $modules,
     ) {
     }

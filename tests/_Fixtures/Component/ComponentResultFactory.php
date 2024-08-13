@@ -16,7 +16,7 @@ class ComponentResultFactory
             0.6666666666666666,
             0.5,
             0.16666666666666652,
-            ZoneType::PAIN,
+            ZoneType::USEFULNESS,
         );
     }
 
@@ -38,7 +38,7 @@ class ComponentResultFactory
             0,
             0,
             1,
-            ZoneType::USELESSNESS,
+            ZoneType::PAIN,
         );
     }
 }
