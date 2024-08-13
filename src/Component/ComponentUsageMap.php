@@ -24,8 +24,8 @@ readonly class ComponentUsageMap
      * It is the number of *classes* in **other** components
      * that depend on classes in this component.
      *
-     * @see Class3 As a simple example, `Class3` (component `Module3`) in this project's
-     * unit test fixtures has a fan-in of 1, because `Class1` (component `Module1`) imports it.
+     * @see Class3 As a simple example, `Class3` (component `Module3` in this project's unit test fixtures)
+     * has a fan-in of 1, because `Class1` (component `Module1`) imports `Class3`.
      */
     public function fanInDependencies(Component $component): int
     {
@@ -45,8 +45,8 @@ readonly class ComponentUsageMap
      * It is the number of *classes* in **this** component
      * that depend on classes in various other components.
      *
-     * @see Class3 Again, as an example, `Class3` (component `Module3`) in this project's
-     * unit test fixtures has a fan-out of 0, because it has no imports.
+     * @see Class3 Again, as an example, `Class3` (component `Module3` in this project's unit test fixtures)
+     * has a fan-out of 0, because it has no imports.
      * However, `Class1` (component `Module1`) has a fan-out of 1, because it imports `Class3`.
      */
     public function fanOutDependencies(Component $component): int
