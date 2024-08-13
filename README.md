@@ -3,7 +3,7 @@
 
 ## Overview
 
-Stability is a PHP-based tool designed to analyze and calculate the stability of software components.
+Stability is a PHP-based tool designed to analyse and calculate the stability of software components.
 It leverages clean architecture principles and stable dependency metrics to provide insights into the maintainability and robustness of your codebase.
 
 ## Installation
@@ -11,7 +11,7 @@ It leverages clean architecture principles and stable dependency metrics to prov
 To install the project, use Composer:
 
 ```bash
-composer require stability/stability
+composer require jcvviljoen/stability
 ```
 
 ## Usage
@@ -63,13 +63,12 @@ Stability uses the following metrics to evaluate the stability of components:
 If you would like to contribute to the project, please follow the steps below:
 
 1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/feature-name`).
-3. Make the necessary changes (remember to write tests!).
-4. Commit your changes (`git commit -am 'Add new feature'`).
-5. Create a new Pull Request.
-6. Wait for feedback and approval.
-7. Once approved, the changes will be merged.
-8. Celebrate your contribution!
+2. Make the necessary changes (remember to write tests!). 
+3. Commit your changes (`git commit -am 'Add new feature'`). 
+4. Create a new Pull Request. 
+5. Wait for feedback and approval. 
+6. Once approved, the changes will be merged. 
+7. Celebrate your contribution! 🎉
 
 ### New plugins
 
@@ -88,4 +87,4 @@ composer tests
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
