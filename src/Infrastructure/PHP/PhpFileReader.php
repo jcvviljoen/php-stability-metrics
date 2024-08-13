@@ -24,10 +24,10 @@ readonly class PhpFileReader implements FileReader
         $files = $this->rglob("$directory/*.php");
 
         foreach ($exclude as $excludedFile) {
-            $files = array_filter(
+            $files = array_values(array_filter(
                 $files,
                 fn(string $file) => !str_contains($file, $excludedFile),
-            );
+            ));
         }
 
         return $files;

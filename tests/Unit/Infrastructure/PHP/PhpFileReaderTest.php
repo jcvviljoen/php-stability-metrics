@@ -36,7 +36,7 @@ class PhpFileReaderTest extends TestCase
             glob($relativeDirectoryPath . DIRECTORY_SEPARATOR . 'Nested' . DIRECTORY_SEPARATOR . '*'),
         );
 
-        $files = $this->phpFileReader->files($relativeDirectoryPath);
+        $files = $this->phpFileReader->files($relativeDirectoryPath, []);
 
         $this->assertEquals(
             [
@@ -59,12 +59,34 @@ class PhpFileReaderTest extends TestCase
         $relativeDirectoryPath = 'path/to/non/existent/directory';
 
         $exception = $this->expectThrows(
-            fn() => $this->phpFileReader->files($relativeDirectoryPath),
+            fn() => $this->phpFileReader->files($relativeDirectoryPath, []),
         );
 
         $this->assertEquals(
             InvalidModuleException::onInvalidModulePath($relativeDirectoryPath),
             $exception,
+        );
+    }
+
+    public function test_given_a_relative_path_when_excluding_files_then_return_filtered_files(): void
+    {
+        $relativeDirectoryPath = __DIR__ . '/_Fixtures/Files';
+
+        $files = $this->phpFileReader->files(
+            $relativeDirectoryPath,
+            [
+                '_Fixtures/Files/config_missing_base_path.php',
+                '_Fixtures/Files/Nested/Nest.php',
+            ],
+        );
+
+        $this->assertEquals(
+            [
+                __DIR__ . DIRECTORY_SEPARATOR . '_Fixtures/Files/config_missing_module.php',
+                __DIR__ . DIRECTORY_SEPARATOR . '_Fixtures/Files/config_missing_modules.php',
+                __DIR__ . DIRECTORY_SEPARATOR . '_Fixtures/Files/config_valid.php',
+            ],
+            $files,
         );
     }
 }

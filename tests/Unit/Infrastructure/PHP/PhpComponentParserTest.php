@@ -82,7 +82,7 @@ class PhpComponentParserTest extends TestCase
     {
         $this->fileReader->expects($this->once())
             ->method('files')
-            ->with($modulePath)
+            ->with($modulePath, [])
             ->willReturn($files);
     }
 
