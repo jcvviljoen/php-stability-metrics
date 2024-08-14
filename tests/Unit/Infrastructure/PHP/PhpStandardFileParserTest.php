@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stability\Tests\Unit\Infrastructure\PHP;
 
-use Exception;
 use PHPUnit\Framework\TestCase;
 use Stability\Component\Class\ClassData;
 use Stability\Component\Class\ClassType;
@@ -83,6 +82,33 @@ class PhpStandardFileParserTest extends TestCase
         );
     }
 
+    public function test_given_a_path_when_class_is_closed_then_parse_to_concrete_class(): void
+    {
+        $file = __DIR__ . '/_Fixtures/Parser/ClosedClass.php';
+
+        $classData = $this->phpFileParser->parse($file, '_Fixtures\Other');
+
+        $this->assertEquals(new ClassData(ClassType::CONCRETE_CLASS, []), $classData);
+    }
+
+    public function test_given_a_path_when_class_is_readonly_then_parse_to_concrete_class(): void
+    {
+        $file = __DIR__ . '/_Fixtures/Parser/ReadonlyClass.php';
+
+        $classData = $this->phpFileParser->parse($file, '_Fixtures\Other');
+
+        $this->assertEquals(new ClassData(ClassType::CONCRETE_CLASS, []), $classData);
+    }
+
+    public function test_given_a_path_when_class_is_closed_and_readonly_then_parse_to_concrete_class(): void
+    {
+        $file = __DIR__ . '/_Fixtures/Parser/ClosedReadonlyClass.php';
+
+        $classData = $this->phpFileParser->parse($file, '_Fixtures\Other');
+
+        $this->assertEquals(new ClassData(ClassType::CONCRETE_CLASS, []), $classData);
+    }
+
     public function test_given_a_path_when_file_is_enum_class_then_parse(): void
     {
         $file = __DIR__ . '/_Fixtures/Parser/TestEnum.php';
@@ -101,17 +127,20 @@ class PhpStandardFileParserTest extends TestCase
         $this->assertEquals(new ClassData(ClassType::UNKNOWN, []), $classData);
     }
 
-    public function test_given_a_path_when_file_cannot_be_read_then_throw_exception(): void
+    /**
+     * Here we want to make sure that we don't accidentally find any "class" string matches.
+     *
+     * For example, config files may have class mappings such as `TestEnum::class` which the
+     * `::class` part would be picked up by the parser.
+     *
+     * We only ever want to find class definitions at the start of the file somewhere.
+     */
+    public function test_given_a_config_file_with_class_mappings_then_identify_as_unknown(): void
     {
-        $file = 'path/to/file';
+        $file = __DIR__ . '/_Fixtures/Parser/mappings.php';
 
-        $exception = $this->expectThrows(
-            fn() => $this->phpFileParser->parse($file, ''),
-        );
+        $classData = $this->phpFileParser->parse($file, '_Fixtures\Other');
 
-        $this->assertEquals(
-            new Exception("Could not open file \"$file\" for reading."),
-            $exception,
-        );
+        $this->assertEquals(new ClassData(ClassType::UNKNOWN, []), $classData);
     }
 }

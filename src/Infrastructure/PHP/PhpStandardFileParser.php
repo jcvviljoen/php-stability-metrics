@@ -63,7 +63,7 @@ readonly class PhpStandardFileParser implements FileParser
                 break;
             }
 
-            if (str_contains($line, 'class')) {
+            if ($this->isClassDefinition($line)) {
                 $type = ClassType::CONCRETE_CLASS;
 
                 break;
@@ -88,5 +88,17 @@ readonly class PhpStandardFileParser implements FileParser
         ));
 
         return new ClassData($type, $imports);
+    }
+
+    /**
+     * Although not perfect, this method is a simple way to determine if a line is a class definition.
+     * This could be made in a more "fancy" way, but it's not necessary for the current requirements.
+     */
+    private function isClassDefinition(string $line): bool
+    {
+        return str_starts_with($line, 'class ')
+            || str_starts_with($line, 'readonly class ')
+            || str_starts_with($line, 'final class ')
+            || str_starts_with($line, 'final readonly class ');
     }
 }
