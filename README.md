@@ -41,15 +41,13 @@ php vendor/bin/stability --config "path/to/config.php"
 There are various configuration fields that you can use to customise the analysis,
 all of which is explained in the [sample configuration file](stability.php.sample).
 
-https://github.com/jcvviljoen/php-stability-metrics/blob/bff8a94c11f34eb7a579a6456883fa741245fe59/stability.php.sample
-
 You can do the following:
 - Specify the main application source to scan.
 - Define the components within the application you want to analyse.
 - For each component, you can also:
   - Exclude specific files / directories from being scanned.
-  - Threshold for crossing into the zone of pain (_defaults to 0.7_).
-  - Threshold for crossing into the zone of uselessness (_defaults to 0.7_).
+  - Threshold for crossing into the zone of pain (_defaults to 0.7 when not specified_).
+  - Threshold for crossing into the zone of uselessness (_defaults to 0.7 when not specified_).
 
 ## Features
 

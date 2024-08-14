@@ -19,6 +19,8 @@ return [
             /**
              * Define the DMS threshold values for the stability check.
              * Should be a value between 0 and 1.
+             *
+             * Defaults to 0.7 for both when not defined.
              */
             'threshold_zone_of_pain' => 0.7,
             'threshold_zone_of_uselessness' => 0.7,
