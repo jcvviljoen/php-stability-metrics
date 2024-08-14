@@ -72,7 +72,7 @@ class CalculatorTest extends TestCase
         $this->assertEquals(0.2666666666666666, $dms);
     }
 
-    public function test_given_dms_when_zero_then_zone_is_usefulness(): void
+    public function test_given_dms_when_zero_then_zone_is_perfect(): void
     {
         $abstractness = 0.5;
         $instability = 0.5;
@@ -88,7 +88,7 @@ class CalculatorTest extends TestCase
             $thresholdZoneOfUselessness,
         );
 
-        $this->assertEquals(ZoneType::USEFULNESS, $zone);
+        $this->assertEquals(ZoneType::PERFECT, $zone);
     }
 
     public function test_given_dms_when_closer_to_zone_of_pain_then_return_zone_of_pain(): void

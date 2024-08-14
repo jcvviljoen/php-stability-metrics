@@ -86,6 +86,10 @@ final readonly class Calculator
         float $thresholdZoneOfPain,
         float $thresholdZoneOfUselessness,
     ): ZoneType {
+        if ($dms === 0.0) {
+            return ZoneType::PERFECT;
+        }
+
         $distanceToPain = self::euclideanDistance($instability, $abstractness, 0, 0);
         $distanceToUselessness = self::euclideanDistance($instability, $abstractness, 1, 1);
 

@@ -9,13 +9,15 @@ enum ZoneType
     case USEFULNESS;
     case USELESSNESS;
     case PAIN;
+    case PERFECT;
 
     public function description(): string
     {
         return match ($this) {
-            self::USEFULNESS => 'Perfectly Balanced, as all things should be',
+            self::USEFULNESS => 'Well-structured and useful',
             self::USELESSNESS => 'Zone of Uselessness',
             self::PAIN => 'Zone of Pain',
+            self::PERFECT => 'Perfectly Balanced, as all things should be',
         };
     }
 
@@ -25,6 +27,7 @@ enum ZoneType
             self::USEFULNESS => '🚀',
             self::USELESSNESS => '💩',
             self::PAIN => '💀',
+            self::PERFECT => '⚖️',
         };
     }
 }

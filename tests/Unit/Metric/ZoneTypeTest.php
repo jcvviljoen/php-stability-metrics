@@ -12,7 +12,7 @@ class ZoneTypeTest extends TestCase
     public function test_description(): void
     {
         $this->assertEquals(
-            'Perfectly Balanced, as all things should be',
+            'Well-structured and useful',
             ZoneType::USEFULNESS->description(),
         );
 
@@ -24,6 +24,11 @@ class ZoneTypeTest extends TestCase
         $this->assertEquals(
             'Zone of Pain',
             ZoneType::PAIN->description(),
+        );
+
+        $this->assertEquals(
+            'Perfectly Balanced, as all things should be',
+            ZoneType::PERFECT->description(),
         );
     }
 
@@ -42,6 +47,11 @@ class ZoneTypeTest extends TestCase
         $this->assertEquals(
             '💀',
             ZoneType::PAIN->icon(),
+        );
+
+        $this->assertEquals(
+            '⚖️',
+            ZoneType::PERFECT->icon(),
         );
     }
 }
