@@ -1,16 +1,12 @@
 # Stability
 #### PHP Stable Dependency Metrics Analyser
 
----
-
-### Overview
+## Overview
 
 **_Stability_** is a PHP-based tool designed to analyse and calculate the stability of software components
 in your architecture.
 
 It leverages clean architecture principles and stable dependency metrics to provide insights into the maintainability and robustness of your codebase.
-
----
 
 ## Installation
 
@@ -19,8 +15,6 @@ To install the project, use Composer:
 ```bash
 composer require jcvviljoen/stability
 ```
-
----
 
 ## Usage
 
@@ -68,8 +62,6 @@ You can also analyse your project at a higher (or lower) level of granularity!
 Should you find something interesting or would like to analyse something specific,
 please share or contribute!
 
----
-
 ## Features
 
 - **Component Parsing**: Parses class and modules into components as specified by your configuration.
@@ -77,8 +69,6 @@ please share or contribute!
 - **Output Results**: Outputs the calculated stability results for further ( _manual*_ ) analysis.
 
 \* See the [Roadmap](ROADMAP.md) for potential future features.
-
-___
 
 ## Stable Dependency Metrics
 
@@ -102,21 +92,15 @@ a component is from the ideal balance of being abstract and stable.
 
 You can read more about the principles being applied in the [CLEAN_ARCHITECTURE](CLEAN_ARCHITECTURE.md) file.
 
-___
-
 ## Contributing
 
 Contributions are welcome!
 
 Please see the [CONTRIBUTING](.github/CONTRIBUTING.md) file for more information.
 
----
-
 ## License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
-
-___
 
 ## Credits & References
 

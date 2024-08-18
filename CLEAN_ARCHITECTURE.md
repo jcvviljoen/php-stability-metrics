@@ -2,8 +2,6 @@
 
 The project tries to showcase and promote the understanding of the following principles:
 
----
-
 ### Component Cohesion
 
 **Cohesion** refers to how closely related the responsibilities of a single module are.
@@ -83,8 +81,6 @@ through well-defined interfaces.
 
 This approach helps in creating systems that are flexible, testable, and scalable.
 
-___
-
 ## Stable Dependency Metrics
 
 Stability uses the following metrics to evaluate the stability of components:
@@ -93,5 +89,3 @@ Stability uses the following metrics to evaluate the stability of components:
 - **Instability (I)**: Measures the ratio of outgoing dependencies to the total number of dependencies. A higher
   value indicates more unstable components (i.e. components that are hard to change due to their high number of dependencies).
 - **Distance from the Main Sequence (DMS)**: Combines abstractness and instability to determine how far a component is from the ideal balance of being abstract and stable.
-
----
