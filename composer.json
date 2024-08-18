@@ -1,6 +1,6 @@
 {
   "name": "jcvviljoen/php-stability-metrics",
-  "description": "PHP Tool to calculate project stability metrics based on clean architecture principles",
+  "description": "PHP tool to calculate architecture stability metrics based on clean architecture principles",
   "type": "library",
   "license": "MIT",
   "keywords": [
