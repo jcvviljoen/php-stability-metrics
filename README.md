@@ -1,6 +1,8 @@
 # Stability
 #### PHP Stable Dependency Metrics Analyser
 
+![Project's current stability result](stability-result-18-08-2024.png)
+
 ## Overview
 
 **_Stability_** is a PHP-based tool designed to analyse and calculate the stability of software components
