@@ -1,21 +1,40 @@
 # Stability
 #### PHP Stable Dependency Metrics Analyser
 
-![Project's current stability result](stability-result-18-08-2024.png)
+![Project's current stability result](stability-result-2024-08-27.png)
 
 ## Overview
 
 **_Stability_** is a PHP-based tool designed to analyse and calculate the stability of software components
 in your architecture.
 
-It leverages clean architecture principles and stable dependency metrics to provide insights into the maintainability and robustness of your codebase.
+It leverages clean architecture principles and stable dependency metrics to provide insights into the maintainability
+and robustness of your codebase.
+
+Stability is a nod to the [Stable Dependency Principle](CLEAN_ARCHITECTURE.md#2-stable-dependencies-principle-sdp)
+and the [Stable Dependency Metrics](#stable-dependency-metrics), where we are actually measuring **_Instability_**.
+
+The goal is to identify components that are either too abstract or too unstable.
+
+### Why use Stability?
+
+Stability can help you identify components that are either overly complex (too abstract)
+or too tightly coupled (too unstable).
+
+By monitoring the metrics of your components as your project continues to develop,
+you can detect areas in your codebase / architecture that may need refactoring early on.
+
+This can help you improve the maintainability and robustness of your codebase,
+while also making it easier to understand.
+These metrics can also be used to guide your development process, and to convince stakeholders of the need for 
+improvement.
 
 ## Installation
 
-To install the project, use Composer:
+To install the package, use Composer to include it as a dev-dependency:
 
 ```bash
-composer require jcvviljoen/stability
+composer require-dev jcvviljoen/stability
 ```
 
 ## Usage
