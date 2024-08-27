@@ -1,0 +1,6 @@
+/.github export-ignore
+/tests export-ignore
+phpunit.xml export-ignore
+phpcs.xml export-ignore
+stability-result-2024-08-27.png export-ignore
+.gitignore export-ignore
