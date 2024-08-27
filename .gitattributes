@@ -4,3 +4,5 @@ phpunit.xml export-ignore
 phpcs.xml export-ignore
 stability-result-2024-08-27.png export-ignore
 .gitignore export-ignore
+.gitattributes export-ignore
+composer.lock export-ignore
