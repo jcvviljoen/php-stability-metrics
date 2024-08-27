@@ -81,10 +81,10 @@ readonly class Stability
 
         return new ComponentResult(
             $component,
+            $zone,
             $abstractness,
             $instability,
             $dms,
-            $zone,
         );
     }
 

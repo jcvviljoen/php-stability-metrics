@@ -59,9 +59,9 @@ class ConsoleOutputWriterTest extends TestCase
             $resultOutput[] = '----------------------------------------';
             $resultOutput[] = "Component: {$componentResult->component->module->name}";
             $resultOutput[] = '----------------------------------------';
-            $resultOutput[] = "| Abstractness: $componentResult->abstractness";
-            $resultOutput[] = "| Instability: $componentResult->instability";
-            $resultOutput[] = "| DMS: $componentResult->dms";
+            $resultOutput[] = "| Abstractness: {$componentResult->abstractness()}";
+            $resultOutput[] = "| Instability: {$componentResult->instability()}";
+            $resultOutput[] = "| DMS: {$componentResult->dms()}";
             $resultOutput[] = "| Zone: $zoneIcon $zoneDescription";
             $resultOutput[] = '----------------------------------------';
             $resultOutput[] = '';
