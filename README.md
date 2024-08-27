@@ -34,7 +34,7 @@ improvement.
 To install the package, use Composer to include it as a dev-dependency:
 
 ```bash
-composer require-dev jcvviljoen/stability
+composer require --dev jcvviljoen/stability
 ```
 
 ## Usage
