@@ -74,6 +74,7 @@
         <exclude name="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousPrefix"/>
         <exclude name="SlevomatCodingStandard.PHP.RequireExplicitAssertion.RequiredExplicitAssertion"/>
         <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.IncorrectStrictTypesFormat"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.UnionTypeHintFormat"/>
 
         <!-- PHP8 conflicts -->
         <exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect"/>
@@ -90,6 +91,13 @@
     <rule ref="SlevomatCodingStandard.Namespaces.UseOnlyWhitelistedNamespaces">
         <properties>
             <property name="allowUseFromRootNamespace" value="true"/>
+        </properties>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.DNFTypeHintFormat">
+        <properties>
+            <property name="withSpacesAroundOperators" value="no"/>
+            <property name="withSpacesInsideParentheses" value="no"/>
         </properties>
     </rule>
 </ruleset>

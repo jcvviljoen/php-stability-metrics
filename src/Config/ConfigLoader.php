@@ -6,6 +6,20 @@ namespace Stability\Config;
 
 use Stability\Exception\InvalidConfigurationException;
 
+/**
+ * @phpstan-type RawConfig array{
+ *     base_path: string|null,
+ *     modules: array<
+ *      int,
+ *      array{
+ *       module: string,
+ *       threshold_zone_of_pain: float,
+ *       threshold_zone_of_uselessness:float,
+ *       exclude: array<string>
+ *      }
+ *     >|null
+ * }
+ */
 interface ConfigLoader
 {
     /**

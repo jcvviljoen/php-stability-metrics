@@ -10,6 +10,9 @@ use Stability\Config\ConfigLoader;
 use Stability\Config\Module\Module;
 use Stability\Exception\InvalidConfigurationException;
 
+/**
+ * @phpstan-import-type RawConfig from ConfigLoader
+ */
 readonly class PhpConfigLoader implements ConfigLoader
 {
     #[Override] public function load(string $path): Config
@@ -18,6 +21,7 @@ readonly class PhpConfigLoader implements ConfigLoader
             throw InvalidConfigurationException::onMissingConfigFile($path);
         }
 
+        /** @var RawConfig $config */
         $config = include $path;
 
         /** @var string $basePath */
