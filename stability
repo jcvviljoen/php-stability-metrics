@@ -4,8 +4,8 @@
 declare (strict_types=1);
 
 use Stability\Config\ConfigLoaderFactory;
+use Stability\Config\Output\OutputWriterFactory;
 use Stability\Exception\StabilityException;
-use Stability\Infrastructure\Console\ConsoleOutputWriter;
 use Stability\Stability;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -24,7 +24,7 @@ if (is_file($autoload = __DIR__ . '/vendor/autoload.php')) {
 }
 
 $console = new ConsoleOutput();
-$args = getopt('i', ['help', 'init', 'config:', 'debug']);
+$args = getopt('i', ['help', 'init', 'config:', 'output:', 'output-file:', 'debug']);
 
 if (isset($args['help'])) {
     $console->writeln([
@@ -33,6 +33,8 @@ if (isset($args['help'])) {
         '<info>Options:</info>',
         '<comment>  -i, --init          Create the standard stability configuration file.</comment>',
         '<comment>  --config            Path to a custom stability configuration file.</comment>',
+        '<comment>  --output            The output format of the stability results. Can be "console" (default) or "json".</comment>',
+        '<comment>  --output-file       The file to output results to (when --output supports printing to files). Default is `stability-result.{ext}`</comment>',
         '<comment>  --debug             Show debug information (exposes exception stack traces).</comment>',
         '<comment>  --help              Display this help message.</comment>',
     ]);
@@ -44,6 +46,14 @@ if (isset($args['config'])) {
     $stabilityFile = $basePath . '/' . $args['config'];
 } else {
     $stabilityFile = $basePath . '/stability.php';
+}
+
+$outputOption = $args['output'] ?? 'console';
+
+if (isset($args['output'])) {
+    $outputFile = $args['output-file'] ?? null;
+} else {
+    $outputFile = null;
 }
 
 if (isset($args['i']) || isset($args['init'])) {
@@ -69,12 +79,13 @@ if (!is_file($stabilityFile)) {
 }
 
 $configLoader = ConfigLoaderFactory::create($stabilityFile);
+$outputWriter = OutputWriterFactory::create($outputOption, $outputFile);
 
 try {
     $console->writeln('<info>Calculating stability metrics...</info>');
     $console->writeln('');
 
-    Stability::create($configLoader, new ConsoleOutputWriter($console))->calculate($stabilityFile);
+    Stability::create($configLoader, $outputWriter)->calculate($stabilityFile);
 
     $console->writeln('');
     $console->writeln('<info>Stability metrics calculated successfully!</info>');

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stability\Infrastructure\Console;
+namespace Stability\Infrastructure\Output;
 
 use Override;
 use Stability\OutputWriter;

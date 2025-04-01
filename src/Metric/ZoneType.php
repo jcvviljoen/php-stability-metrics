@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Stability\Metric;
 
-enum ZoneType
+use JsonSerializable;
+use Override;
+
+enum ZoneType implements JsonSerializable
 {
     case USEFULNESS;
     case USELESSNESS;
@@ -29,5 +32,10 @@ enum ZoneType
             self::PAIN => '💀',
             self::PERFECT => '⚖️',
         };
+    }
+
+    #[Override] public function jsonSerialize(): string
+    {
+        return $this->name;
     }
 }

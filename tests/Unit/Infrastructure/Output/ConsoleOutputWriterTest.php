@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Stability\Tests\Unit\Infrastructure\Console;
+namespace Stability\Tests\Unit\Infrastructure\Output;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Stability\Component\ComponentResult;
-use Stability\Infrastructure\Console\ConsoleOutputWriter;
+use Stability\Infrastructure\Output\ConsoleOutputWriter;
 use Stability\Tests\_Fixtures\StabilityResultFactory;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
