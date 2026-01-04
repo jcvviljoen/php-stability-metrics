@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stability\Config\Loaders;
 
+use Override;
 use Stability\Config\Module;
 
 readonly class LoadedModule implements Module
@@ -19,17 +20,17 @@ readonly class LoadedModule implements Module
     ) {
     }
 
-    public function name(): string
+    #[Override] public function name(): string
     {
         return $this->name;
     }
 
-    public function thresholdZoneOfPain(): float
+    #[Override] public function thresholdZoneOfPain(): float
     {
         return $this->thresholdZoneOfPain;
     }
 
-    public function thresholdZoneOfUselessness(): float
+    #[Override] public function thresholdZoneOfUselessness(): float
     {
         return $this->thresholdZoneOfUselessness;
     }
@@ -37,7 +38,7 @@ readonly class LoadedModule implements Module
         /**
         * @return list<string>
         */
-    public function exclude(): array
+    #[Override] public function exclude(): array
     {
         return $this->exclude;
     }
