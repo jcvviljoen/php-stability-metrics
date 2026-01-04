@@ -15,6 +15,7 @@ use stdClass;
 
 class JsonOutputWriterTest extends TestCase
 {
+    private const string PATH_EXPECTED_RESULT = __DIR__ . '/_Fixtures/expected-result.json';
     private const string PATH_RESULT = __DIR__ . '/_Fixtures/stability-result.json';
 
     private JsonOutputWriter $jsonOutputWriter;
@@ -38,15 +39,15 @@ class JsonOutputWriterTest extends TestCase
 
         $this->jsonOutputWriter->outputResult($result);
 
-        $this->assertJsonStringEqualsJsonFile(
+        $this->assertJsonFileEqualsJsonFile(
+            self::PATH_EXPECTED_RESULT,
             self::PATH_RESULT,
-            json_encode($result, JSON_PRETTY_PRINT),
         );
     }
 
     #[Override] protected function tearDown(): void
     {
-        // Always reset to an empty object in the JSON file after test has executed.
+        // Always reset to an empty object in the written JSON file after test has executed.
         file_put_contents(
             self::PATH_RESULT,
             json_encode(new stdClass(), JSON_PRETTY_PRINT),

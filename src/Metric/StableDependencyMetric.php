@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Stability\Metric;
 
+use JsonSerializable;
+use Override;
 use Stability\Component\Component;
 
-readonly class StableDependencyMetric
+readonly class StableDependencyMetric implements JsonSerializable
 {
     private const int FORMAT_PRECISION = 2;
 
@@ -37,5 +39,19 @@ readonly class StableDependencyMetric
     private function formatFloat(float $value): string
     {
         return number_format($value, self::FORMAT_PRECISION);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    #[Override] public function jsonSerialize(): array
+    {
+        return [
+            'component' => $this->component->name(),
+            'zone' => $this->zone,
+            'abstractness' => $this->abstractness(),
+            'instability' => $this->instability(),
+            'dms' => $this->dms(),
+        ];
     }
 }

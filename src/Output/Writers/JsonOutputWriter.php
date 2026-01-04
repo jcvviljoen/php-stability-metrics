@@ -12,7 +12,7 @@ use Stability\Output\OutputWriter;
 
 readonly class JsonOutputWriter implements OutputWriter
 {
-    public function __construct(private OutputSetting $settings) // TODO also use jackson here?
+    public function __construct(private OutputSetting $settings)
     {
     }
 

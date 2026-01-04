@@ -17,7 +17,7 @@ readonly class ConsoleOutputWriter implements OutputWriter
 
     #[Override] public function outputResult(Result $result): void
     {
-        foreach ($result->componentResults as $componentResult) {
+        foreach ($result->stableDependencyMetrics as $componentResult) {
             $zoneDescription = $componentResult->zone->description();
             $zoneIcon = $componentResult->zone->icon();
 

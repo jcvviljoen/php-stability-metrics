@@ -38,7 +38,6 @@ use Stability\Output\OutputSetting;
  */
 readonly class PhpArrayConfigLoader implements ConfigLoader
 {
-    // TODO use Thiago's jackson package?
     #[Override] public function load(string $path): Config
     {
         if (!file_exists($path)) {

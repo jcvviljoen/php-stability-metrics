@@ -7,10 +7,10 @@ namespace Stability\Metric;
 readonly class Result
 {
     /**
-     * @param array<StableDependencyMetric> $componentResults
+     * @param array<StableDependencyMetric> $stableDependencyMetrics
      */
     public function __construct(
-        public array $componentResults,
+        public array $stableDependencyMetrics,
     ) {
     }
 }

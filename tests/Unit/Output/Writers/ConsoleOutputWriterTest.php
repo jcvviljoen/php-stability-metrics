@@ -29,8 +29,8 @@ class ConsoleOutputWriterTest extends TestCase
     public function test_output_result(): void
     {
         $result = StabilityResultFactory::testSource();
-        $expects = count($result->componentResults);
-        $expectedOutput = $this->generateExpectedOutput($result->componentResults);
+        $expects = count($result->stableDependencyMetrics);
+        $expectedOutput = $this->generateExpectedOutput($result->stableDependencyMetrics);
 
         $this->consoleOutput
             ->expects($this->exactly($expects))
