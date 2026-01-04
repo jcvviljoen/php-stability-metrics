@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stability\Tests\Unit\Component\Parsers;
 
-use Override;
 use PHPUnit\Framework\TestCase;
 use Stability\Component\Parsers\ComponentParserFactory;
 use Stability\Component\Parsers\PHP\PhpClassFileParser;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Stability\Tests\_Fixtures\Output;
 
 use Stability\Output\OutputOption;
@@ -10,7 +12,7 @@ readonly class OutputSettingFactory
     public static function default(): OutputSetting
     {
         return new OutputSetting(
-            OutputOption::JSON,
+            OutputOption::CONSOLE,
             '',
             'stability-result',
         );
