@@ -6,9 +6,9 @@ namespace Stability\Tests\Unit\Config;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Stability\Config\ConfigLoaderFactory;
 use Stability\Config\ConfigType;
-use Stability\Infrastructure\PHP\PhpConfigLoader;
+use Stability\Config\Loaders\ConfigLoaderFactory;
+use Stability\Config\Loaders\PHP\PhpArrayConfigLoader;
 
 class ConfigLoaderFactoryTest extends TestCase
 {
@@ -17,7 +17,7 @@ class ConfigLoaderFactoryTest extends TestCase
     {
         $file = "config.$type->value";
 
-        $loader = ConfigLoaderFactory::create($file);
+        $loader = ConfigLoaderFactory::load($file);
 
         $this->assertInstanceOf($expected, $loader);
     }
@@ -29,8 +29,8 @@ class ConfigLoaderFactoryTest extends TestCase
     {
         return [
             'When given a php config file, then provide the PHP config loader' => [
-                'type' => ConfigType::PHP,
-                'expected' => PhpConfigLoader::class,
+                'type' => ConfigType::PHP_ARRAY,
+                'expected' => PhpArrayConfigLoader::class,
             ],
         ];
     }

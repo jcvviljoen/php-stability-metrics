@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stability\Config;
 
-enum ConfigType: string
+enum ConfigType
 {
-    case PHP = 'php';
+    case PHP_ARRAY;
 }

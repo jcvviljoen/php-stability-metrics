@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Stability\Tests\_Fixtures;
 
-use Stability\StabilityResult;
-use Stability\Tests\_Fixtures\Component\ComponentResultFactory;
+use Stability\Metric\Result;
+use Stability\Tests\_Fixtures\Metric\StableDependencyMetricFactory;
 
 class StabilityResultFactory
 {
-    public static function testSource(): StabilityResult
+    public static function testSource(): Result
     {
-        return new StabilityResult([
-            ComponentResultFactory::module1(),
-            ComponentResultFactory::module2(),
-            ComponentResultFactory::module3(),
+        return new Result([
+            StableDependencyMetricFactory::module1(),
+            StableDependencyMetricFactory::module2(),
+            StableDependencyMetricFactory::module3(),
         ]);
     }
 }

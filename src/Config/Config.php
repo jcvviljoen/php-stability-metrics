@@ -4,16 +4,26 @@ declare(strict_types=1);
 
 namespace Stability\Config;
 
-use Stability\Config\Module\Module;
+use Stability\Output\OutputSetting;
 
-readonly class Config
+interface Config
 {
     /**
-     * @param array<Module> $modules
+     * The base path where the analysis is run from.
      */
-    public function __construct(
-        public string $basePath,
-        public array $modules,
-    ) {
-    }
+    public function basePath(): string;
+
+    /**
+     * The list of modules to analyze within the project.
+     *
+     * @return list<Module>
+     */
+    public function modules(): array;
+
+    /**
+     * The output settings which determines where analysis results are written to.
+     */
+    public function outputSettings(): OutputSetting;
+
+    public function overrideOutputSettings(OutputSetting $outputSettings): void;
 }

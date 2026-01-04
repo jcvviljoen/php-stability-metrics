@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stability\Tests\_Fixtures\Config;
 
-use Stability\Config\Module\Module;
+use Stability\Config\Module;
 
 class ModuleFactory
 {

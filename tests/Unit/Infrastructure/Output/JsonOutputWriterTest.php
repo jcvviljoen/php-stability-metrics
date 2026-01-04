@@ -6,7 +6,7 @@ namespace Stability\Tests\Unit\Infrastructure\Output;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Stability\Infrastructure\Output\JsonOutputWriter;
+use Stability\Output\Writers\JsonOutputWriter;
 use Stability\Tests\_Fixtures\StabilityResultFactory;
 use stdClass;
 

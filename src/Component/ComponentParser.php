@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Stability\Component;
 
-use Stability\Config\Config;
-use Stability\Config\Module\Module;
-use Stability\Exception\InvalidFileException;
-use Stability\Exception\InvalidModuleException;
+use Stability\Component\Exception\InvalidComponentException;
+use Stability\Component\File\Exception\InvalidFileException;
+use Stability\Config\Module;
 
 interface ComponentParser
 {
     /**
-     * @throws InvalidModuleException | InvalidFileException
+     * @param list<Module> $modules
+     *
+     * @throws InvalidComponentException | InvalidFileException
      */
-    public function parse(Config $config, Module $module): Component;
+    public function parse(array $modules): ComponentCollection;
 }

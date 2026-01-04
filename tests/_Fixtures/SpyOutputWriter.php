@@ -5,22 +5,22 @@ declare(strict_types=1);
 namespace Stability\Tests\_Fixtures;
 
 use PHPUnit\Framework\Assert;
-use Stability\OutputWriter;
-use Stability\StabilityResult;
+use Stability\Metric\Result;
+use Stability\Output\OutputWriter;
 
 class SpyOutputWriter implements OutputWriter
 {
     /**
-     * @var array<StabilityResult>
+     * @var array<Result>
      */
     private array $writtenResults = [];
 
-    public function outputResult(StabilityResult $result): void
+    public function outputResult(Result $result): void
     {
         $this->writtenResults[] = $result;
     }
 
-    public function verifyIsWritten(StabilityResult $result): void
+    public function verifyIsWritten(Result $result): void
     {
         Assert::assertTrue(
             in_array($result, $this->writtenResults),

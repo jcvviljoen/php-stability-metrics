@@ -8,7 +8,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Stability\Component\ComponentParser;
 use Stability\Config\ConfigLoader;
-use Stability\Stability;
+use Stability\InstabilityAnalyser;
 use Stability\Tests\_Fixtures\Component\ComponentFactory;
 use Stability\Tests\_Fixtures\Config\ConfigFactory;
 use Stability\Tests\_Fixtures\SpyOutputWriter;
@@ -20,7 +20,7 @@ class StabilityTest extends TestCase
     private ComponentParser&MockObject $componentParser;
     private SpyOutputWriter $outputWriter;
 
-    private Stability $stability;
+    private InstabilityAnalyser $stability;
 
     protected function setUp(): void
     {
@@ -30,7 +30,7 @@ class StabilityTest extends TestCase
         $this->componentParser = $this->createMock(ComponentParser::class);
         $this->outputWriter = new SpyOutputWriter();
 
-        $this->stability = new Stability(
+        $this->stability = new InstabilityAnalyser(
             $this->componentParser,
             $this->configLoader,
             $this->outputWriter,
@@ -43,7 +43,7 @@ class StabilityTest extends TestCase
         $this->setupLoadConfig();
 
         $this->expectToParseModules();
-        $this->stability->calculate($configPath);
+        $this->stability->analyse($configPath);
 
         $this->outputWriter->verifyIsWritten(StabilityResultFactory::testSource());
     }

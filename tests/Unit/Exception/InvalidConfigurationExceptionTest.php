@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stability\Tests\Unit\Exception;
 
 use PHPUnit\Framework\TestCase;
-use Stability\Exception\InvalidConfigurationException;
+use Stability\Config\Exception\InvalidConfigurationException;
 
 class InvalidConfigurationExceptionTest extends TestCase
 {

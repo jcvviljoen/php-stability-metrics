@@ -12,9 +12,9 @@ class ComponentFactory
     public static function module1(): Component
     {
         $classData = [
-            ClassDataFactory::abstract1(),
-            ClassDataFactory::class1(),
-            ClassDataFactory::interface1(),
+            MetadataFactory::abstract1(),
+            MetadataFactory::class1(),
+            MetadataFactory::interface1(),
         ];
 
         return new Component(
@@ -30,8 +30,8 @@ class ComponentFactory
     public static function module2(): Component
     {
         $classData = [
-            ClassDataFactory::abstract2(),
-            ClassDataFactory::class2(),
+            MetadataFactory::abstract2(),
+            MetadataFactory::class2(),
         ];
 
         return new Component(
@@ -46,7 +46,7 @@ class ComponentFactory
 
     public static function module3(): Component
     {
-        $classData = [ClassDataFactory::class3()];
+        $classData = [MetadataFactory::class3()];
 
         return new Component(
             ModuleFactory::module3(),

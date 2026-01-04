@@ -7,18 +7,18 @@ namespace Stability\Tests\Unit\Component;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Stability\Component\Component;
-use Stability\Component\ComponentUsageMap;
+use Stability\Component\DependencyMap;
 use Stability\Tests\_Fixtures\Component\ComponentFactory;
 
 class ComponentUsageMapTest extends TestCase
 {
-    private ComponentUsageMap $map;
+    private DependencyMap $map;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->map = ComponentUsageMap::from([
+        $this->map = DependencyMap::from([
             ComponentFactory::module1(),
             ComponentFactory::module2(),
             ComponentFactory::module3(),
@@ -54,7 +54,7 @@ class ComponentUsageMapTest extends TestCase
         Component $component,
         int $expected,
     ): void {
-        $fanIn = $this->map->fanInDependencies($component);
+        $fanIn = $this->map->countFanIn($component);
 
         $this->assertEquals($expected, $fanIn);
     }
@@ -64,7 +64,7 @@ class ComponentUsageMapTest extends TestCase
         Component $component,
         int $expected,
     ): void {
-        $fanOut = $this->map->fanOutDependencies($component);
+        $fanOut = $this->map->countFanOut($component);
 
         $this->assertEquals($expected, $fanOut);
     }

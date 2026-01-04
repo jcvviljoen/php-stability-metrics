@@ -34,4 +34,12 @@ return [
         ],
         // ... Define other components
     ],
+
+    'output' => [
+        'option' => 'console', // or 'json'
+
+        'filePath' => '', // Optionally define the file path when writing results to a file
+
+        'fileName' => '', // Optionally define the file name when writing results to a file
+    ],
 ];

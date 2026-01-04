@@ -4,40 +4,62 @@ declare(strict_types=1);
 
 namespace Stability\Component;
 
-use Stability\Component\Class\ClassData;
-use Stability\Config\Module\Module;
+use Stability\Component\Exception\InvalidComponentException;
+use Stability\Component\File\Metadata;
+use Stability\Component\File\MetadataCollection;
+use Stability\Config\Module;
 
 readonly class Component
 {
-    /**
-     * @param array<ClassData> $classData
-     */
     public function __construct(
         public Module $module,
-        public string $sharedNamespace,
-        public int $abstractClasses,
-        public int $interfaces,
-        public int $totalClasses,
-        private array $classData,
+        private string $primaryNamespace,
+        private MetadataCollection $fileData,
     ) {
+    }
+
+    public function primaryNamespace(): string
+    {
+        if (empty($this->primaryNamespace)) {
+            throw InvalidComponentException::onEmptyComponent($this->module->name());
+        }
+
+        return $this->primaryNamespace;
+    }
+
+    public function countAbstractClasses(): int
+    {
+        return $this->fileData->countAbstractClasses();
+    }
+
+    public function countInterfaces(): int
+    {
+        return $this->fileData->countInterfaces();
+    }
+
+    public function countTotalClasses(): int
+    {
+        return $this->fileData->countTotalClasses();
     }
 
     public function countUsagesOf(Component $other): int
     {
-        if ($this->module->name === $other->module->name) {
+        if ($this->module->name() === $other->module->name()) {
             return 0;
         }
 
         /** @var array<string> $imports */
         $imports = array_reduce(
-            $this->classData,
-            fn(array $carry, ClassData $class) => array_merge($carry, $class->imports),
+            $this->fileData->validValues(),
+            fn(array $carry, Metadata $class) => array_merge($carry, $class->imports),
             [],
         );
 
+        $otherNamespace = $other->primaryNamespace();
+
         return count(array_filter(
             $imports,
-            fn(string $import) => str_contains(strtolower($import), strtolower($other->sharedNamespace)),
+            fn(string $import) => str_contains(strtolower($import), strtolower($otherNamespace)),
         ));
     }
 }

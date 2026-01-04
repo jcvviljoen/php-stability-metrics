@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stability\Tests\Unit\Infrastructure\PHP;
 
 use PHPUnit\Framework\TestCase;
-use Stability\Exception\InvalidConfigurationException;
-use Stability\Infrastructure\PHP\PhpConfigLoader;
+use Stability\Config\Exception\InvalidConfigurationException;
+use Stability\Config\Loaders\PHP\PhpArrayConfigLoader;
 use Stability\Tests\_Fixtures\Config\ConfigFactory;
 use Stability\Tests\ExpectThrows;
 
@@ -14,13 +14,13 @@ class PhpConfigLoaderTest extends TestCase
 {
     use ExpectThrows;
 
-    private PhpConfigLoader $loader;
+    private PhpArrayConfigLoader $loader;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->loader = new PhpConfigLoader();
+        $this->loader = new PhpArrayConfigLoader();
     }
 
     public function test_given_a_config_when_valid_then_load_config(): void

@@ -6,8 +6,8 @@ namespace Stability\Tests\Unit\Infrastructure\Output;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Stability\Component\ComponentResult;
-use Stability\Infrastructure\Output\ConsoleOutputWriter;
+use Stability\Metric\StableDependencyMetric;
+use Stability\Output\Writers\ConsoleOutputWriter;
 use Stability\Tests\_Fixtures\StabilityResultFactory;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -43,7 +43,7 @@ class ConsoleOutputWriterTest extends TestCase
     }
 
     /**
-     * @param array<ComponentResult> $componentResults
+     * @param array<StableDependencyMetric> $componentResults
      * @return array<string, string>
      */
     private function generateExpectedOutput(array $componentResults): array

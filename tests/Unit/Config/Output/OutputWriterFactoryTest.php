@@ -6,10 +6,10 @@ namespace Stability\Tests\Unit\Config\Output;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Stability\Config\Output\OutputOption;
-use Stability\Config\Output\OutputWriterFactory;
-use Stability\Infrastructure\Output\ConsoleOutputWriter;
-use Stability\Infrastructure\Output\JsonOutputWriter;
+use Stability\Output\OutputOption;
+use Stability\Output\OutputWriterFactory;
+use Stability\Output\Writers\ConsoleOutputWriter;
+use Stability\Output\Writers\JsonOutputWriter;
 
 class OutputWriterFactoryTest extends TestCase
 {
