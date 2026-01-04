@@ -5,34 +5,39 @@ declare(strict_types=1);
 namespace Stability\Tests\_Fixtures\Config;
 
 use Stability\Config\Config;
+use Stability\Config\Loaders\LoadedConfig;
+use Stability\Tests\_Fixtures\Output\OutputSettingFactory;
 
-class ConfigFactory
+readonly class ConfigFactory
 {
     public static function testSource(): Config
     {
-        return new Config(
+        return new LoadedConfig(
             'tests/_Fixtures/_TestSrc',
             [
                 ModuleFactory::module1(),
                 ModuleFactory::module2(),
                 ModuleFactory::module3(),
             ],
+            OutputSettingFactory::default(),
         );
     }
 
     public static function module1(): Config
     {
-        return new Config(
+        return new LoadedConfig(
             'tests/_Fixtures/_TestSrc',
             [ModuleFactory::module1()],
+            OutputSettingFactory::default(),
         );
     }
 
     public static function unknown(): Config
     {
-        return new Config(
+        return new LoadedConfig(
             'src',
             [ModuleFactory::unknown()],
+            OutputSettingFactory::default(),
         );
     }
 
@@ -41,9 +46,10 @@ class ConfigFactory
      */
     public static function baseValid(): Config
     {
-        return new Config(
+        return new LoadedConfig(
             'base',
             [ModuleFactory::baseValid()],
+            OutputSettingFactory::default(),
         );
     }
 }

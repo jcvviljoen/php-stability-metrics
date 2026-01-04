@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stability\Tests\Unit\Component\Parsers\PHP;
 
+use Override;
 use PHPUnit\Framework\TestCase;
 use Stability\Component\Exception\InvalidComponentException;
 use Stability\Component\Parsers\PHP\PhpFileReader;
@@ -15,7 +16,7 @@ class PhpFileReaderTest extends TestCase
 
     private PhpFileReader $phpFileReader;
 
-    protected function setUp(): void
+    #[Override] protected function setUp(): void
     {
         parent::setUp();
 
@@ -40,10 +41,6 @@ class PhpFileReaderTest extends TestCase
 
         $this->assertEquals(
             [
-                __DIR__ . DIRECTORY_SEPARATOR . '_Fixtures/Files/config_missing_base_path.php',
-                __DIR__ . DIRECTORY_SEPARATOR . '_Fixtures/Files/config_missing_module.php',
-                __DIR__ . DIRECTORY_SEPARATOR . '_Fixtures/Files/config_missing_modules.php',
-                __DIR__ . DIRECTORY_SEPARATOR . '_Fixtures/Files/config_valid.php',
                 __DIR__ . DIRECTORY_SEPARATOR . '_Fixtures/Files/Nested/Nest.php',
             ],
             $files,
@@ -75,18 +72,10 @@ class PhpFileReaderTest extends TestCase
         $files = $this->phpFileReader->files(
             $relativeDirectoryPath,
             [
-                '_Fixtures/Files/config_missing_base_path.php',
                 '_Fixtures/Files/Nested/Nest.php',
             ],
         );
 
-        $this->assertEquals(
-            [
-                __DIR__ . DIRECTORY_SEPARATOR . '_Fixtures/Files/config_missing_module.php',
-                __DIR__ . DIRECTORY_SEPARATOR . '_Fixtures/Files/config_missing_modules.php',
-                __DIR__ . DIRECTORY_SEPARATOR . '_Fixtures/Files/config_valid.php',
-            ],
-            $files,
-        );
+        $this->assertEmpty($files);
     }
 }

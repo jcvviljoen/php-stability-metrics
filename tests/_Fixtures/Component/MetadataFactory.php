@@ -8,7 +8,7 @@ use Stability\Component\File\Metadata;
 use Stability\Component\File\MetadataCollection;
 use Stability\Component\File\Type;
 
-class MetadataFactory
+readonly class MetadataFactory
 {
     public static function abstract1(): Metadata
     {

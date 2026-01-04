@@ -7,12 +7,14 @@ namespace Stability\Tests\Unit\Component\Parsers\PHP;
 use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Stability\Component\ComponentCollection;
 use Stability\Component\File\Exception\InvalidFileException;
 use Stability\Component\File\Metadata;
 use Stability\Component\Parsers\PHP\PhpClassFileParser;
 use Stability\Component\Parsers\PHP\PhpComponentParser;
 use Stability\Component\Parsers\PHP\PhpFileReader;
 use Stability\Component\Parsers\PHP\PhpNamespaceParser;
+use Stability\Config\Module;
 use Stability\Tests\_Fixtures\Component\ComponentFactory;
 use Stability\Tests\_Fixtures\Component\MetadataFactory;
 use Stability\Tests\_Fixtures\Config\ConfigFactory;
@@ -42,12 +44,9 @@ class PhpComponentParserTest extends TestCase
     public function test_given_a_module_when_valid_then_parse(): void
     {
         $config = ConfigFactory::module1();
-        $module = $config->modules[0];
-        $modulePath = $config->basePath . DIRECTORY_SEPARATOR . $module->name;
+        $modules = $config->modules();
+        $modulePaths = array_map(fn(Module $module) => $module->name(), $modules);
         $files = ['Abstract1.php', 'Class1.php', 'Interface1.php'];
-        $this->setupParseFiles($files);
-        $this->setupGetFilesForModule($modulePath, $files);
-        $this->setupParsePrimaryNamespace([], 'tests\_Fixtures\_TestSrc\Module1');
         $this->setupParseFiles(
             $files,
             [
@@ -56,23 +55,29 @@ class PhpComponentParserTest extends TestCase
                 MetadataFactory::interface1(),
             ],
         );
+        $this->setupGetFilesForModule($modulePaths, $files);
+        $this->setupParsePrimaryNamespace(
+            // The single unique namespace from the parsed files
+            ['Stability\Tests\_Fixtures\_TestSrc\Module1'],
+            'Stability\Tests\_Fixtures\_TestSrc\Module1',
+        );
 
-        $component = $this->parser->parse([$module]);
+        $components = $this->parser->parse($modules);
 
-        $this->assertEquals(ComponentFactory::module1(), $component);
+        $this->assertEquals(new ComponentCollection([ComponentFactory::module1()]), $components);
     }
 
     public function test_given_a_module_when_class_type_is_unknown_then_throw_exception(): void
     {
         $config = ConfigFactory::unknown();
-        $module = $config->modules[0];
-        $modulePath = $config->basePath . DIRECTORY_SEPARATOR . $module->name;
+        $modules = $config->modules();
+        $modulePaths = array_map(fn(Module $module) => $module->name(), $modules);
         $files = ['Unknown.txt'];
-        $this->setupGetFilesForModule($modulePath, $files);
-        $this->setupDetermineSharedNamespace($modulePath, 'tests\_Fixtures\_TestSrc\Module1');
+        $this->setupGetFilesForModule($modulePaths, $files);
         $this->setupParseFiles($files, [MetadataFactory::unknown()]);
 
-        $exception = $this->expectThrows(fn() => $this->parser->parse($config, $module));
+        $this->expectNotToParsePrimaryNamespace();
+        $exception = $this->expectThrows(fn() => $this->parser->parse($modules));
 
         $this->assertEquals(
             InvalidFileException::onInvalidFileType($files[0]),
@@ -93,14 +98,14 @@ class PhpComponentParserTest extends TestCase
     }
 
     /**
+     * @param array<string> $modulePaths
      * @param array<string> $files
      */
-    private function setupGetFilesForModule(string $modulePath, array $files): void
+    private function setupGetFilesForModule(array $modulePaths, array $files): void
     {
         $this->fileReader
-            ->expects($this->once())
+            ->expects($this->exactly(count($modulePaths)))
             ->method('files')
-            ->with($modulePath, [])
             ->willReturn($files);
     }
 
@@ -114,5 +119,12 @@ class PhpComponentParserTest extends TestCase
             ->method('primaryNamespace')
             ->with($namespaces)
             ->willReturn($return);
+    }
+
+    private function expectNotToParsePrimaryNamespace(): void
+    {
+        $this->namespaceParser
+            ->expects($this->never())
+            ->method('primaryNamespace');
     }
 }

@@ -26,7 +26,7 @@ readonly class OutputSetting
     public static function default(): self
     {
         return new self(
-            OutputOption::CONSOLE,
+            OutputOption::JSON,
             '',
             self::DEFAULT_FILE_NAME,
         );

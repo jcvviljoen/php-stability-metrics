@@ -23,7 +23,7 @@ readonly class ConsoleOutputWriter implements OutputWriter
 
             $this->console->writeln([
                 '----------------------------------------',
-                "Component: {$componentResult->component->module->name()}",
+                "Component: {$componentResult->component->name()}",
                 '----------------------------------------',
                 "| Abstractness: {$componentResult->abstractness()}",
                 "| Instability: {$componentResult->instability()}",

@@ -18,6 +18,11 @@ readonly class Component
     ) {
     }
 
+    public function name(): string
+    {
+        return $this->module->name();
+    }
+
     public function primaryNamespace(): string
     {
         if (empty($this->primaryNamespace)) {
