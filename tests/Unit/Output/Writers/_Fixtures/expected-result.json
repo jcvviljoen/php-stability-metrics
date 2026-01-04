@@ -1,0 +1,25 @@
+{
+  "stableDependencyMetrics": [
+    {
+      "abstractness": "0.67",
+      "component": "Module1",
+      "dms": "0.17",
+      "instability": "0.50",
+      "zone": "USEFULNESS"
+    },
+    {
+      "abstractness": "0.50",
+      "component": "Module2",
+      "dms": "0.50",
+      "instability": "1.00",
+      "zone": "USEFULNESS"
+    },
+    {
+      "abstractness": "0.00",
+      "component": "Module3",
+      "dms": "1.00",
+      "instability": "0.00",
+      "zone": "PAIN"
+    }
+  ]
+}

@@ -75,6 +75,7 @@
         <exclude name="SlevomatCodingStandard.PHP.RequireExplicitAssertion.RequiredExplicitAssertion"/>
         <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.IncorrectStrictTypesFormat"/>
         <exclude name="SlevomatCodingStandard.TypeHints.UnionTypeHintFormat"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification"/>
 
         <!-- PHP8 conflicts -->
         <exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect"/>
