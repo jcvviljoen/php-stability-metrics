@@ -13,6 +13,7 @@ readonly class ModuleFactory
     {
         return new LoadedModule(
             'Module1',
+            'Module1',
             0.7,
             0.7,
             [],
@@ -22,6 +23,7 @@ readonly class ModuleFactory
     public static function module2(): Module
     {
         return new LoadedModule(
+            'Module2',
             'Module2',
             0.7,
             0.7,
@@ -33,6 +35,7 @@ readonly class ModuleFactory
     {
         return new LoadedModule(
             'Module3',
+            'Module3',
             0.7,
             0.7,
             [],
@@ -42,6 +45,7 @@ readonly class ModuleFactory
     public static function unknown(): Module
     {
         return new LoadedModule(
+            'Unknown',
             'Unknown',
             0.7,
             0.7,
@@ -55,6 +59,7 @@ readonly class ModuleFactory
     public static function baseValid(): Module
     {
         return new LoadedModule(
+            'BaseValid',
             'base/module',
             0.2,
             0.8,

@@ -14,15 +14,21 @@ readonly class LoadedModule implements Module
      */
     public function __construct(
         private string $name,
-        private float $thresholdZoneOfPain,
-        private float $thresholdZoneOfUselessness,
-        private array $exclude,
+        private string $path,
+        private float $thresholdZoneOfPain = 0.7,
+        private float $thresholdZoneOfUselessness = 0.7,
+        private array $exclude = [],
     ) {
     }
 
     #[Override] public function name(): string
     {
         return $this->name;
+    }
+
+    #[Override] public function path(): string
+    {
+        return $this->path;
     }
 
     #[Override] public function thresholdZoneOfPain(): float

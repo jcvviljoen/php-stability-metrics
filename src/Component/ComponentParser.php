@@ -6,14 +6,12 @@ namespace Stability\Component;
 
 use Stability\Component\Exception\InvalidComponentException;
 use Stability\Component\File\Exception\InvalidFileException;
-use Stability\Config\Module;
+use Stability\Config\ModuleList;
 
 interface ComponentParser
 {
     /**
-     * @param list<Module> $modules
-     *
      * @throws InvalidComponentException | InvalidFileException
      */
-    public function parse(array $modules): ComponentCollection;
+    public function parse(ModuleList $modules): ComponentCollection;
 }

@@ -2,24 +2,27 @@
 
 return [
     /**
-     * Define the base path, where components would live in.
-     */
-    'base_path' => 'src',
-
-    /**
      * Define each module to be checked.
      */
     'modules' => [
         [
             /**
-             * Define the module path, excluding the base_path
+             * The module's unique name.
              */
-            'module' => 'First/Module/Path',
+            'name' => 'Some module name',
 
             /**
-             * Define the DMS threshold values for the stability check.
-             * Should be a value between 0 and 1.
+             * Define the module path (from the project root) that should be analysed.
+             */
+            'path' => 'First/Module/Path',
+
+            /**
+             * Define the (optional) DMS threshold values for the stability check,
+             * where you can specify from what limit you'd like to see specific components fail the analysis.
              *
+             * This is helpful for domain components that are expected to be more stable than others.
+             *
+             * Should be a value between 0 and 1.
              * Defaults to 0.7 for both when not defined.
              */
             'threshold_zone_of_pain' => 0.7,
@@ -35,6 +38,9 @@ return [
         // ... Define other components
     ],
 
+    /**
+     * The output settings which determines where analysis results are written to.
+     */
     'output' => [
         'option' => 'console', // or 'json'
 

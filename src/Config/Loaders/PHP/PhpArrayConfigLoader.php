@@ -10,13 +10,13 @@ use Stability\Config\ConfigLoader;
 use Stability\Config\Exception\InvalidConfigurationException;
 use Stability\Config\Loaders\LoadedConfig;
 use Stability\Config\Loaders\LoadedModule;
+use Stability\Config\ModuleList;
 use Stability\Output\OutputOption;
 use Stability\Output\OutputSetting;
 
 // phpcs:disable SlevomatCodingStandard.Commenting.DocCommentSpacing.IncorrectLinesCountAfterLastContent
 /**
  * @phpstan-type RawConfig array{
- *     base_path: string|null,
  *     modules: array<
  *         string,
  *         array{
@@ -47,20 +47,16 @@ readonly class PhpArrayConfigLoader implements ConfigLoader
         /** @var RawConfig $config */
         $config = include $path;
 
-        /** @var string $basePath */
-        $basePath = $config['base_path'] ?? throw InvalidConfigurationException::onMissingBasePath();
         /** @var array<int, array<string, mixed>> $modules */
         $modules = $config['modules'] ?? [];
 
-        if (empty($modules)) {
-            throw throw InvalidConfigurationException::onMissingModules();
-        }
-
         /** @var list<LoadedModule> $modules */
         $modules = array_map(
-            function (array $moduleConfig) use ($basePath) {
+            function (array $moduleConfig) {
+                /** @var string $moduleName */
+                $moduleName = $moduleConfig['name'] ?? throw InvalidConfigurationException::onMissingModuleName();
                 /** @var string $modulePath */
-                $modulePath = $moduleConfig['module'] ?? throw InvalidConfigurationException::onMissingModule();
+                $modulePath = $moduleConfig['path'] ?? throw InvalidConfigurationException::onMissingModulePath();
                 /** @var float $thresholdZoneOfPain */
                 $thresholdZoneOfPain = $moduleConfig['threshold_zone_of_pain'] ?? 0.7;
                 /** @var float $thresholdZoneOfUselessness */
@@ -69,7 +65,8 @@ readonly class PhpArrayConfigLoader implements ConfigLoader
                 $exclude = $moduleConfig['exclude'] ?? [];
 
                 return new LoadedModule(
-                    $basePath . DIRECTORY_SEPARATOR . $modulePath,
+                    $moduleName,
+                    $modulePath,
                     $thresholdZoneOfPain,
                     $thresholdZoneOfUselessness,
                     $exclude,
@@ -88,8 +85,7 @@ readonly class PhpArrayConfigLoader implements ConfigLoader
             ) : $outputSettings = OutputSetting::default();
 
         return new LoadedConfig(
-            $basePath,
-            $modules,
+            new ModuleList($modules),
             $outputSettings,
         );
     }

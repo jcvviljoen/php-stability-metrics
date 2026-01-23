@@ -6,6 +6,7 @@ namespace Stability\Tests\_Fixtures\Config;
 
 use Stability\Config\Config;
 use Stability\Config\Loaders\LoadedConfig;
+use Stability\Config\ModuleList;
 use Stability\Tests\_Fixtures\Output\OutputSettingFactory;
 
 readonly class ConfigFactory
@@ -13,12 +14,11 @@ readonly class ConfigFactory
     public static function testSource(): Config
     {
         return new LoadedConfig(
-            'tests/_Fixtures/_TestSrc',
-            [
+            new ModuleList([
                 ModuleFactory::module1(),
                 ModuleFactory::module2(),
                 ModuleFactory::module3(),
-            ],
+            ]),
             OutputSettingFactory::default(),
         );
     }
@@ -26,8 +26,7 @@ readonly class ConfigFactory
     public static function module1(): Config
     {
         return new LoadedConfig(
-            'tests/_Fixtures/_TestSrc',
-            [ModuleFactory::module1()],
+            new ModuleList([ModuleFactory::module1()]),
             OutputSettingFactory::default(),
         );
     }
@@ -35,8 +34,7 @@ readonly class ConfigFactory
     public static function unknown(): Config
     {
         return new LoadedConfig(
-            'src',
-            [ModuleFactory::unknown()],
+            new ModuleList([ModuleFactory::unknown()]),
             OutputSettingFactory::default(),
         );
     }
@@ -47,8 +45,7 @@ readonly class ConfigFactory
     public static function baseValid(): Config
     {
         return new LoadedConfig(
-            'base',
-            [ModuleFactory::baseValid()],
+            new ModuleList([ModuleFactory::baseValid()]),
             OutputSettingFactory::default(),
         );
     }

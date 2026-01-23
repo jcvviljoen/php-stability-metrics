@@ -44,15 +44,6 @@ class PhpArrayConfigLoaderTest extends TestCase
         $this->assertEquals(InvalidConfigurationException::onMissingConfigFile($config), $exception);
     }
 
-    public function test_given_a_config_when_base_path_is_missing_then_throw_exception(): void
-    {
-        $config = __DIR__ . '/_Fixtures/config_missing_base_path.php';
-
-        $exception = $this->expectThrows(fn() => $this->loader->load($config));
-
-        $this->assertEquals(InvalidConfigurationException::onMissingBasePath(), $exception);
-    }
-
     public function test_given_a_config_when_modules_is_missing_then_throw_exception(): void
     {
         $config = __DIR__ . '/_Fixtures/config_missing_modules.php';
@@ -62,13 +53,22 @@ class PhpArrayConfigLoaderTest extends TestCase
         $this->assertEquals(InvalidConfigurationException::onMissingModules(), $exception);
     }
 
-    public function test_given_a_config_when_module_is_missing_then_throw_exception(): void
+    public function test_given_a_config_when_module_name_is_missing_then_throw_exception(): void
     {
-        $config = __DIR__ . '/_Fixtures/config_missing_module.php';
+        $config = __DIR__ . '/_Fixtures/config_missing_module_name.php';
 
         $exception = $this->expectThrows(fn() => $this->loader->load($config));
 
-        $this->assertEquals(InvalidConfigurationException::onMissingModule(), $exception);
+        $this->assertEquals(InvalidConfigurationException::onMissingModuleName(), $exception);
+    }
+
+    public function test_given_a_config_when_module_is_missing_then_throw_exception(): void
+    {
+        $config = __DIR__ . '/_Fixtures/config_missing_module_path.php';
+
+        $exception = $this->expectThrows(fn() => $this->loader->load($config));
+
+        $this->assertEquals(InvalidConfigurationException::onMissingModulePath(), $exception);
     }
 
     public function test_given_a_config_when_output_is_set_without_output_option_then_throw_exception(): void

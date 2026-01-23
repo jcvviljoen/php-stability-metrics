@@ -45,7 +45,7 @@ class PhpComponentParserTest extends TestCase
     {
         $config = ConfigFactory::module1();
         $modules = $config->modules();
-        $modulePaths = array_map(fn(Module $module) => $module->name(), $modules);
+        $modulePaths = array_map(fn(Module $module) => $module->path(), $modules->values());
         $files = ['Abstract1.php', 'Class1.php', 'Interface1.php'];
         $this->setupParseFiles(
             $files,
@@ -71,7 +71,7 @@ class PhpComponentParserTest extends TestCase
     {
         $config = ConfigFactory::unknown();
         $modules = $config->modules();
-        $modulePaths = array_map(fn(Module $module) => $module->name(), $modules);
+        $modulePaths = array_map(fn(Module $module) => $module->path(), $modules->values());
         $files = ['Unknown.txt'];
         $this->setupGetFilesForModule($modulePaths, $files);
         $this->setupParseFiles($files, [MetadataFactory::unknown()]);

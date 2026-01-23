@@ -12,8 +12,8 @@ readonly class OutputSetting
 
     public function __construct(
         public OutputOption $option,
-        string $path,
-        private string $fileName,
+        string $path = '',
+        private string $fileName = '',
     ) {
         // Trim and remove trailing slashes
         $cleanPath = rtrim(trim($path), DIRECTORY_SEPARATOR);

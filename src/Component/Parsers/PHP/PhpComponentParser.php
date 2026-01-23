@@ -8,9 +8,12 @@ use Override;
 use Stability\Component\Component;
 use Stability\Component\ComponentCollection;
 use Stability\Component\ComponentParser;
+use Stability\Component\Exception\InvalidComponentException;
 use Stability\Component\File\Exception\InvalidFileException;
+use Stability\Component\File\Exception\InvalidMetadataException;
 use Stability\Component\File\MetadataCollection;
 use Stability\Component\File\Type;
+use Stability\Config\ModuleList;
 
 readonly class PhpComponentParser implements ComponentParser
 {
@@ -21,12 +24,17 @@ readonly class PhpComponentParser implements ComponentParser
     ) {
     }
 
-    #[Override] public function parse(array $modules): ComponentCollection
+    /**
+     * @throws InvalidMetadataException
+     * @throws InvalidFileException
+     * @throws InvalidComponentException
+     */
+    #[Override] public function parse(ModuleList $modules): ComponentCollection
     {
         $components = ComponentCollection::empty();
 
         foreach ($modules as $module) {
-            $moduleFiles = $this->fileReader->files($module->name(), $module->exclude());
+            $moduleFiles = $this->fileReader->files($module->path(), $module->exclude());
 
             $allFileMetadata = MetadataCollection::empty();
 
