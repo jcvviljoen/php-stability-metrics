@@ -86,8 +86,8 @@ class PhpComponentParserTest extends TestCase
     }
 
     /**
-     * @param array<string> $files
-     * @param array<Metadata> $classData
+     * @param list<string> $files
+     * @param list<Metadata> $classData
      */
     private function setupParseFiles(array $files, array $classData): void
     {
@@ -98,8 +98,8 @@ class PhpComponentParserTest extends TestCase
     }
 
     /**
-     * @param array<string> $modulePaths
-     * @param array<string> $files
+     * @param list<string> $modulePaths
+     * @param list<string> $files
      */
     private function setupGetFilesForModule(array $modulePaths, array $files): void
     {
@@ -110,7 +110,7 @@ class PhpComponentParserTest extends TestCase
     }
 
     /**
-     * @param array<string> $namespaces
+     * @param list<string> $namespaces
      */
     private function setupParsePrimaryNamespace(array $namespaces, string $return): void
     {

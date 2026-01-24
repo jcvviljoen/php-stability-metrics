@@ -6,18 +6,20 @@ namespace Stability\Config\Loaders;
 
 use Override;
 use Stability\Config\Config;
-use Stability\Config\ModuleList;
 use Stability\Output\OutputSetting;
 
 class LoadedConfig implements Config
 {
+    private OutputSetting $outputSettings;
+
     public function __construct(
-        private readonly ModuleList $modules,
-        private OutputSetting $outputSettings,
+        private readonly LoadedModuleList $modules,
+        ?OutputSetting $outputSettings,
     ) {
+        $this->outputSettings = $outputSettings ?? OutputSetting::default();
     }
 
-    #[Override] public function modules(): ModuleList
+    #[Override] public function modules(): LoadedModuleList
     {
         return $this->modules;
     }

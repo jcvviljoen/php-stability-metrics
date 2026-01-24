@@ -14,6 +14,9 @@ use Stability\Tests\_Fixtures\Output\OutputSettingFactory;
 
 class OutputWriterFactoryTest extends TestCase
 {
+    /**
+     * @param class-string $expected
+     */
     #[DataProvider('provide_output_settings')]
     public function test_create_output_writer(OutputSetting $setting, string $expected): void
     {

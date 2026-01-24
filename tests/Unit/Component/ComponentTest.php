@@ -9,7 +9,7 @@ use Stability\Component\Component;
 use Stability\Component\Exception\InvalidComponentException;
 use Stability\Component\File\MetadataCollection;
 use Stability\Tests\_Fixtures\Component\ComponentFactory;
-use Stability\Tests\_Fixtures\Config\ModuleFactory;
+use Stability\Tests\_Fixtures\Config\LoadedModuleFactory;
 use Stability\Tests\ExpectThrows;
 
 class ComponentTest extends TestCase
@@ -26,7 +26,7 @@ class ComponentTest extends TestCase
     public function test_given_an_empty_primary_namespace_then_reading_it_throws_exception(): void
     {
         $component = new Component(
-            ModuleFactory::unknown(),
+            LoadedModuleFactory::unknown(),
             '',
             MetadataCollection::empty(),
         );

@@ -6,7 +6,7 @@ namespace Stability\Tests\_Fixtures\Component;
 
 use Stability\Component\Component;
 use Stability\Component\File\MetadataCollection;
-use Stability\Tests\_Fixtures\Config\ModuleFactory;
+use Stability\Tests\_Fixtures\Config\LoadedModuleFactory;
 
 readonly class ComponentFactory
 {
@@ -19,7 +19,7 @@ readonly class ComponentFactory
         ]);
 
         return new Component(
-            ModuleFactory::module1(),
+            LoadedModuleFactory::module1(),
             'Stability\Tests\_Fixtures\_TestSrc\Module1',
             $metadata,
         );
@@ -33,7 +33,7 @@ readonly class ComponentFactory
         ]);
 
         return new Component(
-            ModuleFactory::module2(),
+            LoadedModuleFactory::module2(),
             'Stability\Tests\_Fixtures\_TestSrc\Module2',
             $metadata,
         );
@@ -44,7 +44,7 @@ readonly class ComponentFactory
         $metadata = new MetadataCollection([MetadataFactory::class3()]);
 
         return new Component(
-            ModuleFactory::module3(),
+            LoadedModuleFactory::module3(),
             'Stability\Tests\_Fixtures\_TestSrc\Module3',
             $metadata,
         );

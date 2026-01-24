@@ -8,6 +8,9 @@ use Stability\Tests\_Fixtures\_TestSrc\Module3\Class3;
 
 readonly class Class1 extends Abstract1 implements Interface1
 {
+    /**
+     * @phpstan-ignore constructor.unusedParameter
+     */
     public function __construct(Class3 $class3)
     {
     }

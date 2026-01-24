@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Stability\Config\Loaders\PHP;
 
 use Override;
-use Stability\Config\Config;
 use Stability\Config\ConfigLoader;
 use Stability\Config\Exception\InvalidConfigurationException;
 use Stability\Config\Loaders\LoadedConfig;
 use Stability\Config\Loaders\LoadedModule;
-use Stability\Config\ModuleList;
+use Stability\Config\Loaders\LoadedModuleList;
 use Stability\Output\OutputOption;
 use Stability\Output\OutputSetting;
 
@@ -38,7 +37,7 @@ use Stability\Output\OutputSetting;
  */
 readonly class PhpArrayConfigLoader implements ConfigLoader
 {
-    #[Override] public function load(string $path): Config
+    #[Override] public function load(string $path): LoadedConfig
     {
         if (!file_exists($path)) {
             throw InvalidConfigurationException::onMissingConfigFile($path);
@@ -75,17 +74,18 @@ readonly class PhpArrayConfigLoader implements ConfigLoader
             $modules,
         );
 
-        isset($config['output'])
-            ? $outputSettings = new OutputSetting(
+        $outputSettings = isset($config['output'])
+            ? new OutputSetting(
                 OutputOption::from(
                     $config['output']['option'] ?? throw InvalidConfigurationException::onMissingOutputOption(),
                 ),
                 $config['output']['fileName'] ?? '',
                 $config['output']['filePath'] ?? '',
-            ) : $outputSettings = OutputSetting::default();
+            )
+            : null;
 
         return new LoadedConfig(
-            new ModuleList($modules),
+            new LoadedModuleList($modules),
             $outputSettings,
         );
     }

@@ -41,8 +41,8 @@
   ],
   "scripts": {
     "test:cs": "vendor/bin/phpcs --colors -ps",
-    "test:stan": "vendor/bin/phpstan analyse src --level=max --ansi",
-    "test:unit": "vendor/bin/phpunit --testdox --color=always",
+    "test:stan": "vendor/bin/phpstan analyse --ansi",
+    "test:unit": "vendor/bin/phpunit",
     "tests": [
       "@test:cs",
       "@test:stan",

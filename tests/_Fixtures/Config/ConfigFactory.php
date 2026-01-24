@@ -6,7 +6,7 @@ namespace Stability\Tests\_Fixtures\Config;
 
 use Stability\Config\Config;
 use Stability\Config\Loaders\LoadedConfig;
-use Stability\Config\ModuleList;
+use Stability\Config\Loaders\LoadedModuleList;
 use Stability\Tests\_Fixtures\Output\OutputSettingFactory;
 
 readonly class ConfigFactory
@@ -14,10 +14,10 @@ readonly class ConfigFactory
     public static function testSource(): Config
     {
         return new LoadedConfig(
-            new ModuleList([
-                ModuleFactory::module1(),
-                ModuleFactory::module2(),
-                ModuleFactory::module3(),
+            new LoadedModuleList([
+                LoadedModuleFactory::module1(),
+                LoadedModuleFactory::module2(),
+                LoadedModuleFactory::module3(),
             ]),
             OutputSettingFactory::default(),
         );
@@ -26,7 +26,7 @@ readonly class ConfigFactory
     public static function module1(): Config
     {
         return new LoadedConfig(
-            new ModuleList([ModuleFactory::module1()]),
+            new LoadedModuleList([LoadedModuleFactory::module1()]),
             OutputSettingFactory::default(),
         );
     }
@@ -34,7 +34,7 @@ readonly class ConfigFactory
     public static function unknown(): Config
     {
         return new LoadedConfig(
-            new ModuleList([ModuleFactory::unknown()]),
+            new LoadedModuleList([LoadedModuleFactory::unknown()]),
             OutputSettingFactory::default(),
         );
     }
@@ -45,7 +45,7 @@ readonly class ConfigFactory
     public static function baseValid(): Config
     {
         return new LoadedConfig(
-            new ModuleList([ModuleFactory::baseValid()]),
+            new LoadedModuleList([LoadedModuleFactory::baseValid()]),
             OutputSettingFactory::default(),
         );
     }

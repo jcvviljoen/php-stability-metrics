@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Stability\Tests\_Fixtures\Config;
 
 use Stability\Config\Loaders\LoadedModule;
-use Stability\Config\Module;
 
-readonly class ModuleFactory
+readonly class LoadedModuleFactory
 {
-    public static function module1(): Module
+    public static function module1(): LoadedModule
     {
         return new LoadedModule(
             'Module1',
@@ -20,7 +19,7 @@ readonly class ModuleFactory
         );
     }
 
-    public static function module2(): Module
+    public static function module2(): LoadedModule
     {
         return new LoadedModule(
             'Module2',
@@ -31,7 +30,7 @@ readonly class ModuleFactory
         );
     }
 
-    public static function module3(): Module
+    public static function module3(): LoadedModule
     {
         return new LoadedModule(
             'Module3',
@@ -42,7 +41,7 @@ readonly class ModuleFactory
         );
     }
 
-    public static function unknown(): Module
+    public static function unknown(): LoadedModule
     {
         return new LoadedModule(
             'Unknown',
@@ -56,7 +55,7 @@ readonly class ModuleFactory
     /**
      * @see tests/Unit/Infrastructure/PHP/_Fixtures/Files/config_valid.php
      */
-    public static function baseValid(): Module
+    public static function baseValid(): LoadedModule
     {
         return new LoadedModule(
             'BaseValid',
