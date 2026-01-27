@@ -13,19 +13,24 @@ class InvalidConfigurationException extends StabilityException
         return new self("No configuration file found at \"$path\".");
     }
 
-    public static function onMissingBasePath(): self
-    {
-        return new self('Configuration is missing "base_path" property.');
-    }
-
     public static function onMissingModules(): self
     {
         return new self('Configuration has no "modules" to run against.');
     }
 
-    public static function onMissingModule(): self
+    public static function onMissingModuleName(): self
     {
-        return new self('Module is missing "module" path property.');
+        return new self("Module is missing the \"name\" property.");
+    }
+
+    public static function onDuplicateModuleName(string $moduleName): self
+    {
+        return new self("Duplicate module name found: \"$moduleName\".");
+    }
+
+    public static function onMissingModulePath(): self
+    {
+        return new self('Module is missing the "path" property.');
     }
 
     public static function onMissingOutputOption(): self

@@ -1,33 +1,22 @@
 <?php
 
-return [
-    /**
-     * Define the base path, where components would live in.
-     */
-    'base_path' => 'src',
+use \Stability\Config\Loaders\LoadedConfig;
+use \Stability\Config\Loaders\LoadedModule;
 
-    /**
-     * Define each module to be checked.
-     */
+/**
+ * @see LoadedConfig
+ * @see LoadedModule
+ */
+return [
     'modules' => [
         [
-            /**
-             * Define the module path, excluding the base_path
-             */
-            'module' => 'First/Module/Path',
+            'name' => 'Some module name',
 
-            /**
-             * Define the DMS threshold values for the stability check.
-             * Should be a value between 0 and 1.
-             *
-             * Defaults to 0.7 for both when not defined.
-             */
-            'threshold_zone_of_pain' => 0.7,
-            'threshold_zone_of_uselessness' => 0.7,
+            'path' => 'First/Module/Path',
 
-            /**
-             * Define the components within the module to be excluded from the stability check.
-             */
+            'thresholdZoneOfPain' => 0.7,
+            'thresholdZoneOfUselessness' => 0.7,
+
             'exclude' => [
                 // ex: 'Interfaces',
             ],
@@ -35,7 +24,8 @@ return [
         // ... Define other components
     ],
 
-    'output' => [
+
+    'outputSettings' => [
         'option' => 'console', // or 'json'
 
         'filePath' => '', // Optionally define the file path when writing results to a file

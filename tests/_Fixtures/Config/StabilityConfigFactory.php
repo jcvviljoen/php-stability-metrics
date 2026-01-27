@@ -5,38 +5,36 @@ declare(strict_types=1);
 namespace Stability\Tests\_Fixtures\Config;
 
 use Stability\Config\Config;
-use Stability\Config\Loaders\LoadedConfig;
+use Stability\Config\Loaders\StabilityConfig;
+use Stability\Config\Loaders\StabilityModuleList;
 use Stability\Tests\_Fixtures\Output\OutputSettingFactory;
 
-readonly class ConfigFactory
+readonly class StabilityConfigFactory
 {
     public static function testSource(): Config
     {
-        return new LoadedConfig(
-            'tests/_Fixtures/_TestSrc',
-            [
-                ModuleFactory::module1(),
-                ModuleFactory::module2(),
-                ModuleFactory::module3(),
-            ],
+        return new StabilityConfig(
+            new StabilityModuleList([
+                StabilityModuleFactory::module1(),
+                StabilityModuleFactory::module2(),
+                StabilityModuleFactory::module3(),
+            ]),
             OutputSettingFactory::default(),
         );
     }
 
     public static function module1(): Config
     {
-        return new LoadedConfig(
-            'tests/_Fixtures/_TestSrc',
-            [ModuleFactory::module1()],
+        return new StabilityConfig(
+            new StabilityModuleList([StabilityModuleFactory::module1()]),
             OutputSettingFactory::default(),
         );
     }
 
     public static function unknown(): Config
     {
-        return new LoadedConfig(
-            'src',
-            [ModuleFactory::unknown()],
+        return new StabilityConfig(
+            new StabilityModuleList([StabilityModuleFactory::unknown()]),
             OutputSettingFactory::default(),
         );
     }
@@ -46,9 +44,8 @@ readonly class ConfigFactory
      */
     public static function baseValid(): Config
     {
-        return new LoadedConfig(
-            'base',
-            [ModuleFactory::baseValid()],
+        return new StabilityConfig(
+            new StabilityModuleList([StabilityModuleFactory::baseValid()]),
             OutputSettingFactory::default(),
         );
     }

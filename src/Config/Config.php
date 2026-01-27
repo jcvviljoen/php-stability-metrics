@@ -9,21 +9,17 @@ use Stability\Output\OutputSetting;
 interface Config
 {
     /**
-     * The base path where the analysis is run from.
+     * The list of modules to analyse within the project.
      */
-    public function basePath(): string;
-
-    /**
-     * The list of modules to analyze within the project.
-     *
-     * @return list<Module>
-     */
-    public function modules(): array;
+    public function modules(): ModuleList;
 
     /**
      * The output settings which determines where analysis results are written to.
      */
     public function outputSettings(): OutputSetting;
 
+    /**
+     * Override the output settings as needed.
+     */
     public function overrideOutputSettings(OutputSetting $outputSettings): void;
 }

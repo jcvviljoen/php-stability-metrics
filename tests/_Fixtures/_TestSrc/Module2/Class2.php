@@ -8,6 +8,9 @@ use Stability\Tests\_Fixtures\_TestSrc\Module1\Class1;
 
 readonly class Class2 extends Abstract2
 {
+    /**
+     * @phpstan-ignore constructor.unusedParameter
+     */
     public function __construct(Class1 $class1)
     {
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stability\Tests\Unit\Output\Writers;
 
+use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Stability\Metric\StableDependencyMetric;
@@ -17,6 +18,7 @@ class ConsoleOutputWriterTest extends TestCase
 
     private ConsoleOutputWriter $consoleOutputWriter;
 
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -44,7 +46,7 @@ class ConsoleOutputWriterTest extends TestCase
 
     /**
      * @param array<StableDependencyMetric> $componentResults
-     * @return array<string, string>
+     * @return list<array<int, string>>
      */
     private function generateExpectedOutput(array $componentResults): array
     {

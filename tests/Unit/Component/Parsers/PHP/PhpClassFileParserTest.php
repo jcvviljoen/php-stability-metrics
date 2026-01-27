@@ -71,6 +71,7 @@ class PhpClassFileParserTest extends TestCase
                 Type::CONCRETE_CLASS,
                 'Stability\Tests\Unit\Component\Parsers\PHP\_Fixtures\Parsing',
                 [
+                    'Override',
                     'RuntimeException',
                     'Stability\Tests\Unit\Component\Parsers\PHP\_Fixtures\Parsing\Abstraction\TestAbstractClass',
                     'Stability\Tests\Unit\Component\Parsers\PHP\_Fixtures\Parsing\Abstraction\TestInterface',

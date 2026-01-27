@@ -32,10 +32,10 @@ class PhpFileReaderTest extends TestCase
          * and the fixtures are in a subdirectory from this test.
          */
         $relativeDirectoryPath = __DIR__ . '/_Fixtures/Files';
-        $allFiles = array_merge(
-            glob($relativeDirectoryPath . DIRECTORY_SEPARATOR . '*.*'), // Ignore directories
-            glob($relativeDirectoryPath . DIRECTORY_SEPARATOR . 'Nested' . DIRECTORY_SEPARATOR . '*'),
-        );
+        /** @var list<string> $baseFiles */
+        $baseFiles = glob($relativeDirectoryPath . DIRECTORY_SEPARATOR . '*.*'); // Ignore directories
+        /** @var list<string> $nestedFiles */
+        $nestedFiles = glob($relativeDirectoryPath . DIRECTORY_SEPARATOR . 'Nested' . DIRECTORY_SEPARATOR . '*');
 
         $files = $this->phpFileReader->files($relativeDirectoryPath, []);
 
@@ -47,7 +47,7 @@ class PhpFileReaderTest extends TestCase
         );
         $this->assertEquals(
             [__DIR__ . DIRECTORY_SEPARATOR . '_Fixtures/Files/Invalid.txt'],
-            array_diff($allFiles, $files),
+            array_diff(array_merge($baseFiles, $nestedFiles), $files),
         );
     }
 

@@ -17,7 +17,7 @@ use Stability\Component\Parsers\PHP\PhpNamespaceParser;
 use Stability\Config\Module;
 use Stability\Tests\_Fixtures\Component\ComponentFactory;
 use Stability\Tests\_Fixtures\Component\MetadataFactory;
-use Stability\Tests\_Fixtures\Config\ConfigFactory;
+use Stability\Tests\_Fixtures\Config\StabilityConfigFactory;
 use Stability\Tests\ExpectThrows;
 
 class PhpComponentParserTest extends TestCase
@@ -43,9 +43,9 @@ class PhpComponentParserTest extends TestCase
 
     public function test_given_a_module_when_valid_then_parse(): void
     {
-        $config = ConfigFactory::module1();
+        $config = StabilityConfigFactory::module1();
         $modules = $config->modules();
-        $modulePaths = array_map(fn(Module $module) => $module->name(), $modules);
+        $modulePaths = array_map(fn(Module $module) => $module->path(), $modules->values());
         $files = ['Abstract1.php', 'Class1.php', 'Interface1.php'];
         $this->setupParseFiles(
             $files,
@@ -69,9 +69,9 @@ class PhpComponentParserTest extends TestCase
 
     public function test_given_a_module_when_class_type_is_unknown_then_throw_exception(): void
     {
-        $config = ConfigFactory::unknown();
+        $config = StabilityConfigFactory::unknown();
         $modules = $config->modules();
-        $modulePaths = array_map(fn(Module $module) => $module->name(), $modules);
+        $modulePaths = array_map(fn(Module $module) => $module->path(), $modules->values());
         $files = ['Unknown.txt'];
         $this->setupGetFilesForModule($modulePaths, $files);
         $this->setupParseFiles($files, [MetadataFactory::unknown()]);
@@ -86,8 +86,8 @@ class PhpComponentParserTest extends TestCase
     }
 
     /**
-     * @param array<string> $files
-     * @param array<Metadata> $classData
+     * @param list<string> $files
+     * @param list<Metadata> $classData
      */
     private function setupParseFiles(array $files, array $classData): void
     {
@@ -98,8 +98,8 @@ class PhpComponentParserTest extends TestCase
     }
 
     /**
-     * @param array<string> $modulePaths
-     * @param array<string> $files
+     * @param list<string> $modulePaths
+     * @param list<string> $files
      */
     private function setupGetFilesForModule(array $modulePaths, array $files): void
     {
@@ -110,7 +110,7 @@ class PhpComponentParserTest extends TestCase
     }
 
     /**
-     * @param array<string> $namespaces
+     * @param list<string> $namespaces
      */
     private function setupParsePrimaryNamespace(array $namespaces, string $return): void
     {

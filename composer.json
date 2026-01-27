@@ -19,7 +19,8 @@
   "require": {
     "php": "^8.4",
     "ext-json": "*",
-    "symfony/console": "^6.0|^7.0|^8.0"
+    "symfony/console": "^6.0|^7.0|^8.0",
+    "tcds-io/php-jackson": "^1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^12.0",
@@ -41,8 +42,8 @@
   ],
   "scripts": {
     "test:cs": "vendor/bin/phpcs --colors -ps",
-    "test:stan": "vendor/bin/phpstan analyse src --level=max --ansi",
-    "test:unit": "vendor/bin/phpunit --testdox --color=always",
+    "test:stan": "vendor/bin/phpstan analyse --ansi",
+    "test:unit": "vendor/bin/phpunit",
     "tests": [
       "@test:cs",
       "@test:stan",

@@ -8,10 +8,13 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Stability\Config\ConfigType;
 use Stability\Config\Loaders\ConfigLoaderFactory;
-use Stability\Config\Loaders\PHP\PhpArrayConfigLoader;
+use Stability\Config\Loaders\PHP\JacksonPhpArrayConfigLoader;
 
 class ConfigLoaderFactoryTest extends TestCase
 {
+    /**
+     * @param class-string $expected
+     */
     #[DataProvider('provide_config_types')]
     public function test_create_config_loader(ConfigType $type, string $expected): void
     {
@@ -28,7 +31,7 @@ class ConfigLoaderFactoryTest extends TestCase
         return [
             'Given a PHP array config type, then provide the PHP array config loader' => [
                 'type' => ConfigType::PHP_ARRAY,
-                'expected' => PhpArrayConfigLoader::class,
+                'expected' => JacksonPhpArrayConfigLoader::class,
             ],
         ];
     }

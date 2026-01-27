@@ -5,7 +5,7 @@ declare(strict_types=1);
 return [
     'modules' => [
         [
-            'module' => '/module',
+            'path' => 'base/module',
             'exclude' => ['tests'],
         ],
     ],

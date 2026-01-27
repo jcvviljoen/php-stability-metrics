@@ -8,27 +8,18 @@ use Override;
 use Stability\Config\Config;
 use Stability\Output\OutputSetting;
 
-class LoadedConfig implements Config
+class StabilityConfig implements Config
 {
-    /**
-     * @param list<LoadedModule> $modules
-     */
+    private OutputSetting $outputSettings;
+
     public function __construct(
-        private readonly string $basePath,
-        private readonly array $modules,
-        private OutputSetting $outputSettings,
+        private readonly StabilityModuleList $modules,
+        ?OutputSetting $outputSettings = null,
     ) {
+        $this->outputSettings = $outputSettings ?? OutputSetting::default();
     }
 
-    #[Override] public function basePath(): string
-    {
-        return $this->basePath;
-    }
-
-    /**
-     * @return list<LoadedModule>
-     */
-    #[Override] public function modules(): array
+    #[Override] public function modules(): StabilityModuleList
     {
         return $this->modules;
     }
