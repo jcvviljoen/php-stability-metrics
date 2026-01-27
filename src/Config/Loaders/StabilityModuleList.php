@@ -10,15 +10,15 @@ use Stability\Config\Module;
 use Stability\Config\ModuleList;
 use Traversable;
 
-class LoadedModuleList implements ModuleList
+class StabilityModuleList implements ModuleList
 {
     /**
-     * @var array<string, LoadedModule> $modules
+     * @var array<string, StabilityModule> $modules
      */
     private array $modules;
 
     /**
-     * @param list<LoadedModule> $modules
+     * @param list<StabilityModule> $modules
      *
      * @throws InvalidConfigurationException
      */
@@ -37,7 +37,7 @@ class LoadedModuleList implements ModuleList
     #[Override]
     public function add(Module $module): void
     {
-        assert($module instanceof LoadedModule);
+        assert($module instanceof StabilityModule);
 
         if (isset($this->modules[$module->name()])) {
             throw InvalidConfigurationException::onDuplicateModuleName($module->name());

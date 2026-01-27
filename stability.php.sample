@@ -1,36 +1,22 @@
 <?php
 
+use \Stability\Config\Loaders\LoadedConfig;
+use \Stability\Config\Loaders\LoadedModule;
+
+/**
+ * @see LoadedConfig
+ * @see LoadedModule
+ */
 return [
-    /**
-     * Define each module to be checked.
-     */
     'modules' => [
         [
-            /**
-             * The module's unique name.
-             */
             'name' => 'Some module name',
 
-            /**
-             * Define the module path (from the project root) that should be analysed.
-             */
             'path' => 'First/Module/Path',
 
-            /**
-             * Define the (optional) DMS threshold values for the stability check,
-             * where you can specify from what limit you'd like to see specific components fail the analysis.
-             *
-             * This is helpful for domain components that are expected to be more stable than others.
-             *
-             * Should be a value between 0 and 1.
-             * Defaults to 0.7 for both when not defined.
-             */
-            'threshold_zone_of_pain' => 0.7,
-            'threshold_zone_of_uselessness' => 0.7,
+            'thresholdZoneOfPain' => 0.7,
+            'thresholdZoneOfUselessness' => 0.7,
 
-            /**
-             * Define the components within the module to be excluded from the stability check.
-             */
             'exclude' => [
                 // ex: 'Interfaces',
             ],
@@ -38,10 +24,8 @@ return [
         // ... Define other components
     ],
 
-    /**
-     * The output settings which determines where analysis results are written to.
-     */
-    'output' => [
+
+    'outputSettings' => [
         'option' => 'console', // or 'json'
 
         'filePath' => '', // Optionally define the file path when writing results to a file

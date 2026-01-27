@@ -9,7 +9,7 @@ use Stability\Output\OutputSetting;
 interface Config
 {
     /**
-     * The list of modules to analyze within the project.
+     * The list of modules to analyse within the project.
      */
     public function modules(): ModuleList;
 
@@ -18,5 +18,8 @@ interface Config
      */
     public function outputSettings(): OutputSetting;
 
+    /**
+     * Override the output settings as needed.
+     */
     public function overrideOutputSettings(OutputSetting $outputSettings): void;
 }

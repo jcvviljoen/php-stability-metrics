@@ -7,16 +7,19 @@ namespace Stability\Config\Loaders;
 use Override;
 use Stability\Config\Module;
 
-readonly class LoadedModule implements Module
+readonly class StabilityModule implements Module
 {
+    public const float DEFAULT_THRESHOLD_ZONE_OF_PAIN = 0.7;
+    public const float DEFAULT_THRESHOLD_ZONE_OF_USELESSNESS = 0.7;
+
     /**
      * @param list<string> $exclude
      */
     public function __construct(
         private string $name,
         private string $path,
-        private float $thresholdZoneOfPain = 0.7,
-        private float $thresholdZoneOfUselessness = 0.7,
+        private float $thresholdZoneOfPain = self::DEFAULT_THRESHOLD_ZONE_OF_PAIN,
+        private float $thresholdZoneOfUselessness = self::DEFAULT_THRESHOLD_ZONE_OF_USELESSNESS,
         private array $exclude = [],
     ) {
     }

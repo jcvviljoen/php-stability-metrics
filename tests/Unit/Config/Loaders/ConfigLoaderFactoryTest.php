@@ -31,7 +31,7 @@ class ConfigLoaderFactoryTest extends TestCase
         return [
             'Given a PHP array config type, then provide the PHP array config loader' => [
                 'type' => ConfigType::PHP_ARRAY,
-                'expected' => PhpArrayConfigLoader::class,
+                'expected' => JacksonPhpArrayConfigLoader::class,
             ],
         ];
     }

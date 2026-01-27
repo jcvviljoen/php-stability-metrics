@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Stability\Tests\_Fixtures\Config;
 
-use Stability\Config\Loaders\LoadedModule;
+use Stability\Config\Loaders\StabilityModule;
 
-readonly class LoadedModuleFactory
+readonly class StabilityModuleFactory
 {
-    public static function module1(): LoadedModule
+    public static function module1(): StabilityModule
     {
-        return new LoadedModule(
+        return new StabilityModule(
             'Module1',
             'Module1',
             0.7,
@@ -19,9 +19,9 @@ readonly class LoadedModuleFactory
         );
     }
 
-    public static function module2(): LoadedModule
+    public static function module2(): StabilityModule
     {
-        return new LoadedModule(
+        return new StabilityModule(
             'Module2',
             'Module2',
             0.7,
@@ -30,9 +30,9 @@ readonly class LoadedModuleFactory
         );
     }
 
-    public static function module3(): LoadedModule
+    public static function module3(): StabilityModule
     {
-        return new LoadedModule(
+        return new StabilityModule(
             'Module3',
             'Module3',
             0.7,
@@ -41,9 +41,9 @@ readonly class LoadedModuleFactory
         );
     }
 
-    public static function unknown(): LoadedModule
+    public static function unknown(): StabilityModule
     {
-        return new LoadedModule(
+        return new StabilityModule(
             'Unknown',
             'Unknown',
             0.7,
@@ -55,9 +55,9 @@ readonly class LoadedModuleFactory
     /**
      * @see tests/Unit/Infrastructure/PHP/_Fixtures/Files/config_valid.php
      */
-    public static function baseValid(): LoadedModule
+    public static function baseValid(): StabilityModule
     {
-        return new LoadedModule(
+        return new StabilityModule(
             'BaseValid',
             'base/module',
             0.2,

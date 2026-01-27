@@ -10,7 +10,7 @@ use Stability\Config\Exception\InvalidConfigurationException;
 use Stability\Config\Loaders\PHP\PhpArrayConfigLoader;
 use Stability\Output\OutputOption;
 use Stability\Output\OutputSetting;
-use Stability\Tests\_Fixtures\Config\ConfigFactory;
+use Stability\Tests\_Fixtures\Config\StabilityConfigFactory;
 use Stability\Tests\ExpectThrows;
 
 class PhpArrayConfigLoaderTest extends TestCase
@@ -32,7 +32,7 @@ class PhpArrayConfigLoaderTest extends TestCase
 
         $result = $this->loader->load($config);
 
-        $this->assertEquals(ConfigFactory::baseValid(), $result);
+        $this->assertEquals(StabilityConfigFactory::baseValid(), $result);
     }
 
     public function test_given_a_config_when_file_does_not_exist_then_throw_exception(): void
@@ -84,7 +84,7 @@ class PhpArrayConfigLoaderTest extends TestCase
     {
         $config = __DIR__ . '/_Fixtures/config_output_with_option.php';
         $expectedSetting = new OutputSetting(OutputOption::JSON, 'some-output', '/var/logs');
-        $expectedConfig = ConfigFactory::baseValid();
+        $expectedConfig = StabilityConfigFactory::baseValid();
         $expectedConfig->overrideOutputSettings($expectedSetting);
 
         $result = $this->loader->load($config);

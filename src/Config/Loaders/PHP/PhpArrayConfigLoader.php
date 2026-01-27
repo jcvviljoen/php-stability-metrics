@@ -7,9 +7,9 @@ namespace Stability\Config\Loaders\PHP;
 use Override;
 use Stability\Config\ConfigLoader;
 use Stability\Config\Exception\InvalidConfigurationException;
-use Stability\Config\Loaders\LoadedConfig;
-use Stability\Config\Loaders\LoadedModule;
-use Stability\Config\Loaders\LoadedModuleList;
+use Stability\Config\Loaders\StabilityConfig;
+use Stability\Config\Loaders\StabilityModule;
+use Stability\Config\Loaders\StabilityModuleList;
 use Stability\Output\OutputOption;
 use Stability\Output\OutputSetting;
 
@@ -20,12 +20,12 @@ use Stability\Output\OutputSetting;
  *         string,
  *         array{
  *             module: string,
- *             threshold_zone_of_pain: float,
- *             threshold_zone_of_uselessness:float,
+ *             thresholdZoneOfPain: float,
+ *             thresholdZoneOfUselessness:float,
  *             exclude: array<string>
  *         }
  *     >|null,
- *     output: array{
+ *     outputSettings: array{
  *         option: string|null,
  *         fileName: string|null,
  *         filePath: string|null
@@ -37,7 +37,7 @@ use Stability\Output\OutputSetting;
  */
 readonly class PhpArrayConfigLoader implements ConfigLoader
 {
-    #[Override] public function load(string $path): LoadedConfig
+    #[Override] public function load(string $path): StabilityConfig
     {
         if (!file_exists($path)) {
             throw InvalidConfigurationException::onMissingConfigFile($path);
@@ -49,7 +49,7 @@ readonly class PhpArrayConfigLoader implements ConfigLoader
         /** @var array<int, array<string, mixed>> $modules */
         $modules = $config['modules'] ?? [];
 
-        /** @var list<LoadedModule> $modules */
+        /** @var list<StabilityModule> $modules */
         $modules = array_map(
             function (array $moduleConfig) {
                 /** @var string $moduleName */
@@ -57,13 +57,13 @@ readonly class PhpArrayConfigLoader implements ConfigLoader
                 /** @var string $modulePath */
                 $modulePath = $moduleConfig['path'] ?? throw InvalidConfigurationException::onMissingModulePath();
                 /** @var float $thresholdZoneOfPain */
-                $thresholdZoneOfPain = $moduleConfig['threshold_zone_of_pain'] ?? 0.7;
+                $thresholdZoneOfPain = $moduleConfig['thresholdZoneOfPain'] ?? 0.7;
                 /** @var float $thresholdZoneOfUselessness */
-                $thresholdZoneOfUselessness = $moduleConfig['threshold_zone_of_uselessness'] ?? 0.7;
+                $thresholdZoneOfUselessness = $moduleConfig['thresholdZoneOfUselessness'] ?? 0.7;
                 /** @var list<string> $exclude */
                 $exclude = $moduleConfig['exclude'] ?? [];
 
-                return new LoadedModule(
+                return new StabilityModule(
                     $moduleName,
                     $modulePath,
                     $thresholdZoneOfPain,
@@ -74,18 +74,18 @@ readonly class PhpArrayConfigLoader implements ConfigLoader
             $modules,
         );
 
-        $outputSettings = isset($config['output'])
+        $outputSettings = isset($config['outputSettings'])
             ? new OutputSetting(
                 OutputOption::from(
-                    $config['output']['option'] ?? throw InvalidConfigurationException::onMissingOutputOption(),
+                    $config['outputSettings']['option'] ?? throw InvalidConfigurationException::onMissingOutputOption(),
                 ),
-                $config['output']['fileName'] ?? '',
-                $config['output']['filePath'] ?? '',
+                $config['outputSettings']['fileName'] ?? '',
+                $config['outputSettings']['filePath'] ?? '',
             )
             : null;
 
-        return new LoadedConfig(
-            new LoadedModuleList($modules),
+        return new StabilityConfig(
+            new StabilityModuleList($modules),
             $outputSettings,
         );
     }

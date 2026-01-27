@@ -6,11 +6,11 @@ namespace Stability\Tests\Unit\Config\Loaders;
 
 use PHPUnit\Framework\TestCase;
 use Stability\Config\Exception\InvalidConfigurationException;
-use Stability\Config\Loaders\LoadedModuleList;
-use Stability\Tests\_Fixtures\Config\LoadedModuleFactory;
+use Stability\Config\Loaders\StabilityModuleList;
+use Stability\Tests\_Fixtures\Config\StabilityModuleFactory;
 use Stability\Tests\ExpectThrows;
 
-class LoadedModuleListTest extends TestCase
+class StabilityModuleListTest extends TestCase
 {
     use ExpectThrows;
 
@@ -18,7 +18,7 @@ class LoadedModuleListTest extends TestCase
     {
         $modules = [];
 
-        $exception = $this->expectThrows(fn() => new LoadedModuleList($modules));
+        $exception = $this->expectThrows(fn() => new StabilityModuleList($modules));
 
         $this->assertEquals(
             InvalidConfigurationException::onMissingModules(),
@@ -28,8 +28,8 @@ class LoadedModuleListTest extends TestCase
 
     public function test_given_a_module_list_when_module_name_exists_then_adding_module_throws_exception(): void
     {
-        $module = LoadedModuleFactory::module1();
-        $modules = new LoadedModuleList([$module]);
+        $module = StabilityModuleFactory::module1();
+        $modules = new StabilityModuleList([$module]);
 
         $exception = $this->expectThrows(fn() => $modules->add($module));
 
@@ -41,9 +41,9 @@ class LoadedModuleListTest extends TestCase
 
     public function test_given_a_module_list_when_getting_values_returns_plain_array(): void
     {
-        $module1 = LoadedModuleFactory::module1();
-        $module2 = LoadedModuleFactory::module2();
-        $modules = new LoadedModuleList([$module1, $module2]);
+        $module1 = StabilityModuleFactory::module1();
+        $module2 = StabilityModuleFactory::module2();
+        $modules = new StabilityModuleList([$module1, $module2]);
 
         $values = $modules->values();
 
