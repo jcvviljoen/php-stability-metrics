@@ -86,6 +86,5 @@ This approach helps in creating systems that are flexible, testable, and scalabl
 Stability uses the following metrics to evaluate the stability of components:
 
 - **Abstractness (A)**: Measures the ratio of abstract classes and interfaces to the total number of classes. A higher value indicates more abstract components.
-- **Instability (I)**: Measures the ratio of outgoing dependencies to the total number of dependencies. A higher
-  value indicates more unstable components (i.e. components that are hard to change due to their high number of dependencies).
+- **Instability (I)**: Measures the ratio of outgoing dependencies to the total number of dependencies. A higher value indicates more unstable components (i.e. components with low resistance to change - easy to modify but fragile to external changes).
 - **Distance from the Main Sequence (DMS)**: Combines abstractness and instability to determine how far a component is from the ideal balance of being abstract and stable.
