@@ -6,6 +6,8 @@ declare(strict_types=1);
 use Stability\Component\Parsers\ComponentParserFactory;
 use Stability\Config\ConfigType;
 use Stability\Config\Loaders\ConfigLoaderFactory;
+use Stability\Chart\ChartOption;
+use Stability\Chart\ChartRendererFactory;
 use Stability\Graph\CycleDetector;
 use Stability\Graph\GraphOption;
 use Stability\Graph\GraphRendererFactory;
@@ -35,7 +37,7 @@ if (is_file($autoload = __DIR__ . '/vendor/autoload.php')) {
 $console = new ConsoleOutput();
 $args = getopt(
         'i',
-        ['help', 'init', 'config:', 'output:', 'output-path:', 'output-name:', 'debug', 'with-visual:'],
+        ['help', 'init', 'config:', 'output:', 'output-path:', 'output-name:', 'debug', 'with-visual:', 'with-chart:'],
 );
 
 // Display help message
@@ -53,6 +55,9 @@ if (isset($args['help'])) {
         '<comment>                      Available renderers: "mermaid" (.mmd), "dot" (Graphviz .dot).</comment>',
         '<comment>                      The file is written to --output-path (or the current directory if not set).</comment>',
         '<comment>                      Circular dependencies are highlighted in red and reported to the console.</comment>',
+        '<comment>  --with-chart        Generate a stability chart plotting components against the DMS main sequence.</comment>',
+        '<comment>                      Available renderers: "svg" (.svg).</comment>',
+        '<comment>                      The file is written to --output-path (or the current directory if not set).</comment>',
         '<comment>  --debug             Show debug information (exposes exception stack traces).</comment>',
         '<comment>  --help              Display this help message.</comment>',
     ]);
@@ -164,6 +169,24 @@ try {
                 $console->writeln('<comment>  ' . implode(' -> ', $cycle) . ' -> ' . $cycle[0] . '</comment>');
             }
         }
+    }
+
+    // Generate stability chart if requested
+    if (isset($args['with-chart'])) {
+        $chartOption = ChartOption::from($args['with-chart']);
+        $chartRenderer = ChartRendererFactory::create($chartOption);
+
+        $rendered = $chartRenderer->render($result);
+
+        $outputPath = rtrim($args['output-path'] ?? '', DIRECTORY_SEPARATOR);
+        $chartFileName = 'stability-chart.' . $chartRenderer->fileExtension();
+        $chartFilePath = empty($outputPath)
+            ? $chartFileName
+            : $outputPath . DIRECTORY_SEPARATOR . $chartFileName;
+
+        file_put_contents($chartFilePath, $rendered);
+
+        $console->writeln("<info>Stability chart written to: {$chartFilePath}</info>");
     }
 } catch (StabilityException $exception) {
     $exceptionWriter($exception);
