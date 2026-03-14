@@ -6,6 +6,9 @@ declare(strict_types=1);
 use Stability\Component\Parsers\ComponentParserFactory;
 use Stability\Config\ConfigType;
 use Stability\Config\Loaders\ConfigLoaderFactory;
+use Stability\Map\CycleDetector;
+use Stability\Map\MapOption;
+use Stability\Map\MapRendererFactory;
 use Stability\Output\OutputOption;
 use Stability\Output\OutputSetting;
 use Stability\Output\OutputWriterFactory;
@@ -32,7 +35,7 @@ if (is_file($autoload = __DIR__ . '/vendor/autoload.php')) {
 $console = new ConsoleOutput();
 $args = getopt(
         'i',
-        ['help', 'init', 'config:', 'output:', 'output-path:', 'output-name:', 'debug'],
+        ['help', 'init', 'config:', 'output:', 'output-path:', 'output-name:', 'debug', 'with-visual:'],
 );
 
 // Display help message
@@ -46,6 +49,10 @@ if (isset($args['help'])) {
         '<comment>  --output            The output format of the stability results. Can be "console" (default) or "json".</comment>',
         '<comment>  --output-path       The directory <options=bold,underscore>relative to the project\'s base path</> where output results will be written to (when --output supports printing to files).</comment>',
         '<comment>  --output-name       The name of the file that output results will be written to (when --output supports printing to files). Default is `stability-result`</comment>',
+        '<comment>  --with-visual       Generate a dependency graph alongside the stability results.</comment>',
+        '<comment>                      Available renderers: "mermaid" (.mmd), "dot" (Graphviz .dot).</comment>',
+        '<comment>                      The file is written to --output-path (or the current directory if not set).</comment>',
+        '<comment>                      Circular dependencies are highlighted in red and reported to the console.</comment>',
         '<comment>  --debug             Show debug information (exposes exception stack traces).</comment>',
         '<comment>  --help              Display this help message.</comment>',
     ]);
@@ -130,6 +137,34 @@ try {
 
     $console->writeln('');
     $console->writeln('<info>Stability metrics calculated successfully!</info>');
+
+    // Generate dependency map if requested
+    if (isset($args['with-visual'])) {
+        $mapOption = MapOption::from($args['with-visual']);
+        $mapRenderer = MapRendererFactory::create($mapOption);
+
+        $cycles = CycleDetector::detect($result->dependencyMap);
+        $rendered = $mapRenderer->render($result->dependencyMap, $cycles);
+
+        $outputPath = rtrim($args['output-path'] ?? '', DIRECTORY_SEPARATOR);
+        $mapFileName = 'stability-map.' . $mapRenderer->fileExtension();
+        $mapFilePath = empty($outputPath)
+            ? $mapFileName
+            : $outputPath . DIRECTORY_SEPARATOR . $mapFileName;
+
+        file_put_contents($mapFilePath, $rendered);
+
+        $console->writeln("<info>Dependency map written to: {$mapFilePath}</info>");
+
+        if (!empty($cycles)) {
+            $console->writeln('');
+            $console->writeln('<error>Circular dependencies detected:</error>');
+
+            foreach ($cycles as $cycle) {
+                $console->writeln('<comment>  ' . implode(' -> ', $cycle) . ' -> ' . $cycle[0] . '</comment>');
+            }
+        }
+    }
 } catch (StabilityException $exception) {
     $exceptionWriter($exception);
 
