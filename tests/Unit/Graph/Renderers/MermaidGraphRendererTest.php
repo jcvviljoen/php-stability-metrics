@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Stability\Tests\Unit\Map\Renderers;
+namespace Stability\Tests\Unit\Graph\Renderers;
 
 use Override;
 use PHPUnit\Framework\TestCase;
 use Stability\Component\DependencyMap;
-use Stability\Map\Renderers\MermaidMapRenderer;
+use Stability\Graph\Renderers\MermaidGraphRenderer;
 
-class MermaidMapRendererTest extends TestCase
+class MermaidGraphRendererTest extends TestCase
 {
-    private MermaidMapRenderer $renderer;
+    private MermaidGraphRenderer $renderer;
 
     #[Override] protected function setUp(): void
     {
         parent::setUp();
 
-        $this->renderer = new MermaidMapRenderer();
+        $this->renderer = new MermaidGraphRenderer();
     }
 
     public function test_file_extension_is_mmd(): void

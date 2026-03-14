@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Stability\Tests\Unit\Map;
+namespace Stability\Tests\Unit\Graph;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Stability\Component\DependencyMap;
-use Stability\Map\CycleDetector;
+use Stability\Graph\CycleDetector;
 
 class CycleDetectorTest extends TestCase
 {

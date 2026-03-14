@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stability\Map;
+namespace Stability\Graph;
 
 use Stability\Component\DependencyMap;
 

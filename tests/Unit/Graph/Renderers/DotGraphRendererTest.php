@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Stability\Tests\Unit\Map\Renderers;
+namespace Stability\Tests\Unit\Graph\Renderers;
 
 use Override;
 use PHPUnit\Framework\TestCase;
 use Stability\Component\DependencyMap;
-use Stability\Map\Renderers\DotMapRenderer;
+use Stability\Graph\Renderers\DotGraphRenderer;
 
-class DotMapRendererTest extends TestCase
+class DotGraphRendererTest extends TestCase
 {
-    private DotMapRenderer $renderer;
+    private DotGraphRenderer $renderer;
 
     #[Override] protected function setUp(): void
     {
         parent::setUp();
 
-        $this->renderer = new DotMapRenderer();
+        $this->renderer = new DotGraphRenderer();
     }
 
     public function test_file_extension_is_dot(): void

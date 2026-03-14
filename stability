@@ -6,9 +6,9 @@ declare(strict_types=1);
 use Stability\Component\Parsers\ComponentParserFactory;
 use Stability\Config\ConfigType;
 use Stability\Config\Loaders\ConfigLoaderFactory;
-use Stability\Map\CycleDetector;
-use Stability\Map\MapOption;
-use Stability\Map\MapRendererFactory;
+use Stability\Graph\CycleDetector;
+use Stability\Graph\GraphOption;
+use Stability\Graph\GraphRendererFactory;
 use Stability\Output\OutputOption;
 use Stability\Output\OutputSetting;
 use Stability\Output\OutputWriterFactory;
@@ -140,8 +140,8 @@ try {
 
     // Generate dependency map if requested
     if (isset($args['with-visual'])) {
-        $mapOption = MapOption::from($args['with-visual']);
-        $mapRenderer = MapRendererFactory::create($mapOption);
+        $mapOption = GraphOption::from($args['with-visual']);
+        $mapRenderer = GraphRendererFactory::create($mapOption);
 
         $cycles = CycleDetector::detect($result->dependencyMap);
         $rendered = $mapRenderer->render($result->dependencyMap, $cycles);

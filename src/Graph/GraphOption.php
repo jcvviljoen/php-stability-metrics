@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Stability\Map;
+namespace Stability\Graph;
 
-enum MapOption: string
+enum GraphOption: string
 {
     case MERMAID = 'mermaid';
     case DOT = 'dot';

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stability\Map;
+namespace Stability\Graph;
 
 use Stability\Component\DependencyMap;
 
-interface MapRenderer
+interface GraphRenderer
 {
     /**
      * Render the dependency graph to a string.

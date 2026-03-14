@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stability\Map\Renderers;
+namespace Stability\Graph\Renderers;
 
 use Override;
 use Stability\Component\DependencyMap;
-use Stability\Map\MapRenderer;
+use Stability\Graph\GraphRenderer;
 
 /**
  * Renders a dependency graph as a Mermaid diagram (.mmd).
@@ -17,7 +17,7 @@ use Stability\Map\MapRenderer;
  *
  * Components that are part of a circular dependency are highlighted in red.
  */
-readonly class MermaidMapRenderer implements MapRenderer
+readonly class MermaidGraphRenderer implements GraphRenderer
 {
     #[Override] public function render(DependencyMap $map, array $cycles): string
     {

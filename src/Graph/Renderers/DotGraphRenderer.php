@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stability\Map\Renderers;
+namespace Stability\Graph\Renderers;
 
 use Override;
 use Stability\Component\DependencyMap;
-use Stability\Map\MapRenderer;
+use Stability\Graph\GraphRenderer;
 
 /**
  * Renders a dependency graph in Graphviz DOT format (.dot).
@@ -22,7 +22,7 @@ use Stability\Map\MapRenderer;
  * Components involved in circular dependencies are filled red.
  * Edges between components in the same cycle are drawn in red.
  */
-readonly class DotMapRenderer implements MapRenderer
+readonly class DotGraphRenderer implements GraphRenderer
 {
     #[Override] public function render(DependencyMap $map, array $cycles): string
     {
