@@ -16,8 +16,8 @@ use Stability\Graph\GraphRenderer;
  *   apt install graphviz (Debian/Ubuntu)
  *
  * Convert the output to an image with:
- *   dot -Tsvg stability-map.dot -o stability-map.svg
- *   dot -Tpng stability-map.dot -o stability-map.png
+ *   dot -Tsvg stability-graph.dot -o stability-graph.svg
+ *   dot -Tpng stability-graph.dot -o stability-graph.png
  *
  * Components involved in circular dependencies are filled red.
  * Edges between components in the same cycle are drawn in red.

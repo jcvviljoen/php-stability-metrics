@@ -1,7 +1,7 @@
 stability.php
 stability-result.json
 stability-chart.*
-stability-map.*
+stability-graph.*
 .phpunit.result.cache
 /.idea/
 /vendor/

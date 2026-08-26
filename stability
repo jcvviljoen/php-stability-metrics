@@ -37,7 +37,7 @@ if (is_file($autoload = __DIR__ . '/vendor/autoload.php')) {
 $console = new ConsoleOutput();
 $args = getopt(
         'i',
-        ['help', 'init', 'config:', 'output:', 'output-path:', 'output-name:', 'debug', 'with-visual:', 'with-chart:'],
+        ['help', 'init', 'config:', 'output:', 'output-path:', 'output-name:', 'debug', 'with-graph:', 'with-chart:'],
 );
 
 // Display help message
@@ -51,7 +51,7 @@ if (isset($args['help'])) {
         '<comment>  --output            The output format of the stability results. Can be "console" (default) or "json".</comment>',
         '<comment>  --output-path       The directory <options=bold,underscore>relative to the project\'s base path</> where output results will be written to (when --output supports printing to files).</comment>',
         '<comment>  --output-name       The name of the file that output results will be written to (when --output supports printing to files). Default is `stability-result`</comment>',
-        '<comment>  --with-visual       Generate a dependency graph alongside the stability results.</comment>',
+        '<comment>  --with-graph        Generate a dependency graph alongside the stability results.</comment>',
         '<comment>                      Available renderers: "mermaid" (.mmd), "dot" (Graphviz .dot).</comment>',
         '<comment>                      The file is written to --output-path (or the current directory if not set).</comment>',
         '<comment>                      Circular dependencies are highlighted in red and reported to the console.</comment>',
@@ -151,24 +151,24 @@ try {
     $console->writeln('');
     $console->writeln('<info>Stability metrics calculated successfully!</info>');
 
-    // Generate dependency map if requested
-    if (isset($args['with-visual'])) {
-        $mapOption = GraphOption::fromArgument($args['with-visual']);
-        $mapRenderer = GraphRendererFactory::create($mapOption);
+    // Generate dependency graph if requested
+    if (isset($args['with-graph'])) {
+        $graphOption = GraphOption::fromArgument($args['with-graph']);
+        $graphRenderer = GraphRendererFactory::create($graphOption);
 
         $dependencyMap = $components->dependencyMap();
         $cycles = CycleDetector::detect($dependencyMap);
-        $rendered = $mapRenderer->render($dependencyMap, $cycles);
+        $rendered = $graphRenderer->render($dependencyMap, $cycles);
 
         $outputPath = rtrim($args['output-path'] ?? '', DIRECTORY_SEPARATOR);
-        $mapFileName = 'stability-map.' . $mapRenderer->fileExtension();
-        $mapFilePath = empty($outputPath)
-            ? $mapFileName
-            : $outputPath . DIRECTORY_SEPARATOR . $mapFileName;
+        $graphFileName = 'stability-graph.' . $graphRenderer->fileExtension();
+        $graphFilePath = empty($outputPath)
+            ? $graphFileName
+            : $outputPath . DIRECTORY_SEPARATOR . $graphFileName;
 
-        file_put_contents($mapFilePath, $rendered);
+        file_put_contents($graphFilePath, $rendered);
 
-        $console->writeln("<info>Dependency map written to: {$mapFilePath}</info>");
+        $console->writeln("<info>Dependency graph written to: {$graphFilePath}</info>");
 
         if (!empty($cycles)) {
             $console->writeln('');
