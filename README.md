@@ -72,8 +72,9 @@ php vendor/bin/stability --with-graph mermaid --with-chart svg
 ```
 
 The dependency graph (`stability-graph.mmd`) shows each component and the direction of its
-dependencies. Components caught in a circular dependency are coloured red, and every cycle is also
-listed in the console output, so you can see which ones to break apart first. Mermaid files render
+dependencies, with any component caught in a circular dependency coloured red. Cycles are
+listed in the console output of every run, whether you ask for a graph or not, so you can see
+which ones to break apart first. Mermaid files render
 on GitHub inside a fenced `mermaid` block. The `dot` renderer writes Graphviz instead, which you can
 convert yourself:
 
@@ -96,16 +97,29 @@ graph LR
     node_Graph["Graph"]
     Metric
     Output
+    Application
+    Console
     Chart --> Metric
     node_Graph --> Component
     Output --> Config
     Output --> Metric
+    Application --> Chart
+    Application --> Component
+    Application --> Config
+    Application --> node_Graph
+    Application --> Metric
+    Application --> Output
+    Console --> Chart
+    Console --> Config
+    Console --> node_Graph
+    Console --> Output
+    Console --> Application
 ```
 
-Nothing here depends on `Config` except `Output`, and `Component` does not depend on it at
-all. The CLI reads the configuration file and translates it into the plain definitions the
-parser asks for, which keeps the translation in the one place that is allowed to know about
-everything, and keeps the graph acyclic.
+`Application` and `Console` are what Robert Martin calls Main: they depend on everything and
+nothing depends on them, so they carry an instability of 1 or close to it. That is where the
+translation from configuration into components lives, which is what lets `Component` and
+`Config` stay ignorant of each other and keeps the graph acyclic.
 
 ### Configuration fields
 

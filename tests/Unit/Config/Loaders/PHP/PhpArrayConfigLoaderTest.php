@@ -84,7 +84,7 @@ class PhpArrayConfigLoaderTest extends TestCase
     {
         $config = __DIR__ . '/_Fixtures/config_output_with_option.php';
         $expectedSetting = new OutputSetting(OutputOption::JSON, 'some-output', '/var/logs');
-        $expectedConfig = StabilityConfigFactory::baseValid()->withOutputSettings($expectedSetting);
+        $expectedConfig = StabilityConfigFactory::baseValid($expectedSetting);
 
         $result = $this->loader->load($config);
 

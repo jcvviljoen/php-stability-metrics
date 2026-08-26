@@ -7,11 +7,11 @@ namespace Stability\Output\Writers;
 use Override;
 use Stability\Metric\Result;
 use Stability\Output\OutputWriter;
-use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 
 readonly class ConsoleOutputWriter implements OutputWriter
 {
-    public function __construct(private ConsoleOutput $console)
+    public function __construct(private OutputInterface $console)
     {
     }
 

@@ -11,6 +11,7 @@ use Stability\Output\OutputWriterFactory;
 use Stability\Output\Writers\ConsoleOutputWriter;
 use Stability\Output\Writers\JsonOutputWriter;
 use Stability\Tests\_Fixtures\Config\OutputSettingFactory;
+use Symfony\Component\Console\Output\NullOutput;
 
 class OutputWriterFactoryTest extends TestCase
 {
@@ -20,7 +21,7 @@ class OutputWriterFactoryTest extends TestCase
     #[DataProvider('provide_output_settings')]
     public function test_create_output_writer(OutputSetting $setting, string $expected): void
     {
-        $loader = OutputWriterFactory::create($setting);
+        $loader = new OutputWriterFactory(new NullOutput())->create($setting);
 
         $this->assertInstanceOf($expected, $loader);
     }

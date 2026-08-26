@@ -17,6 +17,11 @@ use Stability\Component\File\Type;
 readonly class PhpClassFileParser
 {
     /**
+     * A type declaration at the start of a line, with any leading modifiers.
+     */
+    private const string TYPE_DECLARATION = '/^(?:(?:final|abstract|readonly)\s+)*(?<keyword>class|interface|enum)\s/';
+
+    /**
      * @param string $filePath The path to the PHP file.
      *
      * @return Metadata The parsed file data.
@@ -42,34 +47,18 @@ readonly class PhpClassFileParser
                 continue;
             }
 
-            if (str_contains($line, 'abstract class')) {
-                $type = Type::ABSTRACT_CLASS;
-
-                break;
-            }
-
-            if (str_starts_with($line, 'interface')) {
-                $type = Type::INTERFACE;
-
-                break;
-            }
-
-            if (str_starts_with($line, 'enum')) {
-                $type = Type::ENUM;
-
-                break;
-            }
-
-            if ($this->isClassDefinition($line)) {
-                $type = Type::CONCRETE_CLASS;
-
-                break;
-            }
-
             if (str_starts_with($line, 'namespace ')) {
                 $namespace = str_replace('namespace ', '', rtrim($line, ";\n"));
 
                 continue;
+            }
+
+            $declared = $this->declaredType($line);
+
+            if (null !== $declared) {
+                $type = $declared;
+
+                break;
             }
 
             // We don't need to read the file past the class definition.
@@ -88,14 +77,27 @@ readonly class PhpClassFileParser
     }
 
     /**
-     * Although not perfect, this method is a simple way to determine if a line is a class definition.
-     * This could be made in a more "fancy" way, but it's not necessary for the current requirements.
+     * The type a line declares, or null when it declares nothing.
+     *
+     * Modifiers are matched in any order and any combination, so "abstract readonly class"
+     * is recognised as readily as "abstract class". Matching the declaration itself also
+     * keeps prose out of it: a docblock mentioning abstract classes above a concrete class
+     * used to be enough to have the file counted as abstract.
+     *
+     * Traits are deliberately left out, as noted above.
      */
-    private function isClassDefinition(string $line): bool
+    private function declaredType(string $line): ?Type
     {
-        return str_starts_with($line, 'class ')
-            || str_starts_with($line, 'readonly class ')
-            || str_starts_with($line, 'final class ')
-            || str_starts_with($line, 'final readonly class ');
+        if (1 !== preg_match(self::TYPE_DECLARATION, $line, $declaration)) {
+            return null;
+        }
+
+        return match ($declaration['keyword']) {
+            'class' => str_contains($declaration[0], 'abstract')
+                ? Type::ABSTRACT_CLASS
+                : Type::CONCRETE_CLASS,
+            'interface' => Type::INTERFACE,
+            'enum' => Type::ENUM,
+        };
     }
 }

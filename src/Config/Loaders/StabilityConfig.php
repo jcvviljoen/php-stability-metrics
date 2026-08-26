@@ -28,9 +28,4 @@ readonly class StabilityConfig implements Config
     {
         return $this->outputSettings;
     }
-
-    #[Override] public function withOutputSettings(OutputSetting $outputSettings): self
-    {
-        return new self($this->modules, $outputSettings);
-    }
 }

@@ -32,13 +32,39 @@ readonly class OutputSetting
         );
     }
 
+    /**
+     * The configured directory, without a trailing separator. Empty when results are
+     * written to the current directory.
+     */
+    public function filePath(): string
+    {
+        return rtrim($this->filePath, DIRECTORY_SEPARATOR);
+    }
+
+    /**
+     * The configured file name, which is empty when the default is to be used.
+     */
+    public function fileName(): string
+    {
+        return $this->fileName;
+    }
+
+    /**
+     * Where the analysis results are written to.
+     */
     public function fullFilePath(string $extension): string
     {
-        $cleanExtension = ltrim($extension, '.');
+        return $this->pathFor(
+            empty($this->fileName) ? self::DEFAULT_FILE_NAME : $this->fileName,
+            $extension,
+        );
+    }
 
-        return $this->filePath
-            . (empty($this->fileName) ? self::DEFAULT_FILE_NAME : $this->fileName)
-            . '.'
-            . $cleanExtension;
+    /**
+     * Where a file that sits alongside the results is written to, such as a graph or a chart.
+     */
+    public function pathFor(string $fileName, string $extension): string
+    {
+        return $this->filePath . $fileName . '.' . ltrim($extension, '.');
     }
 }
