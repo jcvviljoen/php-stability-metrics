@@ -219,8 +219,36 @@ class AnalyseCommand extends Command
         $output->writeln('<error>Circular dependencies detected:</error>');
 
         foreach ($report->cycles as $cycle) {
-            $output->writeln('<comment>  ' . implode(' -> ', $cycle) . ' -> ' . $cycle[0] . '</comment>');
+            $output->writeln($this->describeCycle($cycle));
         }
+    }
+
+    /**
+     * Two components that import each other is a cycle you can read as a path, and reading
+     * it that way is the point: those are the two imports to break.
+     *
+     * Anything larger is a strongly connected group. Every member reaches every other one,
+     * but not in the order they happen to be listed, so drawing arrows between them would
+     * claim a route around the group that need not exist. A project whose components have
+     * knotted together produces one of these covering most of them, and saying so plainly
+     * is more use than a fabricated forty-step lap.
+     *
+     * @param list<string> $cycle
+     */
+    private function describeCycle(array $cycle): string
+    {
+        if (2 === count($cycle)) {
+            return '<comment>  ' . implode(' -> ', $cycle) . ' -> ' . $cycle[0] . '</comment>';
+        }
+
+        sort($cycle);
+
+        return sprintf(
+            '<comment>  %d components that all depend on each other, directly or by way of'
+            . ' the others: %s</comment>',
+            count($cycle),
+            implode(', ', $cycle),
+        );
     }
 
     private function reportException(

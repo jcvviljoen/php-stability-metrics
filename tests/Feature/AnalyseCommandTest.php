@@ -25,6 +25,7 @@ class AnalyseCommandTest extends TestCase
 
     private const string CONFIG_TEST_SRC = 'tests/Feature/_Fixtures/config_test_src.php';
     private const string CONFIG_CYCLIC = 'tests/Feature/_Fixtures/config_cyclic.php';
+    private const string CONFIG_CYCLIC_GROUP = 'tests/Feature/_Fixtures/config_cyclic_group.php';
 
     private CommandTester $command;
 
@@ -161,6 +162,41 @@ class AnalyseCommandTest extends TestCase
         $this->assertStringContainsString('Circular dependencies detected:', $display);
         $this->assertStringContainsString('CycleA', $display);
         $this->assertStringContainsString('CycleB', $display);
+    }
+
+    public function test_given_two_components_that_import_each_other_then_report_it_as_a_lap(): void
+    {
+        $this->command->execute(['--config' => self::CONFIG_CYCLIC]);
+
+        $this->command->assertCommandIsSuccessful();
+
+        // Either component can be the one the lap is written from, so both readings pass.
+        $this->assertMatchesRegularExpression(
+            '/CycleA -> CycleB -> CycleA|CycleB -> CycleA -> CycleB/',
+            $this->command->getDisplay(),
+        );
+    }
+
+    /**
+     * Three or more components that have knotted together are reported as the group they
+     * are. Listing them in an arrow chain would name a lap around the group that the
+     * imports need not actually offer.
+     */
+    public function test_given_a_knot_of_components_then_report_the_group_rather_than_a_lap(): void
+    {
+        $this->command->execute(['--config' => self::CONFIG_CYCLIC_GROUP]);
+
+        $this->command->assertCommandIsSuccessful();
+
+        $display = $this->command->getDisplay();
+
+        $this->assertStringContainsString('Circular dependencies detected:', $display);
+        $this->assertStringContainsString(
+            '3 components that all depend on each other, directly or by way of the others:'
+            . ' CycleA, CycleB, CycleC',
+            $display,
+        );
+        $this->assertStringNotContainsString('CycleA -> CycleB', $display);
     }
 
     public function test_given_fail_on_cycles_when_a_cycle_is_found_then_fail(): void
