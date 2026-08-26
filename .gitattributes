@@ -5,6 +5,7 @@
 /tests export-ignore
 phpunit.xml export-ignore
 phpcs.xml export-ignore
+phpstan.neon export-ignore
 
 # Exclude project-specific or temporary files
 stability-result-2024-08-27.png export-ignore
