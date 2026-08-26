@@ -10,10 +10,10 @@ use Stability\Config\Module;
 use Stability\Config\ModuleList;
 use Traversable;
 
-class StabilityModuleList implements ModuleList
+readonly class StabilityModuleList implements ModuleList
 {
     /**
-     * @var array<string, StabilityModule> $modules
+     * @var array<string, Module> $modules
      */
     private array $modules;
 
@@ -25,25 +25,10 @@ class StabilityModuleList implements ModuleList
     public function __construct(array $modules)
     {
         if (empty($modules)) {
-            throw throw InvalidConfigurationException::onMissingModules();
+            throw InvalidConfigurationException::onMissingModules();
         }
 
-        array_map($this->add(...), $modules);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[Override]
-    public function add(Module $module): void
-    {
-        assert($module instanceof StabilityModule);
-
-        if (isset($this->modules[$module->name()])) {
-            throw InvalidConfigurationException::onDuplicateModuleName($module->name());
-        }
-
-        $this->modules[$module->name()] = $module;
+        $this->modules = $this->keyedByName($modules);
     }
 
     /**
@@ -59,5 +44,30 @@ class StabilityModuleList implements ModuleList
     public function getIterator(): Traversable
     {
         yield from $this->modules;
+    }
+
+    /**
+     * Names have to be unique, because a name is how a component is identified in every
+     * report and in the dependency map.
+     *
+     * @param list<StabilityModule> $modules
+     *
+     * @return array<string, Module>
+     *
+     * @throws InvalidConfigurationException
+     */
+    private function keyedByName(array $modules): array
+    {
+        $keyed = [];
+
+        foreach ($modules as $module) {
+            if (isset($keyed[$module->name()])) {
+                throw InvalidConfigurationException::onDuplicateModuleName($module->name());
+            }
+
+            $keyed[$module->name()] = $module;
+        }
+
+        return $keyed;
     }
 }

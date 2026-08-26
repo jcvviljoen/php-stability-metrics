@@ -26,12 +26,11 @@ class StabilityModuleListTest extends TestCase
         );
     }
 
-    public function test_given_a_module_list_when_module_name_exists_then_adding_module_throws_exception(): void
+    public function test_given_two_modules_of_the_same_name_then_list_throws_exception(): void
     {
         $module = StabilityModuleFactory::module1();
-        $modules = new StabilityModuleList([$module]);
 
-        $exception = $this->expectThrows(fn() => $modules->add($module));
+        $exception = $this->expectThrows(fn() => new StabilityModuleList([$module, $module]));
 
         $this->assertEquals(
             InvalidConfigurationException::onDuplicateModuleName('Module1'),
