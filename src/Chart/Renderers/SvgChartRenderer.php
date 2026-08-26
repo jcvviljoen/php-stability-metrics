@@ -6,8 +6,8 @@ namespace Stability\Chart\Renderers;
 
 use Override;
 use Stability\Chart\ChartRenderer;
+use Stability\Metric\ComponentMetric;
 use Stability\Metric\Result;
-use Stability\Metric\StableDependencyMetric;
 use Stability\Metric\ZoneType;
 
 /**
@@ -219,7 +219,7 @@ readonly class SvgChartRenderer implements ChartRenderer
         return implode("\n", $lines);
     }
 
-    private function renderDot(StableDependencyMetric $metric): string
+    private function renderDot(ComponentMetric $metric): string
     {
         $instability = (float) $metric->instability();
         $abstractness = (float) $metric->abstractness();

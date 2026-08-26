@@ -8,30 +8,30 @@ use JsonSerializable;
 use Override;
 use Stability\Component\Component;
 
-readonly class StableDependencyMetric implements JsonSerializable
+readonly class StableDependencyMetric implements ComponentMetric, JsonSerializable
 {
     private const int FORMAT_PRECISION = 2;
 
     public function __construct(
-        public Component $component,
-        public ZoneType $zone,
+        #[Override] public Component $component,
+        #[Override] public ZoneType $zone,
         private float $abstractness,
         private float $instability,
         private float $dms,
     ) {
     }
 
-    public function abstractness(): string
+    #[Override] public function abstractness(): string
     {
         return $this->formatFloat($this->abstractness);
     }
 
-    public function instability(): string
+    #[Override] public function instability(): string
     {
         return $this->formatFloat($this->instability);
     }
 
-    public function dms(): string
+    #[Override] public function dms(): string
     {
         return $this->formatFloat($this->dms);
     }
