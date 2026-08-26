@@ -78,8 +78,14 @@ php vendor/bin/stability --with-graph mermaid --with-chart svg
 The dependency graph (`stability-graph.mmd`) shows each component and the direction of its
 dependencies, with any component caught in a circular dependency coloured red. Cycles are
 listed in the console output of every run, whether you ask for a graph or not, so you can see
-which ones to break apart first. Mermaid files render
-on GitHub inside a fenced `mermaid` block. The `dot` renderer writes Graphviz instead, which you can
+which ones to break apart first.
+
+You get a pair of components that import each other as the lap they make, since that lap is the
+thing to break. A bigger knot comes out as a list of its members instead. Every component in a
+knot can reach every other one, but not in the order they happen to be listed, so arrows between
+them would claim a route that may not exist.
+
+Mermaid files render on GitHub inside a fenced `mermaid` block. The `dot` renderer writes Graphviz instead, which you can
 convert yourself:
 
 ```bash

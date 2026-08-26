@@ -92,6 +92,35 @@ class ComponentTest extends TestCase
         $this->assertEquals(1, $foo->countUsagesOf($fooBar));
     }
 
+    /**
+     * A component whose files sit in several sub-namespaces is named by the parent they
+     * share, which is what the namespace parser narrows to. Every count downstream keys
+     * off that parent, so a dependency on any one of the sub-namespaces has to land on
+     * the component holding them, and an import from any one of them has to count as
+     * that component's own.
+     */
+    public function test_given_a_component_spanning_sub_namespaces_then_count_usages_across_all_of_them(): void
+    {
+        $dataSource = new Component(
+            'DataSource',
+            'Domain\DataSource',
+            new MetadataCollection([
+                new Metadata(Type::CONCRETE_CLASS, 'Domain\DataSource\Models', ['Domain\User\Models\User']),
+                new Metadata(Type::CONCRETE_CLASS, 'Domain\DataSource\Repositories', ['Domain\User\Enums\Status']),
+                new Metadata(Type::CONCRETE_CLASS, 'Domain\DataSource\Tests\Mocks', []),
+            ]),
+            ThresholdsFactory::default(),
+        );
+
+        $user = $this->componentNamed('User', 'Domain\User', [
+            'Domain\DataSource\Models\DataSource',
+            'Domain\DataSource\Tests\Mocks\FakeDataSource',
+        ]);
+
+        $this->assertEquals(2, $dataSource->countUsagesOf($user));
+        $this->assertEquals(2, $user->countUsagesOf($dataSource));
+    }
+
     public function test_given_an_aliased_or_function_import_then_still_count_it(): void
     {
         $user = $this->componentNamed('User', 'App\User', [
