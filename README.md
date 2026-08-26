@@ -49,6 +49,11 @@ Various arguments are also supported (don't worry, any invalid setup will guide 
 
 - `-i, --init`: Initialize the configuration file
 - `--config`: Specify a custom configuration file / path
+- `--output`: Set the output format, either `console` (default) or `json`
+- `--output-path`: The directory to write output files to, relative to the project's base path
+- `--output-name`: The name of the output file (_defaults to `stability-result`_)
+- `--with-graph`: Also render a dependency graph, either `mermaid` or `dot`
+- `--with-chart`: Also render a stability chart, currently only `svg`
 - `--debug`: Enable debug output (exposes exception stack traces)
 
 For example, you can specify a custom configuration file (as long as it is a supported format):
@@ -56,6 +61,29 @@ For example, you can specify a custom configuration file (as long as it is a sup
 ```bash
 php vendor/bin/stability --config "path/to/config.php"
 ```
+
+### Visualising the results
+
+Both visuals are written next to your results, in `--output-path` when you set one and the current
+directory when you don't:
+
+```bash
+php vendor/bin/stability --with-graph mermaid --with-chart svg
+```
+
+The dependency graph (`stability-graph.mmd`) shows each component and the direction of its
+dependencies. Components caught in a circular dependency are coloured red, and every cycle is also
+listed in the console output, so you can see which ones to break apart first. Mermaid files render
+on GitHub inside a fenced `mermaid` block. The `dot` renderer writes Graphviz instead, which you can
+convert yourself:
+
+```bash
+dot -Tsvg stability-graph.dot -o stability-graph.svg
+```
+
+The stability chart (`stability-chart.svg`) plots each component at its abstractness and instability,
+with the main sequence drawn as a diagonal. Dots are coloured by zone, and hovering over one shows
+the component's name and its metrics.
 
 ### Configuration fields
 
@@ -88,6 +116,8 @@ please share or contribute!
 - **Component Parsing**: Parses class and modules into components as specified by your configuration.
 - **Stability Calculation**: Computes metrics such as abstractness, instability, and distance from the main sequence (DMS).
 - **Output Results**: Outputs the calculated stability results for further ( _manual*_ ) analysis.
+- **Dependency Graph**: Renders the dependencies between components, and detects circular dependencies.
+- **Stability Chart**: Plots the components against the main sequence to show where each one sits.
 
 \* See the [Roadmap](ROADMAP.md) for potential future features.
 
@@ -121,7 +151,7 @@ Please see the [CONTRIBUTING](.github/CONTRIBUTING.md) file for more information
 
 ## License
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Credits & References
 
