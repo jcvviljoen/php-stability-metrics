@@ -18,4 +18,11 @@ class InvalidFileExceptionTest extends TestCase
             $exception->getMessage(),
         );
     }
+
+    public function test_on_unreadable_file(): void
+    {
+        $exception = InvalidFileException::onUnreadableFile('some/file.php');
+
+        self::assertSame('The file "some/file.php" could not be opened for reading.', $exception->getMessage());
+    }
 }

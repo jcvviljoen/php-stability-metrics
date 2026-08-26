@@ -32,4 +32,14 @@ class InvalidComponentExceptionTest extends TestCase
 
         self::assertSame('Component for module "ModuleName" contains no PHP files.', $exception->getMessage());
     }
+
+    public function test_on_mismatched_namespace(): void
+    {
+        $exception = InvalidComponentException::onMismatchedNamespace('App\Other', 'App\Domain');
+
+        self::assertSame(
+            'Namespace "App\Other" does not sit under the component\'s primary namespace "App\Domain".',
+            $exception->getMessage(),
+        );
+    }
 }

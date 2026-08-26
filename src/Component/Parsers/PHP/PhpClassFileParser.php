@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stability\Component\Parsers\PHP;
 
-use RuntimeException;
+use Stability\Component\File\Exception\InvalidFileException;
 use Stability\Component\File\Metadata;
 use Stability\Component\File\Type;
 
@@ -28,7 +28,7 @@ readonly class PhpClassFileParser
      * If the file's class type cannot be determined, the result should contain FileType::UNKNOWN.
      * This allows the user to filter out files that are not relevant to the analysis.
      *
-     * @throws RuntimeException
+     * @throws InvalidFileException
      */
     public function parse(string $filePath): Metadata
     {
@@ -38,7 +38,7 @@ readonly class PhpClassFileParser
 
         // Open the file for reading
         $file = @fopen($filePath, 'r')
-            ?: throw new RuntimeException("Could not open file \"$filePath\" for reading.");
+            ?: throw InvalidFileException::onUnreadableFile($filePath);
 
         while (($line = fgets($file)) !== false) {
             if (str_starts_with($line, 'use ')) {

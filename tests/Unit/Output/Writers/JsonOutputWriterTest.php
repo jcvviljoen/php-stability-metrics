@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Stability\Config\OutputOption;
 use Stability\Config\OutputSetting;
+use Stability\Output\Exception\UnwritableResultException;
 use Stability\Output\Writers\JsonOutputWriter;
 use Stability\Tests\_Fixtures\Metric\StabilityResultFactory;
 use stdClass;
@@ -43,6 +44,19 @@ class JsonOutputWriterTest extends TestCase
             self::PATH_EXPECTED_RESULT,
             self::PATH_RESULT,
         );
+    }
+
+    #[Test] public function given_an_unwritable_path_then_throw(): void
+    {
+        $writer = new JsonOutputWriter(new OutputSetting(
+            OutputOption::JSON,
+            __DIR__ . '/_Fixtures/not-a-real-directory',
+            'stability-result',
+        ));
+
+        $this->expectException(UnwritableResultException::class);
+
+        $writer->outputResult(StabilityResultFactory::testSource());
     }
 
     #[Override] protected function tearDown(): void

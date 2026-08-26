@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stability\Output\Writers;
 
 use Override;
-use RuntimeException;
 use Stability\Config\OutputSetting;
 use Stability\Metric\Result;
+use Stability\Output\Exception\UnwritableResultException;
 use Stability\Output\OutputWriter;
 
 readonly class JsonOutputWriter implements OutputWriter
@@ -16,14 +16,21 @@ readonly class JsonOutputWriter implements OutputWriter
     {
     }
 
+    /**
+     * @throws UnwritableResultException
+     */
     #[Override] public function outputResult(Result $result): void
     {
         $json = json_encode($result, JSON_PRETTY_PRINT);
 
         if (false === $json) {
-            throw new RuntimeException('Failed to encode result to JSON');
+            throw UnwritableResultException::onFailedEncoding();
         }
 
-        file_put_contents($this->settings->fullFilePath('json'), $json);
+        $path = $this->settings->fullFilePath('json');
+
+        if (false === @file_put_contents($path, $json)) {
+            throw UnwritableResultException::onFailedWrite($path);
+        }
     }
 }

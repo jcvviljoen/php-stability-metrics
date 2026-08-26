@@ -142,7 +142,7 @@ readonly class AnalyseProject
      */
     private function write(string $path, string $contents): string
     {
-        if (false === file_put_contents($path, $contents)) {
+        if (false === @file_put_contents($path, $contents)) {
             throw UnwritableFileException::onFailedWrite($path);
         }
 

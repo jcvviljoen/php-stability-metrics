@@ -6,7 +6,7 @@ namespace Stability\Tests\Unit\Component\Parsers\PHP;
 
 use Override;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
+use Stability\Component\Exception\InvalidComponentException;
 use Stability\Component\Parsers\PHP\PhpNamespaceParser;
 use Stability\Tests\ExpectThrows;
 
@@ -60,7 +60,7 @@ class PhpNamespaceParserTest extends TestCase
         $exception = $this->expectThrows(fn() => $this->parser->primaryNamespace($namespaces));
 
         $this->assertEquals(
-            new RuntimeException('Namespace \'App\Domain\Money\' does not match primary namespace \'\'.'),
+            InvalidComponentException::onMismatchedNamespace('App\Domain\Money', ''),
             $exception,
         );
     }
