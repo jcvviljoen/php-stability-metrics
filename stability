@@ -119,7 +119,14 @@ try {
 
 // Handle output options specified via CLI if needed (overrides config settings)
 if (isset($args['output']) && 'console' !== $args['output']) {
-    $outputOption = OutputOption::from($args['output']);
+    try {
+        $outputOption = OutputOption::fromArgument($args['output']);
+    } catch (StabilityException $exception) {
+        $exceptionWriter($exception);
+
+        exit(1);
+    }
+
     $outputPath = $args['output-path'] ?? '';
     $outputFileName = $args['output-name'] ?? '';
 

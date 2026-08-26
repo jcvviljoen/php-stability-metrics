@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stability\Config\Exception;
 
 use Stability\StabilityException;
+use Throwable;
 
 class InvalidConfigurationException extends StabilityException
 {
@@ -36,5 +37,21 @@ class InvalidConfigurationException extends StabilityException
     public static function onMissingOutputOption(): self
     {
         return new self('Output setting is missing the "option" property.');
+    }
+
+    public static function onUnreadableConfiguration(string $path, Throwable $cause): self
+    {
+        $reason = $cause->getMessage();
+        $root = $cause;
+
+        while (null !== $root->getPrevious()) {
+            $root = $root->getPrevious();
+        }
+
+        if ($root !== $cause && '' !== $root->getMessage()) {
+            $reason .= " ({$root->getMessage()})";
+        }
+
+        return new self("Configuration file \"$path\" could not be read: $reason", $cause);
     }
 }
