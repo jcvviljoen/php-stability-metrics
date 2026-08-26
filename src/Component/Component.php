@@ -64,7 +64,42 @@ readonly class Component
 
         return count(array_filter(
             $imports,
-            fn(string $import) => str_contains(strtolower($import), strtolower($otherNamespace)),
+            fn(string $import) => $this->importsFrom($import, $otherNamespace),
         ));
+    }
+
+    /**
+     * Whether an import names something inside the given namespace.
+     *
+     * The comparison stops at a namespace boundary on purpose. Matching the namespace
+     * anywhere in the import would have a component named "App\Foo" count every import
+     * from "App\FooBar" as a dependency on itself, which quietly inflates the coupling
+     * every metric here is calculated from.
+     */
+    private function importsFrom(string $import, string $namespace): bool
+    {
+        $imported = $this->normalise($import);
+
+        return 0 === strcasecmp($imported, $namespace)
+            || str_starts_with(strtolower($imported), strtolower($namespace) . '\\');
+    }
+
+    /**
+     * The name an import refers to, without the parts that are not part of it: the kind of
+     * import it is, and whatever it was aliased to locally.
+     */
+    private function normalise(string $import): string
+    {
+        foreach (['function ', 'const '] as $kind) {
+            if (str_starts_with($import, $kind)) {
+                $import = substr($import, strlen($kind));
+
+                break;
+            }
+        }
+
+        $alias = stripos($import, ' as ');
+
+        return trim(false === $alias ? $import : substr($import, 0, $alias));
     }
 }

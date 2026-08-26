@@ -7,7 +7,9 @@ namespace Stability\Tests\Unit\Component;
 use PHPUnit\Framework\TestCase;
 use Stability\Component\Component;
 use Stability\Component\Exception\InvalidComponentException;
+use Stability\Component\File\Metadata;
 use Stability\Component\File\MetadataCollection;
+use Stability\Component\File\Type;
 use Stability\Tests\_Fixtures\Component\ComponentFactory;
 use Stability\Tests\_Fixtures\Component\ThresholdsFactory;
 use Stability\Tests\ExpectThrows;
@@ -81,5 +83,47 @@ class ComponentTest extends TestCase
 
         $this->assertEquals(1, $component1->countUsagesOf($component3));
         $this->assertEquals(0, $component3->countUsagesOf($component1));
+    }
+
+    public function test_given_a_component_whose_namespace_prefixes_another_then_do_not_count_it(): void
+    {
+        $foo = $this->componentNamed('Foo', 'App\Foo', ['App\FooBar\Thing', 'App\Foo\Thing']);
+        $fooBar = $this->componentNamed('FooBar', 'App\FooBar', []);
+
+        // Only "App\Foo\Thing" belongs to Foo, so FooBar is used once and not twice.
+        $this->assertEquals(1, $foo->countUsagesOf($fooBar));
+    }
+
+    public function test_given_an_aliased_or_function_import_then_still_count_it(): void
+    {
+        $user = $this->componentNamed('User', 'App\User', [
+            'App\Other\Thing as Aliased',
+            'function App\Other\helper',
+            'const App\Other\SOME_CONSTANT',
+        ]);
+        $other = $this->componentNamed('Other', 'App\Other', []);
+
+        $this->assertEquals(3, $user->countUsagesOf($other));
+    }
+
+    public function test_given_an_import_of_the_namespace_itself_then_count_it(): void
+    {
+        $user = $this->componentNamed('User', 'App\User', ['App\Other']);
+        $other = $this->componentNamed('Other', 'App\Other', []);
+
+        $this->assertEquals(1, $user->countUsagesOf($other));
+    }
+
+    /**
+     * @param list<string> $imports
+     */
+    private function componentNamed(string $name, string $namespace, array $imports): Component
+    {
+        return new Component(
+            $name,
+            $namespace,
+            new MetadataCollection([new Metadata(Type::CONCRETE_CLASS, $namespace, $imports)]),
+            ThresholdsFactory::default(),
+        );
     }
 }
