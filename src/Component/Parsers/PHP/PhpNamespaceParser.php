@@ -24,16 +24,17 @@ readonly class PhpNamespaceParser
 
         foreach ($splitNamespaces as $parts) {
             $length = min(count($primaryParts), count($parts));
+            $shared = 0;
 
-            for ($i = 0; $i < $length; $i++) {
-                if ($primaryParts[$i] !== $parts[$i]) {
-                    $primaryParts = array_slice($primaryParts, 0, $i);
-
-                    break 2;
-                }
+            while ($shared < $length && $primaryParts[$shared] === $parts[$shared]) {
+                $shared++;
             }
 
-            $primaryParts = array_slice($primaryParts, 0, $length);
+            $primaryParts = array_slice($primaryParts, 0, $shared);
+
+            if ([] === $primaryParts) {
+                break;
+            }
         }
 
         $primary = implode('\\', $primaryParts);

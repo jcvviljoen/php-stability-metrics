@@ -49,6 +49,23 @@ class PhpNamespaceParserTest extends TestCase
         $this->assertSame('App\Domain', $result);
     }
 
+    /**
+     * The prefix has to be narrowed against every namespace, not just up to the first one
+     * that diverges. Stopping early leaves a prefix that later namespaces do not sit
+     * under, which used to be reported as a mismatch in the component rather than as
+     * what it was: a prefix that had not finished being worked out.
+     */
+    public function test_given_a_namespace_that_diverges_earlier_than_the_first_then_narrows_the_prefix(): void
+    {
+        $result = $this->parser->primaryNamespace([
+            'Domain\\DataSource\\Tests\\Mocks',
+            'Domain\\DataSource\\Tests\\Repositories',
+            'Domain\\DataSource\\Repositories',
+        ]);
+
+        $this->assertSame('Domain\\DataSource', $result);
+    }
+
     public function test_given_multiple_namespaces_without_common_prefix_then_throws_exception(): void
     {
         $namespaces = [
