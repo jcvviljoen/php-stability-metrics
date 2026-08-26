@@ -110,4 +110,72 @@ class MermaidGraphRendererTest extends TestCase
         $this->assertStringNotContainsString('B --> B', $output);
         $this->assertStringContainsString('A --> B', $output);
     }
+
+    public function test_given_names_with_spaces_then_ids_are_safe_and_names_kept_as_labels(): void
+    {
+        $map = new DependencyMap([
+            'Some module name' => ['Some module name' => 0, 'Another module' => 1],
+            'Another module' => ['Some module name' => 0, 'Another module' => 0],
+        ]);
+
+        $output = $this->renderer->render($map, [['Some module name', 'Another module']]);
+
+        $this->assertStringContainsString('Some_module_name["Some module name"]', $output);
+        $this->assertStringContainsString('Another_module["Another module"]', $output);
+        $this->assertStringContainsString('Some_module_name --> Another_module', $output);
+        $this->assertStringContainsString('style Some_module_name fill:#ff6b6b', $output);
+        $this->assertStringNotContainsString('Some module name -->', $output);
+    }
+
+    public function test_given_a_name_matching_a_mermaid_keyword_then_the_id_is_prefixed(): void
+    {
+        $map = new DependencyMap([
+            'Graph' => ['Graph' => 0, 'End' => 1],
+            'End' => ['Graph' => 0, 'End' => 0],
+        ]);
+
+        $output = $this->renderer->render($map, []);
+
+        $this->assertStringContainsString('node_Graph["Graph"]', $output);
+        $this->assertStringContainsString('node_End["End"]', $output);
+        $this->assertStringContainsString('node_Graph --> node_End', $output);
+    }
+
+    public function test_given_names_that_reduce_to_the_same_id_then_ids_stay_unique(): void
+    {
+        $map = new DependencyMap([
+            'My Module' => ['My Module' => 0, 'My-Module' => 1],
+            'My-Module' => ['My Module' => 0, 'My-Module' => 0],
+        ]);
+
+        $output = $this->renderer->render($map, []);
+
+        $this->assertStringContainsString('My_Module["My Module"]', $output);
+        $this->assertStringContainsString('My_Module_2["My-Module"]', $output);
+        $this->assertStringContainsString('My_Module --> My_Module_2', $output);
+    }
+
+    public function test_given_a_name_with_a_quote_then_the_label_is_escaped(): void
+    {
+        $map = new DependencyMap([
+            'The "core"' => ['The "core"' => 0],
+        ]);
+
+        $output = $this->renderer->render($map, []);
+
+        $this->assertStringContainsString('The_core["The #quot;core#quot;"]', $output);
+    }
+
+    public function test_given_a_component_without_dependencies_then_it_is_still_declared(): void
+    {
+        $map = new DependencyMap([
+            'A' => ['A' => 0, 'B' => 0],
+            'B' => ['A' => 0, 'B' => 0],
+        ]);
+
+        $output = $this->renderer->render($map, []);
+
+        $this->assertStringContainsString("\n    A\n", $output);
+        $this->assertStringContainsString("\n    B\n", $output);
+    }
 }

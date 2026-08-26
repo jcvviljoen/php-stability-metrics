@@ -136,7 +136,8 @@ try {
     $console->writeln('<info>Calculating stability metrics...</info>');
     $console->writeln('');
 
-    $result = new InstabilityAnalyser()->analyse($componentParser->parse($config->modules()));
+    $components = $componentParser->parse($config->modules());
+    $result = new InstabilityAnalyser()->analyse($components);
 
     $outputWriter->outputResult($result);
 
@@ -145,11 +146,12 @@ try {
 
     // Generate dependency map if requested
     if (isset($args['with-visual'])) {
-        $mapOption = GraphOption::from($args['with-visual']);
+        $mapOption = GraphOption::fromArgument($args['with-visual']);
         $mapRenderer = GraphRendererFactory::create($mapOption);
 
-        $cycles = CycleDetector::detect($result->dependencyMap);
-        $rendered = $mapRenderer->render($result->dependencyMap, $cycles);
+        $dependencyMap = $components->dependencyMap();
+        $cycles = CycleDetector::detect($dependencyMap);
+        $rendered = $mapRenderer->render($dependencyMap, $cycles);
 
         $outputPath = rtrim($args['output-path'] ?? '', DIRECTORY_SEPARATOR);
         $mapFileName = 'stability-map.' . $mapRenderer->fileExtension();
@@ -173,7 +175,7 @@ try {
 
     // Generate stability chart if requested
     if (isset($args['with-chart'])) {
-        $chartOption = ChartOption::from($args['with-chart']);
+        $chartOption = ChartOption::fromArgument($args['with-chart']);
         $chartRenderer = ChartRendererFactory::create($chartOption);
 
         $rendered = $chartRenderer->render($result);

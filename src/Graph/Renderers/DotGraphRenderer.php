@@ -43,7 +43,12 @@ readonly class DotGraphRenderer implements GraphRenderer
                     && $cycleNodeMap[$from] === $cycleNodeMap[$to];
 
                 $attrs = $isCycleEdge ? ' [color=red, penwidth=2.0]' : '';
-                $edgeLines[] = "    \"$from\" -> \"$to\"$attrs;";
+                $edgeLines[] = sprintf(
+                    '    "%s" -> "%s"%s;',
+                    $this->escape((string) $from),
+                    $this->escape((string) $to),
+                    $attrs,
+                );
             }
         }
 
@@ -62,7 +67,7 @@ readonly class DotGraphRenderer implements GraphRenderer
                 continue;
             }
 
-            $lines[] = "    \"$node\";";
+            $lines[] = sprintf('    "%s";', $this->escape((string) $node));
         }
 
         // Highlight nodes involved in circular dependencies
@@ -70,7 +75,10 @@ readonly class DotGraphRenderer implements GraphRenderer
             $lines[] = '';
 
             foreach (array_keys($cycleNodeMap) as $node) {
-                $lines[] = "    \"$node\" [style=filled, fillcolor=\"#ff6b6b\", fontcolor=white];";
+                $lines[] = sprintf(
+                    '    "%s" [style=filled, fillcolor="#ff6b6b", fontcolor=white];',
+                    $this->escape((string) $node),
+                );
             }
         }
 
@@ -82,6 +90,15 @@ readonly class DotGraphRenderer implements GraphRenderer
     #[Override] public function fileExtension(): string
     {
         return 'dot';
+    }
+
+    /**
+     * Component names come from the user's configuration, so escape the
+     * characters that would otherwise terminate a quoted DOT identifier.
+     */
+    private function escape(string $name): string
+    {
+        return str_replace(['\\', '"'], ['\\\\', '\\"'], $name);
     }
 
     /**

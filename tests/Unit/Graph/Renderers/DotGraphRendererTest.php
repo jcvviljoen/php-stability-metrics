@@ -141,4 +141,16 @@ class DotGraphRendererTest extends TestCase
         $this->assertStringNotContainsString('"B" -> "B"', $output);
         $this->assertStringContainsString('"A" -> "B"', $output);
     }
+
+    public function test_given_a_name_with_a_quote_then_the_identifier_is_escaped(): void
+    {
+        $map = new DependencyMap([
+            'The "core"' => ['The "core"' => 0, 'B' => 1],
+            'B' => ['The "core"' => 0, 'B' => 0],
+        ]);
+
+        $output = $this->renderer->render($map, []);
+
+        $this->assertStringContainsString('"The \\"core\\"" -> "B";', $output);
+    }
 }

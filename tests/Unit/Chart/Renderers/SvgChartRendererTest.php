@@ -7,7 +7,6 @@ namespace Stability\Tests\Unit\Chart\Renderers;
 use Override;
 use PHPUnit\Framework\TestCase;
 use Stability\Chart\Renderers\SvgChartRenderer;
-use Stability\Component\DependencyMap;
 use Stability\Metric\Result;
 use Stability\Metric\StableDependencyMetric;
 use Stability\Metric\ZoneType;
@@ -105,7 +104,7 @@ class SvgChartRendererTest extends TestCase
 
     public function test_given_empty_result_then_no_component_dots_rendered(): void
     {
-        $result = new Result([], new DependencyMap([]));
+        $result = new Result([]);
 
         $output = $this->renderer->render($result);
 
@@ -118,7 +117,6 @@ class SvgChartRendererTest extends TestCase
     {
         return new Result(
             [new StableDependencyMetric(ComponentFactory::module1(), $zone, 0.5, 0.5, 0.0)],
-            new DependencyMap([]),
         );
     }
 }

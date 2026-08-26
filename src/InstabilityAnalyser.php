@@ -26,7 +26,7 @@ readonly class InstabilityAnalyser
             $components->values(),
         );
 
-        return new Result($componentResults, $dependencyMap);
+        return new Result($componentResults);
     }
 
     private function calculateComponentMetrics(
