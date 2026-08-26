@@ -7,8 +7,9 @@ namespace Stability\Metric;
 /**
  * The metrics calculated for a single component.
  *
- * Values are exposed formatted for display, because reporting them is all
- * the writers and renderers do with them.
+ * Values are reported at full precision. How many decimal places to show is a question
+ * about presenting them, so it belongs to whoever is doing the presenting: rounding here
+ * once had the chart plot every component to two decimal places.
  */
 interface ComponentMetric
 {
@@ -26,15 +27,15 @@ interface ComponentMetric
     /**
      * Abstractness (A), in the range [0, 1].
      */
-    public function abstractness(): string;
+    public function abstractness(): float;
 
     /**
      * Instability (I), in the range [0, 1].
      */
-    public function instability(): string;
+    public function instability(): float;
 
     /**
      * Distance from the Main Sequence (D), in the range [0, 1].
      */
-    public function dms(): string;
+    public function dms(): float;
 }
