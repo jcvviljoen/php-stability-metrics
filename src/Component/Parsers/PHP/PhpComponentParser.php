@@ -25,9 +25,9 @@ readonly class PhpComponentParser implements ComponentParser
     }
 
     /**
-     * @throws InvalidMetadataException
-     * @throws InvalidFileException
      * @throws InvalidComponentException
+     * @throws InvalidFileException
+     * @throws InvalidMetadataException
      */
     #[Override] public function parse(ModuleList $modules): ComponentCollection
     {

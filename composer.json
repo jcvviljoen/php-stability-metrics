@@ -23,7 +23,7 @@
     "tcds-io/php-jackson": "^1.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^12.0",
+    "phpunit/phpunit": "^13.0",
     "phpstan/phpstan": "^2.1.11",
     "slevomat/coding-standard": "^8.16.2"
   },

@@ -17,10 +17,10 @@ jobs:
           php-version: "8.4"
 
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v6
         with:
           path: vendor
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -31,7 +31,7 @@ jobs:
         run: composer validate --strict
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+        run: composer install --prefer-dist --no-progress
 
       - name: Run test suite
         run: composer tests
