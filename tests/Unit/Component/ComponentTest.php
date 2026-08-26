@@ -25,16 +25,14 @@ class ComponentTest extends TestCase
         $this->assertEquals('Module1', $component->name());
     }
 
-    public function test_given_an_empty_primary_namespace_then_reading_it_throws_exception(): void
+    public function test_given_an_empty_primary_namespace_then_the_component_cannot_be_built(): void
     {
-        $component = new Component(
+        $exception = $this->expectThrows(fn() => new Component(
             'Unknown',
             '',
             MetadataCollection::empty(),
             ThresholdsFactory::default(),
-        );
-
-        $exception = $this->expectThrows(fn() => $component->primaryNamespace());
+        ));
 
         $this->assertEquals(
             InvalidComponentException::onEmptyComponent('Unknown'),

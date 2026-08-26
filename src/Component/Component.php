@@ -10,12 +10,22 @@ use Stability\Component\File\MetadataCollection;
 
 readonly class Component
 {
+    /**
+     * A component with no primary namespace has no classified files in it, which means the
+     * configured path is wrong or everything under it was excluded. There is nothing to
+     * measure either way, so it is rejected here rather than on first use.
+     *
+     * @throws InvalidComponentException
+     */
     public function __construct(
         private string $name,
         private string $primaryNamespace,
         private MetadataCollection $fileData,
         public Thresholds $thresholds,
     ) {
+        if (empty($primaryNamespace)) {
+            throw InvalidComponentException::onEmptyComponent($name);
+        }
     }
 
     public function name(): string
@@ -25,10 +35,6 @@ readonly class Component
 
     public function primaryNamespace(): string
     {
-        if (empty($this->primaryNamespace)) {
-            throw InvalidComponentException::onEmptyComponent($this->name);
-        }
-
         return $this->primaryNamespace;
     }
 
