@@ -41,4 +41,28 @@ class JacksonPhpArrayConfigLoaderTest extends TestCase
 
         $this->assertEquals(InvalidConfigurationException::onMissingConfigFile($config), $exception);
     }
+
+    public function test_given_a_config_when_a_value_cannot_be_mapped_then_throw_exception(): void
+    {
+        $config = __DIR__ . '/_Fixtures/config_invalid_output_option.php';
+
+        $exception = $this->expectThrows(fn() => $this->loader->load($config));
+
+        $this->assertInstanceOf(InvalidConfigurationException::class, $exception);
+        $this->assertStringContainsString("Configuration file \"$config\" could not be read", $exception->getMessage());
+        $this->assertStringContainsString('.outputSettings.option', $exception->getMessage());
+        $this->assertStringContainsString('"xml" is not a valid backing value', $exception->getMessage());
+    }
+
+    public function test_given_a_config_when_it_fails_validation_then_throw_the_original_exception(): void
+    {
+        $config = __DIR__ . '/_Fixtures/config_duplicate_module_name.php';
+
+        $exception = $this->expectThrows(fn() => $this->loader->load($config));
+
+        $this->assertEquals(
+            InvalidConfigurationException::onDuplicateModuleName('Module1')->getMessage(),
+            $exception->getMessage(),
+        );
+    }
 }

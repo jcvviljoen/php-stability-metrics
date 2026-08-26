@@ -1,5 +1,8 @@
 parameters:
     level: max
+    # Analyse against the lowest supported version, so results do not depend on
+    # whichever PHP the suite happens to run on.
+    phpVersion: 80400
     paths:
         - src
         - tests

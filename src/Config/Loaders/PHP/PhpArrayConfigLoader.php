@@ -76,7 +76,7 @@ readonly class PhpArrayConfigLoader implements ConfigLoader
 
         $outputSettings = isset($config['outputSettings'])
             ? new OutputSetting(
-                OutputOption::from(
+                OutputOption::fromArgument(
                     $config['outputSettings']['option'] ?? throw InvalidConfigurationException::onMissingOutputOption(),
                 ),
                 $config['outputSettings']['fileName'] ?? '',

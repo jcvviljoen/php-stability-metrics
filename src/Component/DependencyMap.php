@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stability\Component;
 
-use Stability\Tests\_Fixtures\_TestSrc\Module3\Class3;
-
 readonly class DependencyMap
 {
     /**
@@ -24,8 +22,8 @@ readonly class DependencyMap
      * It is the number of *classes* in **other** components
      * that depend on classes in this component.
      *
-     * @see Class3 As a simple example, `Class3` (component `Module3` in this project's unit test fixtures)
-     * has a fan-in of 1, because `Class1` (component `Module1`) imports `Class3`.
+     * As a simple example, take a component `Module3` holding a single class, which is
+     * imported by one class in component `Module1`. `Module3` has a fan-in of 1.
      */
     public function countFanIn(Component $component): int
     {
@@ -45,9 +43,8 @@ readonly class DependencyMap
      * It is the number of *classes* in **this** component
      * that depend on classes in various other components.
      *
-     * @see Class3 Again, as an example, `Class3` (component `Module3` in this project's unit test fixtures)
-     * has a fan-out of 0, because it has no imports.
-     * However, `Class1` (component `Module1`) has a fan-out of 1, because it imports `Class3`.
+     * Following the same example, `Module3` has a fan-out of 0, because its class imports
+     * nothing, while `Module1` has a fan-out of 1.
      */
     public function countFanOut(Component $component): int
     {

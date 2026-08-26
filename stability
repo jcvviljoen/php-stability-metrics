@@ -6,6 +6,11 @@ declare(strict_types=1);
 use Stability\Component\Parsers\ComponentParserFactory;
 use Stability\Config\ConfigType;
 use Stability\Config\Loaders\ConfigLoaderFactory;
+use Stability\Chart\ChartOption;
+use Stability\Chart\ChartRendererFactory;
+use Stability\Graph\CycleDetector;
+use Stability\Graph\GraphOption;
+use Stability\Graph\GraphRendererFactory;
 use Stability\Output\OutputOption;
 use Stability\Output\OutputSetting;
 use Stability\Output\OutputWriterFactory;
@@ -32,7 +37,7 @@ if (is_file($autoload = __DIR__ . '/vendor/autoload.php')) {
 $console = new ConsoleOutput();
 $args = getopt(
         'i',
-        ['help', 'init', 'config:', 'output:', 'output-path:', 'output-name:', 'debug'],
+        ['help', 'init', 'config:', 'output:', 'output-path:', 'output-name:', 'debug', 'with-graph:', 'with-chart:'],
 );
 
 // Display help message
@@ -46,6 +51,13 @@ if (isset($args['help'])) {
         '<comment>  --output            The output format of the stability results. Can be "console" (default) or "json".</comment>',
         '<comment>  --output-path       The directory <options=bold,underscore>relative to the project\'s base path</> where output results will be written to (when --output supports printing to files).</comment>',
         '<comment>  --output-name       The name of the file that output results will be written to (when --output supports printing to files). Default is `stability-result`</comment>',
+        '<comment>  --with-graph        Generate a dependency graph alongside the stability results.</comment>',
+        '<comment>                      Available renderers: "mermaid" (.mmd), "dot" (Graphviz .dot).</comment>',
+        '<comment>                      The file is written to --output-path (or the current directory if not set).</comment>',
+        '<comment>                      Circular dependencies are highlighted in red and reported to the console.</comment>',
+        '<comment>  --with-chart        Generate a stability chart plotting components against the DMS main sequence.</comment>',
+        '<comment>                      Available renderers: "svg" (.svg).</comment>',
+        '<comment>                      The file is written to --output-path (or the current directory if not set).</comment>',
         '<comment>  --debug             Show debug information (exposes exception stack traces).</comment>',
         '<comment>  --help              Display this help message.</comment>',
     ]);
@@ -107,7 +119,14 @@ try {
 
 // Handle output options specified via CLI if needed (overrides config settings)
 if (isset($args['output']) && 'console' !== $args['output']) {
-    $outputOption = OutputOption::from($args['output']);
+    try {
+        $outputOption = OutputOption::fromArgument($args['output']);
+    } catch (StabilityException $exception) {
+        $exceptionWriter($exception);
+
+        exit(1);
+    }
+
     $outputPath = $args['output-path'] ?? '';
     $outputFileName = $args['output-name'] ?? '';
 
@@ -124,12 +143,60 @@ try {
     $console->writeln('<info>Calculating stability metrics...</info>');
     $console->writeln('');
 
-    $result = new InstabilityAnalyser()->analyse($componentParser->parse($config->modules()));
+    $components = $componentParser->parse($config->modules());
+    $result = new InstabilityAnalyser()->analyse($components);
 
     $outputWriter->outputResult($result);
 
     $console->writeln('');
     $console->writeln('<info>Stability metrics calculated successfully!</info>');
+
+    // Generate dependency graph if requested
+    if (isset($args['with-graph'])) {
+        $graphOption = GraphOption::fromArgument($args['with-graph']);
+        $graphRenderer = GraphRendererFactory::create($graphOption);
+
+        $dependencyMap = $components->dependencyMap();
+        $cycles = CycleDetector::detect($dependencyMap);
+        $rendered = $graphRenderer->render($dependencyMap, $cycles);
+
+        $outputPath = rtrim($args['output-path'] ?? '', DIRECTORY_SEPARATOR);
+        $graphFileName = 'stability-graph.' . $graphRenderer->fileExtension();
+        $graphFilePath = empty($outputPath)
+            ? $graphFileName
+            : $outputPath . DIRECTORY_SEPARATOR . $graphFileName;
+
+        file_put_contents($graphFilePath, $rendered);
+
+        $console->writeln("<info>Dependency graph written to: {$graphFilePath}</info>");
+
+        if (!empty($cycles)) {
+            $console->writeln('');
+            $console->writeln('<error>Circular dependencies detected:</error>');
+
+            foreach ($cycles as $cycle) {
+                $console->writeln('<comment>  ' . implode(' -> ', $cycle) . ' -> ' . $cycle[0] . '</comment>');
+            }
+        }
+    }
+
+    // Generate stability chart if requested
+    if (isset($args['with-chart'])) {
+        $chartOption = ChartOption::fromArgument($args['with-chart']);
+        $chartRenderer = ChartRendererFactory::create($chartOption);
+
+        $rendered = $chartRenderer->render($result);
+
+        $outputPath = rtrim($args['output-path'] ?? '', DIRECTORY_SEPARATOR);
+        $chartFileName = 'stability-chart.' . $chartRenderer->fileExtension();
+        $chartFilePath = empty($outputPath)
+            ? $chartFileName
+            : $outputPath . DIRECTORY_SEPARATOR . $chartFileName;
+
+        file_put_contents($chartFilePath, $rendered);
+
+        $console->writeln("<info>Stability chart written to: {$chartFilePath}</info>");
+    }
 } catch (StabilityException $exception) {
     $exceptionWriter($exception);
 

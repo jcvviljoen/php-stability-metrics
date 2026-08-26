@@ -10,28 +10,33 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [ "8.4", "8.5" ]
+
     steps:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.4"
+          php-version: ${{ matrix.php-version }}
 
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v6
         with:
           path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-php-
+            ${{ runner.os }}-php-${{ matrix.php-version }}-
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+        run: composer install --prefer-dist --no-progress
 
       - name: Run test suite
         run: composer tests
