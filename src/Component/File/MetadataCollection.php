@@ -33,6 +33,9 @@ class MetadataCollection implements IteratorAggregate, Countable
     }
 
     /**
+     * The namespaces of every file that could be classified. Unclassified files have no
+     * namespace to report, so they are left out rather than asked for one.
+     *
      * @return list<string>
      *
      * @throws InvalidMetadataException
@@ -42,7 +45,7 @@ class MetadataCollection implements IteratorAggregate, Countable
         return array_values(
             array_unique(array_map(
                 fn(Metadata $item) => $item->namespace(),
-                $this->items,
+                $this->validValues(),
             )),
         );
     }
@@ -62,6 +65,19 @@ class MetadataCollection implements IteratorAggregate, Countable
         $filtered = array_filter(
             $this->items,
             fn (Metadata $item) => $item->type->isInterface(),
+        );
+
+        return count($filtered);
+    }
+
+    /**
+     * How many files could not be classified, and so count towards nothing.
+     */
+    public function countUnclassified(): int
+    {
+        $filtered = array_filter(
+            $this->items,
+            fn (Metadata $item) => $item->type->isUnknown(),
         );
 
         return count($filtered);

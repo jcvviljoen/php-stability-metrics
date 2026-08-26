@@ -16,13 +16,4 @@ readonly class ComponentDefinitionFactory
             ThresholdsFactory::default(),
         );
     }
-
-    public static function unknown(): ComponentDefinition
-    {
-        return new ComponentDefinition(
-            'Unknown',
-            'Unknown',
-            ThresholdsFactory::default(),
-        );
-    }
 }

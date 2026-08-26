@@ -13,7 +13,6 @@ use Stability\Component\Exception\InvalidComponentException;
 use Stability\Component\File\Exception\InvalidFileException;
 use Stability\Component\File\Exception\InvalidMetadataException;
 use Stability\Component\File\MetadataCollection;
-use Stability\Component\File\Type;
 
 readonly class PhpComponentParser implements ComponentParser
 {
@@ -41,13 +40,10 @@ readonly class PhpComponentParser implements ComponentParser
             $allFileMetadata = MetadataCollection::empty();
 
             foreach ($componentFiles as $file) {
-                $data = $this->fileParser->parse($file);
-
-                if (Type::UNKNOWN === $data->type) {
-                    throw InvalidFileException::onInvalidFileType($file);
-                }
-
-                $allFileMetadata->add($data);
+                // A file the parser cannot classify (a trait, say, or something that is not
+                // a type at all) is kept as unknown and left out of every count, rather
+                // than taken as reason to abandon the whole analysis.
+                $allFileMetadata->add($this->fileParser->parse($file));
             }
 
             $primaryNamespace = $this->namespaceParser->primaryNamespace($allFileMetadata->namespaces());

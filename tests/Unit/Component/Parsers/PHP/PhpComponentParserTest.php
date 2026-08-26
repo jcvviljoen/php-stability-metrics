@@ -9,7 +9,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Stability\Component\ComponentCollection;
 use Stability\Component\ComponentDefinition;
-use Stability\Component\File\Exception\InvalidFileException;
 use Stability\Component\File\Metadata;
 use Stability\Component\Parsers\PHP\PhpClassFileParser;
 use Stability\Component\Parsers\PHP\PhpComponentParser;
@@ -18,12 +17,9 @@ use Stability\Component\Parsers\PHP\PhpNamespaceParser;
 use Stability\Tests\_Fixtures\Component\ComponentDefinitionFactory;
 use Stability\Tests\_Fixtures\Component\ComponentFactory;
 use Stability\Tests\_Fixtures\Component\MetadataFactory;
-use Stability\Tests\ExpectThrows;
 
 class PhpComponentParserTest extends TestCase
 {
-    use ExpectThrows;
-
     private PhpClassFileParser&MockObject $fileParser;
     private PhpFileReader&MockObject $fileReader;
     private PhpNamespaceParser&MockObject $namespaceParser;
@@ -66,21 +62,23 @@ class PhpComponentParserTest extends TestCase
         $this->assertEquals(new ComponentCollection([ComponentFactory::module1()]), $components);
     }
 
-    public function test_given_a_module_when_class_type_is_unknown_then_throw_exception(): void
+    public function test_given_a_file_that_cannot_be_classified_then_leave_it_out_and_carry_on(): void
     {
-        $definitions = [ComponentDefinitionFactory::unknown()];
+        $definitions = [ComponentDefinitionFactory::module1()];
         $componentPaths = array_map(fn(ComponentDefinition $definition) => $definition->path, $definitions);
-        $files = ['Unknown.txt'];
+        $files = ['Class1.php', 'NotAType.txt'];
         $this->setupGetFilesForComponent($componentPaths, $files);
-        $this->setupParseFiles($files, [MetadataFactory::unknown()]);
-
-        $this->expectNotToParsePrimaryNamespace();
-        $exception = $this->expectThrows(fn() => $this->parser->parse($definitions));
-
-        $this->assertEquals(
-            InvalidFileException::onInvalidFileType($files[0]),
-            $exception,
+        $this->setupParseFiles($files, [MetadataFactory::class1(), MetadataFactory::unknown()]);
+        $this->setupParsePrimaryNamespace(
+            // The unclassified file has no namespace to contribute.
+            ['Stability\\Tests\\_Fixtures\\_TestSrc\\Module1'],
+            'Stability\\Tests\\_Fixtures\\_TestSrc\\Module1',
         );
+
+        $component = $this->parser->parse($definitions)->values()[0];
+
+        $this->assertEquals(1, $component->countTotalClasses());
+        $this->assertEquals(1, $component->countUnclassifiedFiles());
     }
 
     /**
@@ -117,12 +115,5 @@ class PhpComponentParserTest extends TestCase
             ->method('primaryNamespace')
             ->with($namespaces)
             ->willReturn($return);
-    }
-
-    private function expectNotToParsePrimaryNamespace(): void
-    {
-        $this->namespaceParser
-            ->expects($this->never())
-            ->method('primaryNamespace');
     }
 }

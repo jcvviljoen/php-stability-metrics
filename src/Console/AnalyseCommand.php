@@ -194,6 +194,13 @@ class AnalyseCommand extends Command
             $output->writeln("<info>Stability chart written to: {$report->chartFile}</info>");
         }
 
+        foreach ($report->unclassifiedFiles as $component => $count) {
+            $output->writeln(
+                "<comment>$component: $count file(s) could not be classified and were left out"
+                . ' of its counts.</comment>',
+            );
+        }
+
         if (!$report->hasCycles()) {
             return;
         }

@@ -20,12 +20,15 @@ readonly class AnalysisReport
      * @param list<list<string>> $cycles Each inner list names the components of one circular dependency.
      * @param string|null $graphFile Where the dependency graph was written, when one was asked for.
      * @param string|null $chartFile Where the stability chart was written, when one was asked for.
+     * @param array<string, int> $unclassifiedFiles How many files were left out, by component name.
+     *  Only components that had any appear here.
      */
     public function __construct(
         public Result $result,
         public array $cycles,
         public ?string $graphFile = null,
         public ?string $chartFile = null,
+        public array $unclassifiedFiles = [],
     ) {
     }
 

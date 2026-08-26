@@ -47,6 +47,15 @@ readonly class Component
         return $this->fileData->countTotalClasses();
     }
 
+    /**
+     * How many of the component's files the parser could not make sense of. They are left
+     * out of every count, so a caller may want to say so rather than quietly drop them.
+     */
+    public function countUnclassifiedFiles(): int
+    {
+        return $this->fileData->countUnclassified();
+    }
+
     public function countUsagesOf(Component $other): int
     {
         if ($this->name === $other->name) {

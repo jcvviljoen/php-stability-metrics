@@ -12,11 +12,4 @@ class InvalidFileException extends StabilityException
     {
         return new self("The file \"$file\" could not be opened for reading.");
     }
-
-    public static function onInvalidFileType(string $file): self
-    {
-        return new self(
-            "The file type of file \"$file\" could not be determined. Perhaps it should be excluded?",
-        );
-    }
 }

@@ -7,6 +7,7 @@ namespace Stability\Application;
 use Stability\Application\Exception\UnwritableFileException;
 use Stability\Chart\ChartOption;
 use Stability\Chart\ChartRendererFactory;
+use Stability\Component\ComponentCollection;
 use Stability\Component\ComponentDefinition;
 use Stability\Component\ComponentParser;
 use Stability\Component\DependencyMap;
@@ -71,7 +72,30 @@ readonly class AnalyseProject
             ? $this->writeChart($request->chart, $settings, $result)
             : null;
 
-        return new AnalysisReport($result, $cycles, $graphFile, $chartFile);
+        return new AnalysisReport($result, $cycles, $graphFile, $chartFile, $this->unclassifiedIn($components));
+    }
+
+    /**
+     * Files the parser could not make sense of, by component. They count towards nothing,
+     * so a caller is given the chance to say so rather than let them go unremarked.
+     *
+     * @return array<string, int>
+     */
+    private function unclassifiedIn(ComponentCollection $components): array
+    {
+        $unclassified = [];
+
+        foreach ($components as $component) {
+            $count = $component->countUnclassifiedFiles();
+
+            if (0 === $count) {
+                continue;
+            }
+
+            $unclassified[$component->name()] = $count;
+        }
+
+        return $unclassified;
     }
 
     /**

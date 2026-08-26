@@ -59,6 +59,18 @@ class AnalyseCommandTest extends TestCase
         $this->assertStringContainsString('Stability metrics calculated successfully!', $display);
     }
 
+    public function test_given_a_file_it_cannot_classify_then_carry_on_and_say_so(): void
+    {
+        // Module3 holds a trait, which the parser does not classify.
+        $this->command->execute(['--config' => self::CONFIG_TEST_SRC]);
+
+        $this->command->assertCommandIsSuccessful();
+        $this->assertStringContainsString(
+            'Module3: 1 file(s) could not be classified',
+            $this->command->getDisplay(),
+        );
+    }
+
     public function test_given_an_absolute_configuration_path_then_it_is_read_as_given(): void
     {
         $this->command->execute(['--config' => $this->projectRoot() . '/' . self::CONFIG_TEST_SRC]);
