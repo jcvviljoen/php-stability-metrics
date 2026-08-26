@@ -120,4 +120,19 @@ class SvgChartRendererTest extends TestCase
             [new StableDependencyMetric(ComponentFactory::module1(), $zone, 0.5, 0.5, 0.0)],
         );
     }
+
+    public function test_given_result_then_zone_shading_only_covers_the_threshold_corners(): void
+    {
+        $output = $this->renderer->render(StabilityResultFactory::testSource());
+
+        // D >= 0.7 puts each zone in a corner: 30% of the plot on each axis, not half of it.
+        $this->assertStringContainsString(
+            '<polygon points="70,470 202,470 70,344" fill="#f44336"',
+            $output,
+        );
+        $this->assertStringContainsString(
+            '<polygon points="510,50 378,50 510,176" fill="#ff9800"',
+            $output,
+        );
+    }
 }

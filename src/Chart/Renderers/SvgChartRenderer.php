@@ -13,6 +13,11 @@ use Stability\Metric\ZoneType;
 /**
  * Renders an SVG scatter plot of component stability metrics against the DMS main sequence.
  *
+ * Zone shading marks where a component would be classified as painful or useless at the
+ * default threshold. Thresholds are configurable per component, and one chart can only
+ * draw one boundary, so read the dot colours for the classification each component
+ * actually received.
+ *
  * Each component is plotted at (Instability, Abstractness) and colour-coded by zone:
  *   - Green = perfectly balanced (on or near the main sequence)
  *   - Blue = useful (stable and abstract)
@@ -31,6 +36,7 @@ readonly class SvgChartRenderer implements ChartRenderer
     private const int PLOT_BOTTOM = 470;
     private const int PLOT_WIDTH = 440; // PLOT_RIGHT - PLOT_LEFT
     private const int PLOT_HEIGHT = 420; // PLOT_BOTTOM - PLOT_TOP
+    private const float ZONE_THRESHOLD = 0.7;
 
     #[Override] public function render(Result $result): string
     {
@@ -45,7 +51,8 @@ readonly class SvgChartRenderer implements ChartRenderer
         $lines[] = '<rect width="100%" height="100%" fill="#ffffff"/>';
         $lines[] = sprintf(
             '<text x="%d" y="30" text-anchor="middle" font-family="sans-serif"'
-            . ' font-size="16" font-weight="bold" fill="#333">Stability Metrics — Main Sequence</text>',
+            . ' font-size="16" font-weight="bold" fill="#333">Stability Metrics against the Main'
+            . ' Sequence</text>',
             intdiv(self::SVG_WIDTH, 2),
         );
         $lines[] = $this->renderZoneShading();
@@ -88,29 +95,33 @@ readonly class SvgChartRenderer implements ChartRenderer
         $r = self::PLOT_RIGHT;
         $b = self::PLOT_BOTTOM;
 
-        // Zone of Pain: lower-left triangle (near I=0, A=0 corner).
-        // The main sequence runs top-left → bottom-right, so the triangle
-        // formed by the bottom-left, top-left, and bottom-right corners sits
-        // entirely below (and to the left of) the line.
+        // A component is painful or useless once its distance from the main sequence
+        // reaches the threshold, which puts both zones in a corner rather than over a
+        // whole half of the plot: D >= 0.7 means A + I <= 0.3 or A + I >= 1.7.
+        $span = 1.0 - self::ZONE_THRESHOLD;
+        $width = (int) round($span * self::PLOT_WIDTH);
+        $height = (int) round($span * self::PLOT_HEIGHT);
+
+        // Zone of Pain: the corner nearest I=0, A=0.
         $pain = sprintf(
             '<polygon points="%d,%d %d,%d %d,%d" fill="#f44336" fill-opacity="0.08"/>',
             $l,
             $b,
-            $l,
-            $t,
-            $r,
+            $l + $width,
             $b,
+            $l,
+            $b - $height,
         );
 
-        // Zone of Uselessness: upper-right triangle (near I=1, A=1 corner).
+        // Zone of Uselessness: the corner nearest I=1, A=1.
         $useless = sprintf(
             '<polygon points="%d,%d %d,%d %d,%d" fill="#ff9800" fill-opacity="0.08"/>',
-            $l,
-            $t,
             $r,
             $t,
+            $r - $width,
+            $t,
             $r,
-            $b,
+            $t + $height,
         );
 
         return $pain . "\n" . $useless;

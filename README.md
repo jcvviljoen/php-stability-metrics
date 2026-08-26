@@ -1,7 +1,7 @@
 # Stability
 #### PHP Stable Dependency Metrics Analyser
 
-![Project's current stability result](stability-result-2024-08-27.png)
+![Project's current stability result](stability-result-2026-08-26.png)
 
 ## Overview
 
@@ -83,7 +83,30 @@ dot -Tsvg stability-graph.dot -o stability-graph.svg
 
 The stability chart (`stability-chart.svg`) plots each component at its abstractness and instability,
 with the main sequence drawn as a diagonal. Dots are coloured by zone, and hovering over one shows
-the component's name and its metrics.
+the component's name and its metrics. The shaded corners mark where a component crosses into a zone
+at the default threshold, which is what the image at the top of this file shows.
+
+Here is what the graph looks like for this project, cycle and all:
+
+```mermaid
+graph LR
+    Chart
+    Component
+    Config
+    node_Graph["Graph"]
+    Metric
+    Output
+    Chart --> Metric
+    Component --> Config
+    Config --> Output
+    node_Graph --> Component
+    Metric --> Component
+    Output --> Metric
+    style Output fill:#ff6b6b,stroke:#cc0000,color:#fff
+    style Config fill:#ff6b6b,stroke:#cc0000,color:#fff
+    style Component fill:#ff6b6b,stroke:#cc0000,color:#fff
+    style Metric fill:#ff6b6b,stroke:#cc0000,color:#fff
+```
 
 ### Configuration fields
 
