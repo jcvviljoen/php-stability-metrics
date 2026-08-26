@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stability\Application\Exception;
 
-use Stability\StabilityException;
+use Stability\Shared\StabilityException;
 
 class UnwritableFileException extends StabilityException
 {

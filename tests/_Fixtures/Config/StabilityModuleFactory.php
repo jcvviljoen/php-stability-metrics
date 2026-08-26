@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stability\Tests\_Fixtures\Config;
 
-use Stability\Config\Loaders\StabilityModule;
+use Stability\Config\StabilityModule;
 
 readonly class StabilityModuleFactory
 {

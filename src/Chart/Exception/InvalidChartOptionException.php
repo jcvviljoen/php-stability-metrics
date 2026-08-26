@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stability\Chart\Exception;
 
 use Stability\Chart\ChartOption;
-use Stability\StabilityException;
+use Stability\Shared\StabilityException;
 
 class InvalidChartOptionException extends StabilityException
 {

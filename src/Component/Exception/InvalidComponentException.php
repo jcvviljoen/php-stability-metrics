@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stability\Component\Exception;
 
-use Stability\StabilityException;
+use Stability\Shared\StabilityException;
 
 class InvalidComponentException extends StabilityException
 {

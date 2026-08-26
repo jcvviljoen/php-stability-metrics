@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Stability\Config\Loaders;
+namespace Stability\Config;
 
 use Override;
-use Stability\Config\Module;
 
 readonly class StabilityModule implements Module
 {

@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Stability\Config\Loaders;
+namespace Stability\Config;
 
 use Override;
 use Stability\Config\Exception\InvalidConfigurationException;
-use Stability\Config\Module;
-use Stability\Config\ModuleList;
 use Traversable;
 
 readonly class StabilityModuleList implements ModuleList

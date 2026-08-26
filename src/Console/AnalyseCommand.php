@@ -14,7 +14,7 @@ use Stability\Chart\ChartOption;
 use Stability\Config\OutputOption;
 use Stability\Graph\GraphOption;
 use Stability\Output\OutputWriterFactory;
-use Stability\StabilityException;
+use Stability\Shared\StabilityException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Stability\Config\Loaders;
+namespace Stability\Config;
 
 use Override;
-use Stability\Config\Config;
-use Stability\Config\OutputSetting;
 
+/**
+ * The configuration as the file described it, which is all this reports. What the effective
+ * settings for a run are, once a caller has had its say, is the application layer's to work
+ * out.
+ */
 readonly class StabilityConfig implements Config
 {
     private OutputSetting $outputSettings;

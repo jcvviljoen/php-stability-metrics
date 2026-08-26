@@ -7,8 +7,8 @@ namespace Stability\Config\Loaders\PHP;
 use Override;
 use Stability\Config\ConfigLoader;
 use Stability\Config\Exception\InvalidConfigurationException;
-use Stability\Config\Loaders\StabilityConfig;
-use Stability\StabilityException;
+use Stability\Config\StabilityConfig;
+use Stability\Shared\StabilityException;
 use Tcds\Io\Jackson\ArrayObjectMapper;
 use Throwable;
 

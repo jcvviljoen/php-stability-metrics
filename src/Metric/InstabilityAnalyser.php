@@ -2,15 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stability;
+namespace Stability\Metric;
 
 use Stability\Component\Component;
 use Stability\Component\ComponentCollection;
 use Stability\Component\DependencyMap;
-use Stability\Metric\Calculator;
-use Stability\Metric\Result;
-use Stability\Metric\StabilityResult;
-use Stability\Metric\StableDependencyMetric;
 
 readonly class InstabilityAnalyser
 {

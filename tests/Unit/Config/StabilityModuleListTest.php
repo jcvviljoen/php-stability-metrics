@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stability\Tests\Unit\Config\Loaders;
+namespace Stability\Tests\Unit\Config;
 
 use PHPUnit\Framework\TestCase;
 use Stability\Config\Exception\InvalidConfigurationException;
-use Stability\Config\Loaders\StabilityModuleList;
+use Stability\Config\StabilityModuleList;
 use Stability\Tests\_Fixtures\Config\StabilityModuleFactory;
 use Stability\Tests\ExpectThrows;
 

@@ -12,7 +12,7 @@ use Stability\Component\Parsers\ComponentParserFactory;
 use Stability\Config\ConfigType;
 use Stability\Config\Loaders\ConfigLoaderFactory;
 use Stability\Console\AnalyseCommand;
-use Stability\InstabilityAnalyser;
+use Stability\Metric\InstabilityAnalyser;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Stability\Tests\_Fixtures\Config;
 
 use Stability\Config\Config;
-use Stability\Config\Loaders\StabilityConfig;
-use Stability\Config\Loaders\StabilityModuleList;
 use Stability\Config\OutputSetting;
+use Stability\Config\StabilityConfig;
+use Stability\Config\StabilityModuleList;
 
 readonly class StabilityConfigFactory
 {

@@ -19,10 +19,10 @@ use Stability\Config\OutputSetting;
 use Stability\Graph\CycleDetector;
 use Stability\Graph\GraphOption;
 use Stability\Graph\GraphRendererFactory;
-use Stability\InstabilityAnalyser;
+use Stability\Metric\InstabilityAnalyser;
 use Stability\Metric\Result;
 use Stability\Output\OutputWriterFactory;
-use Stability\StabilityException;
+use Stability\Shared\StabilityException;
 
 /**
  * One full pass of the analysis: read the configuration, parse the components it names,

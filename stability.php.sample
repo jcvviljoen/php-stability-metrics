@@ -1,7 +1,7 @@
 <?php
 
-use \Stability\Config\Loaders\StabilityConfig;
-use \Stability\Config\Loaders\StabilityModule;
+use \Stability\Config\StabilityConfig;
+use \Stability\Config\StabilityModule;
 
 /**
  * @see StabilityConfig

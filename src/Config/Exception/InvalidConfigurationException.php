@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stability\Config\Exception;
 
-use Stability\StabilityException;
+use Stability\Shared\StabilityException;
 use Throwable;
 
 class InvalidConfigurationException extends StabilityException

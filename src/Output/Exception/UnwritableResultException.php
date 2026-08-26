@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stability\Output\Exception;
 
-use Stability\StabilityException;
+use Stability\Shared\StabilityException;
 
 /**
  * The Application component owns an exception for the files it writes itself. Sharing one

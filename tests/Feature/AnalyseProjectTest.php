@@ -14,7 +14,7 @@ use Stability\Config\ConfigLoader;
 use Stability\Config\OutputOption;
 use Stability\Config\OutputSetting;
 use Stability\Graph\GraphOption;
-use Stability\InstabilityAnalyser;
+use Stability\Metric\InstabilityAnalyser;
 use Stability\Output\OutputWriterFactory;
 use Stability\Tests\_Fixtures\Component\ComponentFactory;
 use Stability\Tests\_Fixtures\Config\StabilityConfigFactory;
