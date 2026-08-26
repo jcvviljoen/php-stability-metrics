@@ -13,8 +13,8 @@ readonly class StableDependencyMetric implements ComponentMetric, JsonSerializab
     private const int FORMAT_PRECISION = 2;
 
     public function __construct(
-        #[Override] public Component $component,
-        #[Override] public ZoneType $zone,
+        public Component $component,
+        public ZoneType $zone,
         private float $abstractness,
         private float $instability,
         private float $dms,
