@@ -163,6 +163,27 @@ class AnalyseCommandTest extends TestCase
         $this->assertStringContainsString('CycleB', $display);
     }
 
+    public function test_given_fail_on_cycles_when_a_cycle_is_found_then_fail(): void
+    {
+        $this->command->execute([
+            '--config' => self::CONFIG_CYCLIC,
+            '--fail-on-cycles' => true,
+        ]);
+
+        $this->assertSame(Command::FAILURE, $this->command->getStatusCode());
+        $this->assertStringContainsString('Circular dependencies detected:', $this->command->getDisplay());
+    }
+
+    public function test_given_fail_on_cycles_when_there_are_none_then_succeed(): void
+    {
+        $this->command->execute([
+            '--config' => self::CONFIG_TEST_SRC,
+            '--fail-on-cycles' => true,
+        ]);
+
+        $this->command->assertCommandIsSuccessful();
+    }
+
     public function test_given_init_when_no_configuration_exists_then_create_one(): void
     {
         $command = new CommandTester($this->commandFor($this->temporaryDirectory));

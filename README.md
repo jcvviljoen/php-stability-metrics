@@ -54,6 +54,7 @@ Various arguments are also supported (don't worry, any invalid setup will guide 
 - `--output-name`: The name of the output file (_defaults to `stability-result`_)
 - `--with-graph`: Also render a dependency graph, either `mermaid` or `dot`
 - `--with-chart`: Also render a stability chart, currently only `svg`
+- `--fail-on-cycles`: Exit with a failure when a circular dependency is found, for use in a build
 - `--debug`: Enable debug output (exposes exception stack traces)
 
 For example, you can specify a custom configuration file (as long as it is a supported format):
@@ -120,6 +121,11 @@ graph LR
 nothing depends on them, so they carry an instability of 1 or close to it. That is where the
 translation from configuration into components lives, which is what lets `Component` and
 `Config` stay ignorant of each other and keeps the graph acyclic.
+
+This is not a claim you have to take on trust. The configuration in
+[stability.php](stability.php) covers every directory under `src`, and `composer tests` runs
+`stability --fail-on-cycles` against it, so a pull request that introduces a cycle between
+these components fails its build.
 
 ### Configuration fields
 

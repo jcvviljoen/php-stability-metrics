@@ -84,6 +84,12 @@ class AnalyseCommand extends Command
                 'Also render a stability chart against the main sequence. Available renderers: "svg" (.svg).',
             )
             ->addOption(
+                'fail-on-cycles',
+                null,
+                InputOption::VALUE_NONE,
+                'Exit with a failure when a circular dependency is found, for use in a build.',
+            )
+            ->addOption(
                 'debug',
                 null,
                 InputOption::VALUE_NONE,
@@ -122,6 +128,10 @@ class AnalyseCommand extends Command
         }
 
         $this->reportOn($report, $output);
+
+        if ($report->hasCycles() && true === $input->getOption('fail-on-cycles')) {
+            return self::FAILURE;
+        }
 
         return self::SUCCESS;
     }
