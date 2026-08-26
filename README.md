@@ -1,7 +1,7 @@
 # Stability
 #### PHP Stable Dependency Metrics Analyser
 
-![Project's current stability result](stability-result-2026-08-26.png)
+![Stability's own components plotted against the main sequence](docs/stability-chart.svg)
 
 ## Overview
 
@@ -182,6 +182,28 @@ A higher value indicates more unstable components
 
 Combines abstractness and instability to determine how far
 a component is from the ideal balance of being abstract and stable.
+
+### Reading a bad score honestly
+
+The chart at the top of this file puts one of Stability's own components, `Component`, in
+the Zone of Pain. That is not an oversight, and it is worth explaining, because you will
+meet the same reading in your own projects.
+
+`Component` is the domain core here. Plenty depends on it, it depends on almost nothing, and
+it is made of concrete classes. By the Stable Abstractions Principle that is exactly the
+combination the metric is built to flag: something this stable should be abstract, so that
+it can be extended without being modified.
+
+Martin's own answer is that the corner has legitimate residents. His example is a string
+library: highly stable, entirely concrete, and nothing to worry about, because it is not
+volatile. The question the metric asks is not "is this concrete and stable?" but "is this
+concrete, stable, and likely to change?". A domain core made of value objects and entities
+answers yes to the first and no to the second.
+
+So use the number as a prompt, not a verdict. Where a stable concrete component does turn
+out to be volatile, the metric has found something real. Where it does not, write down why,
+and move on. What is worth failing a build over is a cycle, because there is no reading of
+the Acyclic Dependencies Principle under which one is fine.
 
 You can read more about the principles being applied in the [CLEAN_ARCHITECTURE](CLEAN_ARCHITECTURE.md) file.
 

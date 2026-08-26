@@ -50,14 +50,16 @@
             "@test:unit",
             "@test:stability"
         ],
-        "test:stability": "php stability --fail-on-cycles"
+        "test:stability": "php stability --fail-on-cycles",
+        "docs:chart": "php stability --with-chart svg --output-path docs"
     },
     "scripts-descriptions": {
         "test:cs": "Run PHP Code Sniffer to check standards (does not fix!).",
         "test:stan": "Run PHPStan to check for static analysis errors.",
         "test:unit": "Run PHPUnit to run unit tests.",
         "tests": "Run all tests.",
-        "test:stability": "Run this project through its own analysis, failing on a circular dependency."
+        "test:stability": "Run this project through its own analysis, failing on a circular dependency.",
+        "docs:chart": "Regenerate the stability chart used in the README."
     },
     "config": {
         "allow-plugins": {
