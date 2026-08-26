@@ -1,7 +1,8 @@
-stability.php
 stability-result.json
 stability-chart.*
 stability-graph.*
+# ...except the one the README uses, which `composer docs:chart` regenerates.
+!/docs/stability-chart.svg
 .phpunit.result.cache
 /.idea/
 /vendor/

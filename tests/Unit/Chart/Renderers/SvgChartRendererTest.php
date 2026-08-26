@@ -11,7 +11,6 @@ use Stability\Metric\Result;
 use Stability\Metric\StabilityResult;
 use Stability\Metric\StableDependencyMetric;
 use Stability\Metric\ZoneType;
-use Stability\Tests\_Fixtures\Component\ComponentFactory;
 use Stability\Tests\_Fixtures\Metric\StabilityResultFactory;
 
 class SvgChartRendererTest extends TestCase
@@ -117,7 +116,7 @@ class SvgChartRendererTest extends TestCase
     private function makeResult(ZoneType $zone): Result
     {
         return new StabilityResult(
-            [new StableDependencyMetric(ComponentFactory::module1(), $zone, 0.5, 0.5, 0.0)],
+            [new StableDependencyMetric('Module1', $zone, 0.5, 0.5, 0.0)],
         );
     }
 

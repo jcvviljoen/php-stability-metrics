@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stability\Tests\Unit\Config\Loaders;
+namespace Stability\Tests\Unit\Config;
 
 use PHPUnit\Framework\TestCase;
 use Stability\Config\Exception\InvalidConfigurationException;
-use Stability\Config\Loaders\StabilityModuleList;
+use Stability\Config\StabilityModuleList;
 use Stability\Tests\_Fixtures\Config\StabilityModuleFactory;
 use Stability\Tests\ExpectThrows;
 
@@ -26,12 +26,11 @@ class StabilityModuleListTest extends TestCase
         );
     }
 
-    public function test_given_a_module_list_when_module_name_exists_then_adding_module_throws_exception(): void
+    public function test_given_two_modules_of_the_same_name_then_list_throws_exception(): void
     {
         $module = StabilityModuleFactory::module1();
-        $modules = new StabilityModuleList([$module]);
 
-        $exception = $this->expectThrows(fn() => $modules->add($module));
+        $exception = $this->expectThrows(fn() => new StabilityModuleList([$module, $module]));
 
         $this->assertEquals(
             InvalidConfigurationException::onDuplicateModuleName('Module1'),

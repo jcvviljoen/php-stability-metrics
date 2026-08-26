@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Stability\Output\Exception;
+namespace Stability\Config\Exception;
 
-use Stability\Output\OutputOption;
-use Stability\StabilityException;
+use Stability\Config\OutputOption;
+use Stability\Shared\StabilityException;
 
 class InvalidOutputOptionException extends StabilityException
 {

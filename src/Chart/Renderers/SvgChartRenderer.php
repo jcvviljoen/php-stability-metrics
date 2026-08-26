@@ -38,6 +38,9 @@ readonly class SvgChartRenderer implements ChartRenderer
     private const int PLOT_HEIGHT = 420; // PLOT_BOTTOM - PLOT_TOP
     private const float ZONE_THRESHOLD = 0.7;
 
+    // Only the hover text is rounded. Dots are placed at full precision.
+    private const int TOOLTIP_PRECISION = 2;
+
     #[Override] public function render(Result $result): string
     {
         $lines = [];
@@ -232,20 +235,22 @@ readonly class SvgChartRenderer implements ChartRenderer
 
     private function renderDot(ComponentMetric $metric): string
     {
-        $instability = (float) $metric->instability();
-        $abstractness = (float) $metric->abstractness();
-        $name = htmlspecialchars($metric->component->name(), ENT_XML1);
+        $instability = $metric->instability();
+        $abstractness = $metric->abstractness();
+        $name = htmlspecialchars($metric->componentName, ENT_XML1);
         $zone = htmlspecialchars($metric->zone->description(), ENT_XML1);
-        $dms = $metric->dms();
 
         $cx = self::PLOT_LEFT + (int) round($instability * self::PLOT_WIDTH);
         $cy = self::PLOT_TOP + (int) round((1.0 - $abstractness) * self::PLOT_HEIGHT);
         $color = $this->zoneColor($metric->zone);
 
-        $tooltip = htmlspecialchars(
-            "{$name} | I={$metric->instability()} A={$metric->abstractness()} D={$dms} | {$zone}",
-            ENT_XML1,
+        $values = sprintf(
+            'I=%s A=%s D=%s',
+            number_format($instability, self::TOOLTIP_PRECISION),
+            number_format($abstractness, self::TOOLTIP_PRECISION),
+            number_format($metric->dms(), self::TOOLTIP_PRECISION),
         );
+        $tooltip = htmlspecialchars("{$name} | {$values} | {$zone}", ENT_XML1);
 
         $lines = [];
         $lines[] = '<g>';

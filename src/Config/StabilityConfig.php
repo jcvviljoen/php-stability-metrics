@@ -2,18 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Stability\Config\Loaders;
+namespace Stability\Config;
 
 use Override;
-use Stability\Config\Config;
-use Stability\Output\OutputSetting;
 
-class StabilityConfig implements Config
+/**
+ * The configuration as the file described it, which is all this reports. What the effective
+ * settings for a run are, once a caller has had its say, is the application layer's to work
+ * out.
+ */
+readonly class StabilityConfig implements Config
 {
     private OutputSetting $outputSettings;
 
     public function __construct(
-        private readonly StabilityModuleList $modules,
+        private StabilityModuleList $modules,
         ?OutputSetting $outputSettings = null,
     ) {
         $this->outputSettings = $outputSettings ?? OutputSetting::default();
@@ -27,10 +30,5 @@ class StabilityConfig implements Config
     #[Override] public function outputSettings(): OutputSetting
     {
         return $this->outputSettings;
-    }
-
-    #[Override] public function overrideOutputSettings(OutputSetting $outputSettings): void
-    {
-        $this->outputSettings = $outputSettings;
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Stability\Graph\Exception;
 
 use Stability\Graph\GraphOption;
-use Stability\StabilityException;
+use Stability\Shared\StabilityException;
 
 class InvalidGraphOptionException extends StabilityException
 {

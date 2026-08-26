@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Stability\Tests\Unit;
+namespace Stability\Tests\Unit\Metric;
 
 use Override;
 use PHPUnit\Framework\TestCase;
 use Stability\Component\ComponentCollection;
-use Stability\InstabilityAnalyser;
+use Stability\Metric\InstabilityAnalyser;
 use Stability\Tests\_Fixtures\Component\ComponentFactory;
 use Stability\Tests\_Fixtures\Metric\StabilityResultFactory;
 

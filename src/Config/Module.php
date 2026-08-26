@@ -29,7 +29,7 @@ interface Module
     /**
      * Define the components within the module to be excluded from the stability check.
      *
-     * @return array<string> $exclude
+     * @return list<string> $exclude
      */
     public function exclude(): array;
 }

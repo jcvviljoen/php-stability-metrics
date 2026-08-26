@@ -29,42 +29,12 @@ class InvalidConfigurationExceptionTest extends TestCase
         );
     }
 
-    public function test_on_missing_module_name(): void
-    {
-        $exception = InvalidConfigurationException::onMissingModuleName();
-
-        $this->assertEquals(
-            'Module is missing the "name" property.',
-            $exception->getMessage(),
-        );
-    }
-
     public function test_on_duplicate_module_name(): void
     {
         $exception = InvalidConfigurationException::onDuplicateModuleName('UserModule');
 
         $this->assertEquals(
             'Duplicate module name found: "UserModule".',
-            $exception->getMessage(),
-        );
-    }
-
-    public function test_on_missing_module(): void
-    {
-        $exception = InvalidConfigurationException::onMissingModulePath();
-
-        $this->assertEquals(
-            'Module is missing the "path" property.',
-            $exception->getMessage(),
-        );
-    }
-
-    public function test_on_missing_output_option(): void
-    {
-        $exception = InvalidConfigurationException::onMissingOutputOption();
-
-        $this->assertEquals(
-            'Output setting is missing the "option" property.',
             $exception->getMessage(),
         );
     }

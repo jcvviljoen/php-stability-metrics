@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stability\Tests\Unit\Output;
+namespace Stability\Tests\Unit\Config;
 
 use PHPUnit\Framework\TestCase;
-use Stability\Output\Exception\InvalidOutputOptionException;
-use Stability\Output\OutputOption;
+use Stability\Config\Exception\InvalidOutputOptionException;
+use Stability\Config\OutputOption;
 
 class OutputOptionTest extends TestCase
 {

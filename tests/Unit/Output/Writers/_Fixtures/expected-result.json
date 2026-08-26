@@ -1,25 +1,25 @@
 {
-  "stableDependencyMetrics": [
-    {
-      "abstractness": "0.67",
-      "component": "Module1",
-      "dms": "0.17",
-      "instability": "0.50",
-      "zone": "USEFULNESS"
-    },
-    {
-      "abstractness": "0.50",
-      "component": "Module2",
-      "dms": "0.50",
-      "instability": "1.00",
-      "zone": "USEFULNESS"
-    },
-    {
-      "abstractness": "0.00",
-      "component": "Module3",
-      "dms": "1.00",
-      "instability": "0.00",
-      "zone": "PAIN"
-    }
-  ]
+    "stableDependencyMetrics": [
+        {
+            "component": "Module1",
+            "zone": "USEFULNESS",
+            "abstractness": 0.6666666666666666,
+            "instability": 0.5,
+            "dms": 0.16666666666666652
+        },
+        {
+            "component": "Module2",
+            "zone": "USEFULNESS",
+            "abstractness": 0.5,
+            "instability": 1,
+            "dms": 0.5
+        },
+        {
+            "component": "Module3",
+            "zone": "PAIN",
+            "abstractness": 0,
+            "instability": 0,
+            "dms": 1
+        }
+    ]
 }

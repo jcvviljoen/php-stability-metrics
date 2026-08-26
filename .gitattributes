@@ -8,7 +8,8 @@ phpcs.xml export-ignore
 phpstan.neon export-ignore
 
 # Exclude project-specific or temporary files
-stability-result-2026-08-26.png export-ignore
+stability.php export-ignore
+/docs export-ignore
 
 # Exclude Git and Composer metadata
 .gitignore export-ignore

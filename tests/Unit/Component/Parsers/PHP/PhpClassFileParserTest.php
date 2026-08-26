@@ -44,6 +44,22 @@ class PhpClassFileParserTest extends TestCase
         );
     }
 
+    public function test_given_a_path_when_file_is_an_abstract_readonly_class_then_parse(): void
+    {
+        $file = __DIR__ . '/_Fixtures/Parsing/Abstraction/AbstractReadonlyClass.php';
+
+        $classData = $this->parser->parse($file);
+
+        $this->assertEquals(
+            new Metadata(
+                Type::ABSTRACT_CLASS,
+                'Stability\Tests\Unit\Component\Parsers\PHP\_Fixtures\Parsing\Abstraction',
+                [],
+            ),
+            $classData,
+        );
+    }
+
     public function test_given_a_path_when_file_is_interface_then_parse(): void
     {
         $file = __DIR__ . '/_Fixtures/Parsing/Abstraction/TestInterface.php';

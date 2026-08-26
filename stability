@@ -3,22 +3,18 @@
 
 declare(strict_types=1);
 
+use Stability\Application\AnalyseProject;
+use Stability\Application\InitialiseConfig;
 use Stability\Component\Parsers\ComponentParserFactory;
 use Stability\Config\ConfigType;
 use Stability\Config\Loaders\ConfigLoaderFactory;
-use Stability\Chart\ChartOption;
-use Stability\Chart\ChartRendererFactory;
-use Stability\Graph\CycleDetector;
-use Stability\Graph\GraphOption;
-use Stability\Graph\GraphRendererFactory;
-use Stability\Output\OutputOption;
-use Stability\Output\OutputSetting;
-use Stability\Output\OutputWriterFactory;
-use Stability\InstabilityAnalyser;
-use Stability\StabilityException;
-use Symfony\Component\Console\Output\ConsoleOutput;
+use Stability\Console\AnalyseCommand;
+use Stability\Metric\InstabilityAnalyser;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\CommandLoader\FactoryCommandLoader;
 
-// Autoload dependencies
+// Autoload dependencies, and work out where the project being analysed lives: this
+// directory when working on Stability itself, or the root of whatever installed it.
 if (is_file($autoload = __DIR__ . '/vendor/autoload.php')) {
     require_once $autoload;
     $basePath = __DIR__;
@@ -33,172 +29,23 @@ if (is_file($autoload = __DIR__ . '/vendor/autoload.php')) {
     exit(1);
 }
 
-// Set up console and arguments
-$console = new ConsoleOutput();
-$args = getopt(
-        'i',
-        ['help', 'init', 'config:', 'output:', 'output-path:', 'output-name:', 'debug', 'with-graph:', 'with-chart:'],
+$command = new AnalyseCommand(
+    $basePath,
+    new AnalyseProject(
+        ConfigLoaderFactory::create(ConfigType::PHP_ARRAY),
+        ComponentParserFactory::create(),
+        new InstabilityAnalyser(),
+    ),
+    new InitialiseConfig(__DIR__ . '/stability.php.sample'),
 );
 
-// Display help message
-if (isset($args['help'])) {
-    $console->writeln([
-        '<info>Usage: stability [options]</info>',
-        '',
-        '<info>Options:</info>',
-        '<comment>  -i, --init          Create the standard stability configuration file.</comment>',
-        '<comment>  --config            Path to a custom stability configuration file.</comment>',
-        '<comment>  --output            The output format of the stability results. Can be "console" (default) or "json".</comment>',
-        '<comment>  --output-path       The directory <options=bold,underscore>relative to the project\'s base path</> where output results will be written to (when --output supports printing to files).</comment>',
-        '<comment>  --output-name       The name of the file that output results will be written to (when --output supports printing to files). Default is `stability-result`</comment>',
-        '<comment>  --with-graph        Generate a dependency graph alongside the stability results.</comment>',
-        '<comment>                      Available renderers: "mermaid" (.mmd), "dot" (Graphviz .dot).</comment>',
-        '<comment>                      The file is written to --output-path (or the current directory if not set).</comment>',
-        '<comment>                      Circular dependencies are highlighted in red and reported to the console.</comment>',
-        '<comment>  --with-chart        Generate a stability chart plotting components against the DMS main sequence.</comment>',
-        '<comment>                      Available renderers: "svg" (.svg).</comment>',
-        '<comment>                      The file is written to --output-path (or the current directory if not set).</comment>',
-        '<comment>  --debug             Show debug information (exposes exception stack traces).</comment>',
-        '<comment>  --help              Display this help message.</comment>',
-    ]);
+$application = new Application('Stability');
 
-    exit(0);
-}
+// Registered through a loader rather than added directly, because the method for adding
+// one has been renamed across the Symfony Console versions this package supports.
+$application->setCommandLoader(new FactoryCommandLoader([
+    'stability' => fn() => $command,
+]));
+$application->setDefaultCommand('stability', true);
 
-// Find configuration file location
-if (isset($args['config'])) {
-    $stabilityFile = $basePath . '/' . $args['config'];
-} else {
-    $stabilityFile = $basePath . '/stability.php';
-}
-
-// Handle initialization
-if (isset($args['i']) || isset($args['init'])) {
-    if (!is_file($stabilityFile)) {
-        copy(__DIR__ . '/stability.php.sample', $stabilityFile);
-
-        $console->writeln('<info>Stability configuration file created successfully!</info>');
-
-        exit(0);
-    }
-
-    $console->writeln('<info>Stability configuration file already exists!</info>');
-
-    exit(0);
-}
-
-// Define how to handle exceptions
-$exceptionWriter = function (StabilityException $exception) use ($console, $args): void {
-    $console->writeln("<error>{$exception->getMessage()}</error>");
-
-    if (isset($args['debug'])) {
-        $console->writeln([
-            '',
-            '<error>Stack trace:</error>',
-            '<info>' . $exception->getTraceAsString() . '</info>',
-        ]);
-    }
-};
-
-// Load configuration
-if (!is_file($stabilityFile)) {
-    $console->writeln(
-            '<error>Configuration file not found. Please run `stability --init (-i)` or point to a custom file using `--config`.</error>',
-    );
-
-    exit(1);
-}
-
-try {
-    $config = ConfigLoaderFactory::create(ConfigType::PHP_ARRAY)->load($stabilityFile);
-} catch (StabilityException $exception) {
-    $exceptionWriter($exception);
-
-    exit(1);
-}
-
-// Handle output options specified via CLI if needed (overrides config settings)
-if (isset($args['output']) && 'console' !== $args['output']) {
-    try {
-        $outputOption = OutputOption::fromArgument($args['output']);
-    } catch (StabilityException $exception) {
-        $exceptionWriter($exception);
-
-        exit(1);
-    }
-
-    $outputPath = $args['output-path'] ?? '';
-    $outputFileName = $args['output-name'] ?? '';
-
-    $config->overrideOutputSettings(new OutputSetting($outputOption, $outputPath, $outputFileName));
-}
-
-// Create file parser
-$componentParser = ComponentParserFactory::create();
-
-// Create output writer
-$outputWriter = OutputWriterFactory::create($config->outputSettings());
-
-try {
-    $console->writeln('<info>Calculating stability metrics...</info>');
-    $console->writeln('');
-
-    $components = $componentParser->parse($config->modules());
-    $result = new InstabilityAnalyser()->analyse($components);
-
-    $outputWriter->outputResult($result);
-
-    $console->writeln('');
-    $console->writeln('<info>Stability metrics calculated successfully!</info>');
-
-    // Generate dependency graph if requested
-    if (isset($args['with-graph'])) {
-        $graphOption = GraphOption::fromArgument($args['with-graph']);
-        $graphRenderer = GraphRendererFactory::create($graphOption);
-
-        $dependencyMap = $components->dependencyMap();
-        $cycles = CycleDetector::detect($dependencyMap);
-        $rendered = $graphRenderer->render($dependencyMap, $cycles);
-
-        $outputPath = rtrim($args['output-path'] ?? '', DIRECTORY_SEPARATOR);
-        $graphFileName = 'stability-graph.' . $graphRenderer->fileExtension();
-        $graphFilePath = empty($outputPath)
-            ? $graphFileName
-            : $outputPath . DIRECTORY_SEPARATOR . $graphFileName;
-
-        file_put_contents($graphFilePath, $rendered);
-
-        $console->writeln("<info>Dependency graph written to: {$graphFilePath}</info>");
-
-        if (!empty($cycles)) {
-            $console->writeln('');
-            $console->writeln('<error>Circular dependencies detected:</error>');
-
-            foreach ($cycles as $cycle) {
-                $console->writeln('<comment>  ' . implode(' -> ', $cycle) . ' -> ' . $cycle[0] . '</comment>');
-            }
-        }
-    }
-
-    // Generate stability chart if requested
-    if (isset($args['with-chart'])) {
-        $chartOption = ChartOption::fromArgument($args['with-chart']);
-        $chartRenderer = ChartRendererFactory::create($chartOption);
-
-        $rendered = $chartRenderer->render($result);
-
-        $outputPath = rtrim($args['output-path'] ?? '', DIRECTORY_SEPARATOR);
-        $chartFileName = 'stability-chart.' . $chartRenderer->fileExtension();
-        $chartFilePath = empty($outputPath)
-            ? $chartFileName
-            : $outputPath . DIRECTORY_SEPARATOR . $chartFileName;
-
-        file_put_contents($chartFilePath, $rendered);
-
-        $console->writeln("<info>Stability chart written to: {$chartFilePath}</info>");
-    }
-} catch (StabilityException $exception) {
-    $exceptionWriter($exception);
-
-    exit(1);
-}
+$application->run();

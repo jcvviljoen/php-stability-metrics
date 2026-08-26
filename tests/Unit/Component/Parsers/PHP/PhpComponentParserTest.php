@@ -8,22 +8,18 @@ use Override;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Stability\Component\ComponentCollection;
-use Stability\Component\File\Exception\InvalidFileException;
+use Stability\Component\ComponentDefinition;
 use Stability\Component\File\Metadata;
 use Stability\Component\Parsers\PHP\PhpClassFileParser;
 use Stability\Component\Parsers\PHP\PhpComponentParser;
 use Stability\Component\Parsers\PHP\PhpFileReader;
 use Stability\Component\Parsers\PHP\PhpNamespaceParser;
-use Stability\Config\Module;
+use Stability\Tests\_Fixtures\Component\ComponentDefinitionFactory;
 use Stability\Tests\_Fixtures\Component\ComponentFactory;
 use Stability\Tests\_Fixtures\Component\MetadataFactory;
-use Stability\Tests\_Fixtures\Config\StabilityConfigFactory;
-use Stability\Tests\ExpectThrows;
 
 class PhpComponentParserTest extends TestCase
 {
-    use ExpectThrows;
-
     private PhpClassFileParser&MockObject $fileParser;
     private PhpFileReader&MockObject $fileReader;
     private PhpNamespaceParser&MockObject $namespaceParser;
@@ -43,9 +39,8 @@ class PhpComponentParserTest extends TestCase
 
     public function test_given_a_module_when_valid_then_parse(): void
     {
-        $config = StabilityConfigFactory::module1();
-        $modules = $config->modules();
-        $modulePaths = array_map(fn(Module $module) => $module->path(), $modules->values());
+        $definitions = [ComponentDefinitionFactory::module1()];
+        $componentPaths = array_map(fn(ComponentDefinition $definition) => $definition->path, $definitions);
         $files = ['Abstract1.php', 'Class1.php', 'Interface1.php'];
         $this->setupParseFiles(
             $files,
@@ -55,34 +50,35 @@ class PhpComponentParserTest extends TestCase
                 MetadataFactory::interface1(),
             ],
         );
-        $this->setupGetFilesForModule($modulePaths, $files);
+        $this->setupGetFilesForComponent($componentPaths, $files);
         $this->setupParsePrimaryNamespace(
             // The single unique namespace from the parsed files
             ['Stability\Tests\_Fixtures\_TestSrc\Module1'],
             'Stability\Tests\_Fixtures\_TestSrc\Module1',
         );
 
-        $components = $this->parser->parse($modules);
+        $components = $this->parser->parse($definitions);
 
         $this->assertEquals(new ComponentCollection([ComponentFactory::module1()]), $components);
     }
 
-    public function test_given_a_module_when_class_type_is_unknown_then_throw_exception(): void
+    public function test_given_a_file_that_cannot_be_classified_then_leave_it_out_and_carry_on(): void
     {
-        $config = StabilityConfigFactory::unknown();
-        $modules = $config->modules();
-        $modulePaths = array_map(fn(Module $module) => $module->path(), $modules->values());
-        $files = ['Unknown.txt'];
-        $this->setupGetFilesForModule($modulePaths, $files);
-        $this->setupParseFiles($files, [MetadataFactory::unknown()]);
-
-        $this->expectNotToParsePrimaryNamespace();
-        $exception = $this->expectThrows(fn() => $this->parser->parse($modules));
-
-        $this->assertEquals(
-            InvalidFileException::onInvalidFileType($files[0]),
-            $exception,
+        $definitions = [ComponentDefinitionFactory::module1()];
+        $componentPaths = array_map(fn(ComponentDefinition $definition) => $definition->path, $definitions);
+        $files = ['Class1.php', 'NotAType.txt'];
+        $this->setupGetFilesForComponent($componentPaths, $files);
+        $this->setupParseFiles($files, [MetadataFactory::class1(), MetadataFactory::unknown()]);
+        $this->setupParsePrimaryNamespace(
+            // The unclassified file has no namespace to contribute.
+            ['Stability\\Tests\\_Fixtures\\_TestSrc\\Module1'],
+            'Stability\\Tests\\_Fixtures\\_TestSrc\\Module1',
         );
+
+        $component = $this->parser->parse($definitions)->values()[0];
+
+        $this->assertEquals(1, $component->countTotalClasses());
+        $this->assertEquals(1, $component->countUnclassifiedFiles());
     }
 
     /**
@@ -98,13 +94,13 @@ class PhpComponentParserTest extends TestCase
     }
 
     /**
-     * @param list<string> $modulePaths
+     * @param list<string> $componentPaths
      * @param list<string> $files
      */
-    private function setupGetFilesForModule(array $modulePaths, array $files): void
+    private function setupGetFilesForComponent(array $componentPaths, array $files): void
     {
         $this->fileReader
-            ->expects($this->exactly(count($modulePaths)))
+            ->expects($this->exactly(count($componentPaths)))
             ->method('files')
             ->willReturn($files);
     }
@@ -119,12 +115,5 @@ class PhpComponentParserTest extends TestCase
             ->method('primaryNamespace')
             ->with($namespaces)
             ->willReturn($return);
-    }
-
-    private function expectNotToParsePrimaryNamespace(): void
-    {
-        $this->namespaceParser
-            ->expects($this->never())
-            ->method('primaryNamespace');
     }
 }

@@ -4,32 +4,38 @@ declare(strict_types=1);
 
 namespace Stability\Metric;
 
-use Stability\Component\Component;
-
 /**
  * The metrics calculated for a single component.
  *
- * Values are exposed formatted for display, because reporting them is all
- * the writers and renderers do with them.
+ * Values are reported at full precision. How many decimal places to show is a question
+ * about presenting them, so it belongs to whoever is doing the presenting: rounding here
+ * once had the chart plot every component to two decimal places.
  */
 interface ComponentMetric
 {
-    public Component $component { get; }
+    /**
+     * The name of the component these metrics were calculated for.
+     *
+     * Reporting is all anything downstream does with the component, so the name is all
+     * a metric needs to carry. Holding the component itself would point the Metric
+     * component back at Component and close a dependency cycle.
+     */
+    public string $componentName { get; }
 
     public ZoneType $zone { get; }
 
     /**
      * Abstractness (A), in the range [0, 1].
      */
-    public function abstractness(): string;
+    public function abstractness(): float;
 
     /**
      * Instability (I), in the range [0, 1].
      */
-    public function instability(): string;
+    public function instability(): float;
 
     /**
      * Distance from the Main Sequence (D), in the range [0, 1].
      */
-    public function dms(): string;
+    public function dms(): float;
 }

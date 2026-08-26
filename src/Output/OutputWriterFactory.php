@@ -4,16 +4,22 @@ declare(strict_types=1);
 
 namespace Stability\Output;
 
+use Stability\Config\OutputOption;
+use Stability\Config\OutputSetting;
 use Stability\Output\Writers\ConsoleOutputWriter;
 use Stability\Output\Writers\JsonOutputWriter;
-use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 
 readonly class OutputWriterFactory
 {
-    public static function create(OutputSetting $setting): OutputWriter
+    public function __construct(private OutputInterface $console)
+    {
+    }
+
+    public function create(OutputSetting $setting): OutputWriter
     {
         return match ($setting->option) {
-            OutputOption::CONSOLE => new ConsoleOutputWriter(new ConsoleOutput()),
+            OutputOption::CONSOLE => new ConsoleOutputWriter($this->console),
             OutputOption::JSON => new JsonOutputWriter($setting),
         };
     }

@@ -1,11 +1,11 @@
 <?php
 
-use \Stability\Config\Loaders\LoadedConfig;
-use \Stability\Config\Loaders\LoadedModule;
+use \Stability\Config\StabilityConfig;
+use \Stability\Config\StabilityModule;
 
 /**
- * @see LoadedConfig
- * @see LoadedModule
+ * @see StabilityConfig
+ * @see StabilityModule
  */
 return [
     'modules' => [

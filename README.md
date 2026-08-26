@@ -1,7 +1,7 @@
 # Stability
 #### PHP Stable Dependency Metrics Analyser
 
-![Project's current stability result](stability-result-2026-08-26.png)
+![Stability's own components plotted against the main sequence](docs/stability-chart.svg)
 
 ## Overview
 
@@ -54,7 +54,11 @@ Various arguments are also supported (don't worry, any invalid setup will guide 
 - `--output-name`: The name of the output file (_defaults to `stability-result`_)
 - `--with-graph`: Also render a dependency graph, either `mermaid` or `dot`
 - `--with-chart`: Also render a stability chart, currently only `svg`
+- `--fail-on-cycles`: Exit with a failure when a circular dependency is found, for use in a build
 - `--debug`: Enable debug output (exposes exception stack traces)
+
+The command is built on Symfony Console, so `--help`, `-q`, `-v` and the other standard
+options come with it.
 
 For example, you can specify a custom configuration file (as long as it is a supported format):
 
@@ -72,8 +76,9 @@ php vendor/bin/stability --with-graph mermaid --with-chart svg
 ```
 
 The dependency graph (`stability-graph.mmd`) shows each component and the direction of its
-dependencies. Components caught in a circular dependency are coloured red, and every cycle is also
-listed in the console output, so you can see which ones to break apart first. Mermaid files render
+dependencies, with any component caught in a circular dependency coloured red. Cycles are
+listed in the console output of every run, whether you ask for a graph or not, so you can see
+which ones to break apart first. Mermaid files render
 on GitHub inside a fenced `mermaid` block. The `dot` renderer writes Graphviz instead, which you can
 convert yourself:
 
@@ -86,27 +91,58 @@ with the main sequence drawn as a diagonal. Dots are coloured by zone, and hover
 the component's name and its metrics. The shaded corners mark where a component crosses into a zone
 at the default threshold, which is what the image at the top of this file shows.
 
-Here is what the graph looks like for this project, cycle and all:
+Here is what the graph looks like for this project:
 
 ```mermaid
 graph LR
+    Application
     Chart
     Component
     Config
+    Console
     node_Graph["Graph"]
     Metric
     Output
+    Shared
+    Application --> Chart
+    Application --> Component
+    Application --> Config
+    Application --> node_Graph
+    Application --> Metric
+    Application --> Output
+    Application --> Shared
     Chart --> Metric
-    Component --> Config
-    Config --> Output
+    Chart --> Shared
+    Component --> Shared
+    Config --> Shared
+    Console --> Application
+    Console --> Chart
+    Console --> Config
+    Console --> node_Graph
+    Console --> Output
+    Console --> Shared
     node_Graph --> Component
+    node_Graph --> Shared
     Metric --> Component
+    Output --> Config
     Output --> Metric
-    style Output fill:#ff6b6b,stroke:#cc0000,color:#fff
-    style Config fill:#ff6b6b,stroke:#cc0000,color:#fff
-    style Component fill:#ff6b6b,stroke:#cc0000,color:#fff
-    style Metric fill:#ff6b6b,stroke:#cc0000,color:#fff
+    Output --> Shared
 ```
+
+Two shapes are worth pointing out. `Application` and `Console` are what Robert Martin calls
+Main: they depend on everything and nothing depends on them, so they carry an instability of
+1 or close to it. That is where the translation from configuration into components lives,
+which is what lets `Component` and `Config` stay ignorant of each other.
+
+`Shared` is the opposite end. It holds one abstract class, the exception every other one
+extends, so everything depends on it and it depends on nothing. That gives it A = 1.00 and
+I = 0.00, which puts it exactly on the main sequence. It has a component to itself precisely
+so that it can be depended on from everywhere without closing a cycle.
+
+This is not a claim you have to take on trust. The configuration in
+[stability.php](stability.php) covers every directory under `src`, and `composer tests` runs
+`stability --fail-on-cycles` against it, so a pull request that introduces a cycle between
+these components fails its build.
 
 ### Configuration fields
 
@@ -163,6 +199,28 @@ A higher value indicates more unstable components
 
 Combines abstractness and instability to determine how far
 a component is from the ideal balance of being abstract and stable.
+
+### Reading a bad score honestly
+
+The chart at the top of this file puts one of Stability's own components, `Component`, in
+the Zone of Pain. That is not an oversight, and it is worth explaining, because you will
+meet the same reading in your own projects.
+
+`Component` is the domain core here. Plenty depends on it, it depends on almost nothing, and
+it is made of concrete classes. By the Stable Abstractions Principle that is exactly the
+combination the metric is built to flag: something this stable should be abstract, so that
+it can be extended without being modified.
+
+Martin's own answer is that the corner has legitimate residents. His example is a string
+library: highly stable, entirely concrete, and nothing to worry about, because it is not
+volatile. The question the metric asks is not "is this concrete and stable?" but "is this
+concrete, stable, and likely to change?". A domain core made of value objects and entities
+answers yes to the first and no to the second.
+
+So use the number as a prompt, not a verdict. Where a stable concrete component does turn
+out to be volatile, the metric has found something real. Where it does not, write down why,
+and move on. What is worth failing a build over is a cycle, because there is no reading of
+the Acyclic Dependencies Principle under which one is fine.
 
 You can read more about the principles being applied in the [CLEAN_ARCHITECTURE](CLEAN_ARCHITECTURE.md) file.
 

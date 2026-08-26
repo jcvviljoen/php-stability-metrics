@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Stability\Component\Parsers\PHP;
 
-use RuntimeException;
+use Stability\Component\Exception\InvalidComponentException;
 
 readonly class PhpNamespaceParser
 {
     /**
      * @param list<string> $namespaces
+     *
+     * @throws InvalidComponentException
      */
     public function primaryNamespace(array $namespaces): string
     {
@@ -38,7 +40,7 @@ readonly class PhpNamespaceParser
 
         foreach ($namespaces as $namespace) {
             if (!str_starts_with($namespace, $primary . '\\') && $namespace !== $primary) {
-                throw new RuntimeException("Namespace '$namespace' does not match primary namespace '$primary'.");
+                throw InvalidComponentException::onMismatchedNamespace($namespace, $primary);
             }
         }
 

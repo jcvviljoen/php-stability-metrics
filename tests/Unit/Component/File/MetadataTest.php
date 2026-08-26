@@ -7,6 +7,7 @@ namespace Stability\Tests\Unit\Component\File;
 use PHPUnit\Framework\TestCase;
 use Stability\Component\File\Exception\InvalidMetadataException;
 use Stability\Component\File\Metadata;
+use Stability\Component\File\Type;
 use Stability\Tests\_Fixtures\Component\MetadataFactory;
 use Stability\Tests\ExpectThrows;
 
@@ -14,16 +15,21 @@ class MetadataTest extends TestCase
 {
     use ExpectThrows;
 
-    public function test_given_some_metadata_when_namespace_is_empty_then_throw_exception(): void
+    public function test_given_a_classified_file_with_no_namespace_then_the_metadata_cannot_be_built(): void
     {
-        $metadata = Metadata::unknown();
-
-        $exception = $this->expectThrows(fn() => $metadata->namespace());
+        $exception = $this->expectThrows(fn() => new Metadata(Type::CONCRETE_CLASS, '', []));
 
         $this->assertEquals(
             InvalidMetadataException::onMissingNamespace(),
             $exception,
         );
+    }
+
+    public function test_given_an_unclassified_file_then_it_needs_no_namespace(): void
+    {
+        $metadata = Metadata::unknown();
+
+        $this->assertSame('', $metadata->namespace());
     }
 
     public function test_given_some_metadata_when_namespace_is_set_then_return_namespace(): void
