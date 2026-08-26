@@ -7,26 +7,26 @@ namespace Stability\Component;
 use Stability\Component\Exception\InvalidComponentException;
 use Stability\Component\File\Metadata;
 use Stability\Component\File\MetadataCollection;
-use Stability\Config\Module;
 
 readonly class Component
 {
     public function __construct(
-        public Module $module,
+        private string $name,
         private string $primaryNamespace,
         private MetadataCollection $fileData,
+        public Thresholds $thresholds,
     ) {
     }
 
     public function name(): string
     {
-        return $this->module->name();
+        return $this->name;
     }
 
     public function primaryNamespace(): string
     {
         if (empty($this->primaryNamespace)) {
-            throw InvalidComponentException::onEmptyComponent($this->module->name());
+            throw InvalidComponentException::onEmptyComponent($this->name);
         }
 
         return $this->primaryNamespace;
@@ -49,7 +49,7 @@ readonly class Component
 
     public function countUsagesOf(Component $other): int
     {
-        if ($this->module->name() === $other->module->name()) {
+        if ($this->name === $other->name) {
             return 0;
         }
 

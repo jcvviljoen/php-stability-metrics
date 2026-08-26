@@ -6,8 +6,8 @@ namespace Stability\Output\Writers;
 
 use Override;
 use RuntimeException;
+use Stability\Config\OutputSetting;
 use Stability\Metric\Result;
-use Stability\Output\OutputSetting;
 use Stability\Output\OutputWriter;
 
 readonly class JsonOutputWriter implements OutputWriter

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stability\Config;
 
-use Stability\Output\OutputSetting;
-
 interface Config
 {
     /**
@@ -19,7 +17,8 @@ interface Config
     public function outputSettings(): OutputSetting;
 
     /**
-     * Override the output settings as needed.
+     * A copy of this configuration with the given output settings in place of its own,
+     * so that a caller (the CLI, say) can layer its own settings over the file's.
      */
-    public function overrideOutputSettings(OutputSetting $outputSettings): void;
+    public function withOutputSettings(OutputSetting $outputSettings): self;
 }

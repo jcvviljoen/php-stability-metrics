@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Stability\Tests\_Fixtures\Output;
+namespace Stability\Tests\_Fixtures\Config;
 
-use Stability\Output\OutputOption;
-use Stability\Output\OutputSetting;
+use Stability\Config\OutputOption;
+use Stability\Config\OutputSetting;
 
 readonly class OutputSettingFactory
 {

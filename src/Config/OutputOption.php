@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Stability\Output;
+namespace Stability\Config;
 
-use Stability\Output\Exception\InvalidOutputOptionException;
+use Stability\Config\Exception\InvalidOutputOptionException;
 
 enum OutputOption: string
 {

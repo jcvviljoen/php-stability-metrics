@@ -30,30 +30,8 @@ readonly class StabilityModuleFactory
         );
     }
 
-    public static function module3(): StabilityModule
-    {
-        return new StabilityModule(
-            'Module3',
-            'Module3',
-            0.7,
-            0.7,
-            [],
-        );
-    }
-
-    public static function unknown(): StabilityModule
-    {
-        return new StabilityModule(
-            'Unknown',
-            'Unknown',
-            0.7,
-            0.7,
-            [],
-        );
-    }
-
     /**
-     * @see tests/Unit/Infrastructure/PHP/_Fixtures/Files/config_valid.php
+     * @see tests/Unit/Config/Loaders/PHP/_Fixtures/config_valid.php
      */
     public static function baseValid(): StabilityModule
     {

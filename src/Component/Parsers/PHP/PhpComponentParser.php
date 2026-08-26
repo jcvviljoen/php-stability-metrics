@@ -7,13 +7,13 @@ namespace Stability\Component\Parsers\PHP;
 use Override;
 use Stability\Component\Component;
 use Stability\Component\ComponentCollection;
+use Stability\Component\ComponentDefinition;
 use Stability\Component\ComponentParser;
 use Stability\Component\Exception\InvalidComponentException;
 use Stability\Component\File\Exception\InvalidFileException;
 use Stability\Component\File\Exception\InvalidMetadataException;
 use Stability\Component\File\MetadataCollection;
 use Stability\Component\File\Type;
-use Stability\Config\ModuleList;
 
 readonly class PhpComponentParser implements ComponentParser
 {
@@ -25,20 +25,22 @@ readonly class PhpComponentParser implements ComponentParser
     }
 
     /**
+     * @param list<ComponentDefinition> $definitions
+     *
      * @throws InvalidComponentException
      * @throws InvalidFileException
      * @throws InvalidMetadataException
      */
-    #[Override] public function parse(ModuleList $modules): ComponentCollection
+    #[Override] public function parse(array $definitions): ComponentCollection
     {
         $components = ComponentCollection::empty();
 
-        foreach ($modules as $module) {
-            $moduleFiles = $this->fileReader->files($module->path(), $module->exclude());
+        foreach ($definitions as $definition) {
+            $componentFiles = $this->fileReader->files($definition->path, $definition->exclude);
 
             $allFileMetadata = MetadataCollection::empty();
 
-            foreach ($moduleFiles as $file) {
+            foreach ($componentFiles as $file) {
                 $data = $this->fileParser->parse($file);
 
                 if (Type::UNKNOWN === $data->type) {
@@ -50,7 +52,12 @@ readonly class PhpComponentParser implements ComponentParser
 
             $primaryNamespace = $this->namespaceParser->primaryNamespace($allFileMetadata->namespaces());
 
-            $components->add(new Component($module, $primaryNamespace, $allFileMetadata));
+            $components->add(new Component(
+                $definition->name,
+                $primaryNamespace,
+                $allFileMetadata,
+                $definition->thresholds,
+            ));
         }
 
         return $components;

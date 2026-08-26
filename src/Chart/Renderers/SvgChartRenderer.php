@@ -234,7 +234,7 @@ readonly class SvgChartRenderer implements ChartRenderer
     {
         $instability = (float) $metric->instability();
         $abstractness = (float) $metric->abstractness();
-        $name = htmlspecialchars($metric->component->name(), ENT_XML1);
+        $name = htmlspecialchars($metric->componentName, ENT_XML1);
         $zone = htmlspecialchars($metric->zone->description(), ENT_XML1);
         $dms = $metric->dms();
 

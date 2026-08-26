@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Stability\Metric;
 
-use Stability\Component\Component;
-
 /**
  * The metrics calculated for a single component.
  *
@@ -14,7 +12,14 @@ use Stability\Component\Component;
  */
 interface ComponentMetric
 {
-    public Component $component { get; }
+    /**
+     * The name of the component these metrics were calculated for.
+     *
+     * Reporting is all anything downstream does with the component, so the name is all
+     * a metric needs to carry. Holding the component itself would point the Metric
+     * component back at Component and close a dependency cycle.
+     */
+    public string $componentName { get; }
 
     public ZoneType $zone { get; }
 

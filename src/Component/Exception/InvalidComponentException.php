@@ -13,6 +13,11 @@ class InvalidComponentException extends StabilityException
         return new self("Component's module directory \"$path\" could not be found.");
     }
 
+    public static function onThresholdOutOfRange(string $threshold, float $value): self
+    {
+        return new self("Threshold \"$threshold\" must be a distance between 0 and 1, but was $value.");
+    }
+
     public static function onEmptyComponent(string $moduleName): self
     {
         return new self("Component for module \"$moduleName\" contains no PHP files.");

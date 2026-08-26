@@ -3,16 +3,19 @@
 
 declare(strict_types=1);
 
+use Stability\Component\ComponentDefinition;
 use Stability\Component\Parsers\ComponentParserFactory;
+use Stability\Component\Thresholds;
 use Stability\Config\ConfigType;
+use Stability\Config\Module;
 use Stability\Config\Loaders\ConfigLoaderFactory;
 use Stability\Chart\ChartOption;
 use Stability\Chart\ChartRendererFactory;
 use Stability\Graph\CycleDetector;
 use Stability\Graph\GraphOption;
 use Stability\Graph\GraphRendererFactory;
-use Stability\Output\OutputOption;
-use Stability\Output\OutputSetting;
+use Stability\Config\OutputOption;
+use Stability\Config\OutputSetting;
 use Stability\Output\OutputWriterFactory;
 use Stability\InstabilityAnalyser;
 use Stability\StabilityException;
@@ -130,7 +133,7 @@ if (isset($args['output']) && 'console' !== $args['output']) {
     $outputPath = $args['output-path'] ?? '';
     $outputFileName = $args['output-name'] ?? '';
 
-    $config->overrideOutputSettings(new OutputSetting($outputOption, $outputPath, $outputFileName));
+    $config = $config->withOutputSettings(new OutputSetting($outputOption, $outputPath, $outputFileName));
 }
 
 // Create file parser
@@ -143,7 +146,19 @@ try {
     $console->writeln('<info>Calculating stability metrics...</info>');
     $console->writeln('');
 
-    $components = $componentParser->parse($config->modules());
+    // Translate the configured modules into what the parser asks for. This mapping is the
+    // application layer's job; it sits here until there is an application layer to hold it.
+    $definitions = array_map(
+        fn(Module $module) => new ComponentDefinition(
+            $module->name(),
+            $module->path(),
+            new Thresholds($module->thresholdZoneOfPain(), $module->thresholdZoneOfUselessness()),
+            $module->exclude(),
+        ),
+        $config->modules()->values(),
+    );
+
+    $components = $componentParser->parse($definitions);
     $result = new InstabilityAnalyser()->analyse($components);
 
     $outputWriter->outputResult($result);

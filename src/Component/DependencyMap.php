@@ -29,7 +29,7 @@ readonly class DependencyMap
     {
         return array_reduce(
             $this->mappings,
-            fn(int $fanIn, array $mapping) => $fanIn + $mapping[$component->module->name()],
+            fn(int $fanIn, array $mapping) => $fanIn + $mapping[$component->name()],
             0,
         );
     }
@@ -49,7 +49,7 @@ readonly class DependencyMap
     public function countFanOut(Component $component): int
     {
         return array_reduce(
-            $this->mappings[$component->module->name()],
+            $this->mappings[$component->name()],
             fn(int $fanOut, int $dependencyCount) => $fanOut + $dependencyCount,
             0,
         );
@@ -60,10 +60,10 @@ readonly class DependencyMap
         $mappings = [];
 
         foreach ($components as $component) {
-            $name = $component->module->name();
+            $name = $component->name();
 
             foreach ($components as $other) {
-                $otherName = $other->module->name();
+                $otherName = $other->name();
 
                 $mappings[$name][$otherName] = $component->countUsagesOf($other);
             }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stability\Output;
+namespace Stability\Config;
 
 readonly class OutputSetting
 {

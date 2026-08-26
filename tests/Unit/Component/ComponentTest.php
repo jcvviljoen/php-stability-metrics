@@ -9,14 +9,14 @@ use Stability\Component\Component;
 use Stability\Component\Exception\InvalidComponentException;
 use Stability\Component\File\MetadataCollection;
 use Stability\Tests\_Fixtures\Component\ComponentFactory;
-use Stability\Tests\_Fixtures\Config\StabilityModuleFactory;
+use Stability\Tests\_Fixtures\Component\ThresholdsFactory;
 use Stability\Tests\ExpectThrows;
 
 class ComponentTest extends TestCase
 {
     use ExpectThrows;
 
-    public function given_a_component_when_reading_the_name_then_return_module_name(): void
+    public function test_given_a_component_when_reading_the_name_then_return_its_name(): void
     {
         $component = ComponentFactory::module1();
 
@@ -26,9 +26,10 @@ class ComponentTest extends TestCase
     public function test_given_an_empty_primary_namespace_then_reading_it_throws_exception(): void
     {
         $component = new Component(
-            StabilityModuleFactory::unknown(),
+            'Unknown',
             '',
             MetadataCollection::empty(),
+            ThresholdsFactory::default(),
         );
 
         $exception = $this->expectThrows(fn() => $component->primaryNamespace());

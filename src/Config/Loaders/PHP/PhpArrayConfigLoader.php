@@ -10,8 +10,8 @@ use Stability\Config\Exception\InvalidConfigurationException;
 use Stability\Config\Loaders\StabilityConfig;
 use Stability\Config\Loaders\StabilityModule;
 use Stability\Config\Loaders\StabilityModuleList;
-use Stability\Output\OutputOption;
-use Stability\Output\OutputSetting;
+use Stability\Config\OutputOption;
+use Stability\Config\OutputSetting;
 
 // phpcs:disable SlevomatCodingStandard.Commenting.DocCommentSpacing.IncorrectLinesCountAfterLastContent
 /**

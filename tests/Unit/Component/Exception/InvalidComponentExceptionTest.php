@@ -16,6 +16,16 @@ class InvalidComponentExceptionTest extends TestCase
         self::assertSame('Component\'s module directory "path" could not be found.', $exception->getMessage());
     }
 
+    public function test_on_threshold_out_of_range(): void
+    {
+        $exception = InvalidComponentException::onThresholdOutOfRange('thresholdZoneOfPain', 1.5);
+
+        self::assertSame(
+            'Threshold "thresholdZoneOfPain" must be a distance between 0 and 1, but was 1.5.',
+            $exception->getMessage(),
+        );
+    }
+
     public function test_on_invalid_component_path(): void
     {
         $exception = InvalidComponentException::onEmptyComponent('ModuleName');

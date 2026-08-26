@@ -6,14 +6,13 @@ namespace Stability\Metric;
 
 use JsonSerializable;
 use Override;
-use Stability\Component\Component;
 
 readonly class StableDependencyMetric implements ComponentMetric, JsonSerializable
 {
     private const int FORMAT_PRECISION = 2;
 
     public function __construct(
-        public Component $component,
+        public string $componentName,
         public ZoneType $zone,
         private float $abstractness,
         private float $instability,
@@ -47,7 +46,7 @@ readonly class StableDependencyMetric implements ComponentMetric, JsonSerializab
     #[Override] public function jsonSerialize(): array
     {
         return [
-            'component' => $this->component->name(),
+            'component' => $this->componentName,
             'zone' => $this->zone,
             'abstractness' => $this->abstractness(),
             'instability' => $this->instability(),

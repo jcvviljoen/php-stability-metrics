@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Stability\Tests\_Fixtures\Output;
+namespace Stability\Tests\Unit\Config;
 
 use PHPUnit\Framework\TestCase;
-use Stability\Output\OutputOption;
-use Stability\Output\OutputSetting;
+use Stability\Config\OutputOption;
+use Stability\Config\OutputSetting;
+use Stability\Tests\_Fixtures\Config\OutputSettingFactory;
 
 class OutputSettingTest extends TestCase
 {

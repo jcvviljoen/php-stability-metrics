@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Stability\Output;
 
+use Stability\Config\OutputOption;
+use Stability\Config\OutputSetting;
 use Stability\Output\Writers\ConsoleOutputWriter;
 use Stability\Output\Writers\JsonOutputWriter;
 use Symfony\Component\Console\Output\ConsoleOutput;

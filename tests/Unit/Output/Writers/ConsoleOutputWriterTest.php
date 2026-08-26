@@ -59,7 +59,7 @@ class ConsoleOutputWriterTest extends TestCase
             $resultOutput = [];
 
             $resultOutput[] = '----------------------------------------';
-            $resultOutput[] = "Component: {$componentResult->component->name()}";
+            $resultOutput[] = "Component: {$componentResult->componentName}";
             $resultOutput[] = '----------------------------------------';
             $resultOutput[] = "| Abstractness: {$componentResult->abstractness()}";
             $resultOutput[] = "| Instability: {$componentResult->instability()}";

@@ -6,14 +6,13 @@ namespace Stability\Tests\_Fixtures\Metric;
 
 use Stability\Metric\StableDependencyMetric;
 use Stability\Metric\ZoneType;
-use Stability\Tests\_Fixtures\Component\ComponentFactory;
 
 class StableDependencyMetricFactory
 {
     public static function module1(): StableDependencyMetric
     {
         return new StableDependencyMetric(
-            ComponentFactory::module1(),
+            'Module1',
             ZoneType::USEFULNESS,
             0.6666666666666666,
             0.5,
@@ -24,7 +23,7 @@ class StableDependencyMetricFactory
     public static function module2(): StableDependencyMetric
     {
         return new StableDependencyMetric(
-            ComponentFactory::module2(),
+            'Module2',
             ZoneType::USEFULNESS,
             0.5,
             1,
@@ -35,7 +34,7 @@ class StableDependencyMetricFactory
     public static function module3(): StableDependencyMetric
     {
         return new StableDependencyMetric(
-            ComponentFactory::module3(),
+            'Module3',
             ZoneType::PAIN,
             0,
             0,

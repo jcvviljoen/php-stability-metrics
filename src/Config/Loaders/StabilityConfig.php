@@ -6,14 +6,14 @@ namespace Stability\Config\Loaders;
 
 use Override;
 use Stability\Config\Config;
-use Stability\Output\OutputSetting;
+use Stability\Config\OutputSetting;
 
-class StabilityConfig implements Config
+readonly class StabilityConfig implements Config
 {
     private OutputSetting $outputSettings;
 
     public function __construct(
-        private readonly StabilityModuleList $modules,
+        private StabilityModuleList $modules,
         ?OutputSetting $outputSettings = null,
     ) {
         $this->outputSettings = $outputSettings ?? OutputSetting::default();
@@ -29,8 +29,8 @@ class StabilityConfig implements Config
         return $this->outputSettings;
     }
 
-    #[Override] public function overrideOutputSettings(OutputSetting $outputSettings): void
+    #[Override] public function withOutputSettings(OutputSetting $outputSettings): self
     {
-        $this->outputSettings = $outputSettings;
+        return new self($this->modules, $outputSettings);
     }
 }

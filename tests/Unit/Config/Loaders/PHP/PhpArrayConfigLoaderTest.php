@@ -8,8 +8,8 @@ use Override;
 use PHPUnit\Framework\TestCase;
 use Stability\Config\Exception\InvalidConfigurationException;
 use Stability\Config\Loaders\PHP\PhpArrayConfigLoader;
-use Stability\Output\OutputOption;
-use Stability\Output\OutputSetting;
+use Stability\Config\OutputOption;
+use Stability\Config\OutputSetting;
 use Stability\Tests\_Fixtures\Config\StabilityConfigFactory;
 use Stability\Tests\ExpectThrows;
 
@@ -84,8 +84,7 @@ class PhpArrayConfigLoaderTest extends TestCase
     {
         $config = __DIR__ . '/_Fixtures/config_output_with_option.php';
         $expectedSetting = new OutputSetting(OutputOption::JSON, 'some-output', '/var/logs');
-        $expectedConfig = StabilityConfigFactory::baseValid();
-        $expectedConfig->overrideOutputSettings($expectedSetting);
+        $expectedConfig = StabilityConfigFactory::baseValid()->withOutputSettings($expectedSetting);
 
         $result = $this->loader->load($config);
 

@@ -51,12 +51,12 @@ readonly class InstabilityAnalyser
             $abstractness,
             $instability,
             $dms,
-            $component->module->thresholdZoneOfPain(),
-            $component->module->thresholdZoneOfUselessness(),
+            $component->thresholds->zoneOfPain,
+            $component->thresholds->zoneOfUselessness,
         );
 
         return new StableDependencyMetric(
-            $component,
+            $component->name(),
             $zone,
             $abstractness,
             $instability,

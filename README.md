@@ -86,7 +86,7 @@ with the main sequence drawn as a diagonal. Dots are coloured by zone, and hover
 the component's name and its metrics. The shaded corners mark where a component crosses into a zone
 at the default threshold, which is what the image at the top of this file shows.
 
-Here is what the graph looks like for this project, cycle and all:
+Here is what the graph looks like for this project:
 
 ```mermaid
 graph LR
@@ -97,16 +97,15 @@ graph LR
     Metric
     Output
     Chart --> Metric
-    Component --> Config
-    Config --> Output
     node_Graph --> Component
-    Metric --> Component
+    Output --> Config
     Output --> Metric
-    style Output fill:#ff6b6b,stroke:#cc0000,color:#fff
-    style Config fill:#ff6b6b,stroke:#cc0000,color:#fff
-    style Component fill:#ff6b6b,stroke:#cc0000,color:#fff
-    style Metric fill:#ff6b6b,stroke:#cc0000,color:#fff
 ```
+
+Nothing here depends on `Config` except `Output`, and `Component` does not depend on it at
+all. The CLI reads the configuration file and translates it into the plain definitions the
+parser asks for, which keeps the translation in the one place that is allowed to know about
+everything, and keeps the graph acyclic.
 
 ### Configuration fields
 
