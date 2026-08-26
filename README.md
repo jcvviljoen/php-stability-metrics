@@ -57,6 +57,9 @@ Various arguments are also supported (don't worry, any invalid setup will guide 
 - `--fail-on-cycles`: Exit with a failure when a circular dependency is found, for use in a build
 - `--debug`: Enable debug output (exposes exception stack traces)
 
+The command is built on Symfony Console, so `--help`, `-q`, `-v` and the other standard
+options come with it.
+
 For example, you can specify a custom configuration file (as long as it is a supported format):
 
 ```bash
@@ -92,35 +95,49 @@ Here is what the graph looks like for this project:
 
 ```mermaid
 graph LR
+    Application
     Chart
     Component
     Config
+    Console
     node_Graph["Graph"]
     Metric
     Output
-    Application
-    Console
-    Chart --> Metric
-    node_Graph --> Component
-    Output --> Config
-    Output --> Metric
+    Shared
     Application --> Chart
     Application --> Component
     Application --> Config
     Application --> node_Graph
     Application --> Metric
     Application --> Output
+    Application --> Shared
+    Chart --> Metric
+    Chart --> Shared
+    Component --> Shared
+    Config --> Shared
+    Console --> Application
     Console --> Chart
     Console --> Config
     Console --> node_Graph
     Console --> Output
-    Console --> Application
+    Console --> Shared
+    node_Graph --> Component
+    node_Graph --> Shared
+    Metric --> Component
+    Output --> Config
+    Output --> Metric
+    Output --> Shared
 ```
 
-`Application` and `Console` are what Robert Martin calls Main: they depend on everything and
-nothing depends on them, so they carry an instability of 1 or close to it. That is where the
-translation from configuration into components lives, which is what lets `Component` and
-`Config` stay ignorant of each other and keeps the graph acyclic.
+Two shapes are worth pointing out. `Application` and `Console` are what Robert Martin calls
+Main: they depend on everything and nothing depends on them, so they carry an instability of
+1 or close to it. That is where the translation from configuration into components lives,
+which is what lets `Component` and `Config` stay ignorant of each other.
+
+`Shared` is the opposite end. It holds one abstract class, the exception every other one
+extends, so everything depends on it and it depends on nothing. That gives it A = 1.00 and
+I = 0.00, which puts it exactly on the main sequence. It has a component to itself precisely
+so that it can be depended on from everywhere without closing a cycle.
 
 This is not a claim you have to take on trust. The configuration in
 [stability.php](stability.php) covers every directory under `src`, and `composer tests` runs
