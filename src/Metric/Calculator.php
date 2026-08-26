@@ -39,15 +39,14 @@ final readonly class Calculator
      */
     public static function instability(float $fanIn, float $fanOut): float
     {
-        if ($fanIn === 0.0) {
-            return 1;
-        }
+        $total = $fanIn + $fanOut;
 
-        if ($fanOut === 0.0) {
+        // With no dependencies in either direction the ratio is undefined, and a component
+        // nothing depends on that in turn depends on nothing is not fragile: there is
+        // nothing outside it that can force it to change, which is what I = 0 says.
+        if ($total === 0.0) {
             return 0;
         }
-
-        $total = $fanIn + $fanOut;
 
         return $fanOut / $total;
     }

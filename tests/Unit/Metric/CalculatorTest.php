@@ -62,6 +62,16 @@ class CalculatorTest extends TestCase
         $this->assertEquals(0, $instability);
     }
 
+    public function test_given_a_component_is_not_coupled_at_all_then_return_zero(): void
+    {
+        $fanIn = 0;
+        $fanOut = 0;
+
+        $instability = Calculator::instability($fanIn, $fanOut);
+
+        $this->assertEquals(0, $instability);
+    }
+
     public function test_dms(): void
     {
         $instability = 0.6666666666666666;
